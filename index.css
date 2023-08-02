@@ -1,0 +1,28 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+
+.input-group {
+    height: 28px;
+}
+
+.btn {
+    text-shadow: none;
+    background-image: none;
+    height: 28px;
+}
+
+button.roll::after {
+    content: '\f6cf';
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+}
+
+.disabled :is(input, select) {
+    pointer-events: none;
+    background-color: var(--bs-secondary-bg);
+}
+
+.input-group-text {
+    min-width: 100px;
+}
