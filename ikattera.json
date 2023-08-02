@@ -140,6 +140,12 @@
       "title": "Телосложение",
       "value": 0
     }
-
-  ]
+  ],
+  "level_bonus": {
+    "1": {
+      "attributes_free": 8,
+      "skills_free": 25
+    }
+  },
+  "level": 1
 }
