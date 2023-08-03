@@ -1,0 +1,196 @@
+﻿@model string
+
+<script type="text/worker">
+	const CharsheetData = JSON.parse('@Html.Raw(Model)');
+	const buttonList = ['character', 'attributes', 'skills', 'weapons', 'combat'];
+
+	async function rollDice(dice, attributeName) {
+		const roll = `&{template:default} {{name=@@{character_name}}} {{result=[[${dice} + @@{${attributeName}} + @@{${attributeName}_mod}]]}}`;
+		const results = await startRoll(roll);
+		finishRoll(results.rollId);
+		console.log(results.results.result.result);
+	}
+
+	function setAttributes(attributes) {
+		getAttrs(attributes.map(attr => `${attr.name}`), function(values) {
+			const attributesToInit = attributes
+				.filter(attr => !values[`${attr.name}`])
+				.reduce((agg, attr) => ({
+					...agg,
+					[attr.name]: attr.value,
+					[`${attr.name}_mod`]: 0
+				}), {});
+
+			setAttrs(attributesToInit);
+		});
+	}
+
+	function getAttributeChanges(propertyName, data, level) {
+		if (!data || !data.level_bonus) {
+        	return 0;
+        }
+
+        return Object
+        	.keys(data.level_bonus)
+        	.filter(l => parseInt(l) > 0 && parseInt(l) <= level)
+        	.reduce((agg, key) => {
+        		if (!data.level_bonus[key][propertyName]) {
+        			return agg;
+        		}
+        		return CharsheetData[propertyName]
+        			.map(p => ({key: p.name, value: data.level_bonus[key][propertyName][p.name], aggValue: agg[p.name]}))
+        			.filter(p => !!p.value || !!p.aggValue)
+        			.map(p => ({[p.key]: (p.value || 0) + (p.aggValue || 0) }));
+        	}, {});
+	}
+
+	function calculateObject(propertyName, data, level) {
+		if (!data || !data.level_bonus) {
+			return 0;
+		}
+
+		const result = Object
+			.keys(data.level_bonus)
+			.filter(l => parseInt(l) > 0 && parseInt(l) <= level)
+			.reduce((agg, key) => {
+				return agg
+					+ (!!data.level_bonus[key][`${propertyName}_free`] ? data.level_bonus[key][`${propertyName}_free`] : 0)
+					+ (!!data.level_bonus[key][propertyName] ? Object.keys(data.level_bonus[key][propertyName]).reduce((propertyAgg, propertyKey) => propertyAgg + data.level_bonus[key][propertyName][propertyKey], 0) : 0)
+			}, 0);
+
+		return result;
+	}
+
+	function calculate(propertyName, values, level) {
+		level = level || values.level;
+		const race = CharsheetData.races.find(r => r.name === values.race);
+		const kind = !!race ? (race.kinds && race.kinds.find(k => k.name === values.kind)) : null;
+
+		const pickedCount = CharsheetData[propertyName]
+			.reduce((agg, p) => (agg + (!!values[p.name] ? parseInt(values[p.name]) : 0)), 0);
+
+		console.log(getAttributeChanges(propertyName, CharsheetData, level));
+		console.log(getAttributeChanges(propertyName, race, level));
+
+		return calculateObject(propertyName, CharsheetData, level)
+			+ calculateObject(propertyName, race, level)
+			+ calculateObject(propertyName, kind, level)
+			- pickedCount;
+	}
+
+	function getValuesListForCalculate(attrs) {
+		return CharsheetData.attributes.reduce((agg, attr) => [...agg, attr.name], [...(!!attrs ? attrs : []), 'level', 'race', 'kind']);
+	}
+
+	function init() {
+		setAttributes(CharsheetData.attributes);
+
+		getAttrs(getValuesListForCalculate(), values => {
+			if (!values.level) {
+				const race = CharsheetData.races.find(r => r.name === values.race);
+				const kind = !!race ? (race.kinds && race.kinds.find(k => k.name === values.kind)) : null;
+
+				setAttrs({
+					level: CharsheetData.level,
+					attributes_free: calculate('attributes', values, CharsheetData.level)
+				});
+			}
+		});
+	}
+
+	on('sheet:opened', async function () {
+		setAttrs({
+			sheetTab: 'character'
+		});
+		getAttrs(['race', 'level'], function(values) {
+			if (values.race != 'revera') {
+				setAttrs({
+					kind: ''
+				});
+				$20('.js-group-kind').addClass('hidden');
+			}
+			if (values.level < 3) {
+				setAttrs({
+					subclass: 'none'
+				});
+				$20('.js-group-subclass').addClass('disabled');
+			}
+		});
+		populateListOptions({
+			elemSelector: '#form_subclass',
+			optionsArray: [
+				{label: 'Выберите подкласс', value: 'none'},
+				{label: 'Следопыт', value: 'bowman-pathfinder'},
+				{label: 'Стрелок Эгмы', value: 'bowman-mage'},
+				{label: 'Стремительность', value: 'bowman-swiftness'}
+			]
+		});
+		init();
+	});
+
+	buttonList.forEach(button => {
+    	on(`clicked:${button}`, function() {
+    		$20('.nav-link').removeClass('active');
+    		$20(`button[name='act_${button}']`).addClass('active');
+    		setAttrs({
+    			sheetTab: button
+    		});
+    	});
+    });
+
+	CharsheetData.attributes.forEach(attr => {
+		on(`change:${attr.name}`, e => {
+			const currentValue = parseInt(e.newValue);
+			getAttrs(getValuesListForCalculate(['attributes_free']), values => {
+				setAttrs({
+					attributes_free: calculate('attributes', values)
+				});
+			});
+		});
+	});
+
+	on('change:level', function (e) {
+		const currentLevel = parseInt(e.newValue);
+		getAttrs(getValuesListForCalculate(['attributes_free']), values => {
+			setAttrs({
+				attributes_free: calculate('attributes', values, currentLevel)
+			});
+		});
+
+		if (currentLevel < 3) {
+			setAttrs({
+				subclass: 'none'
+			});
+			$20('.js-group-subclass').addClass('disabled');
+		} else {
+			$20('.js-group-subclass').removeClass('disabled');
+		}
+	});
+
+	on('change:race', function (e) {
+		getAttrs(getValuesListForCalculate(['attributes_free']), values => {
+			setAttrs({
+				attributes_free: calculate('attributes', values)
+			});
+		});
+
+		if (e.newValue != 'revera') {
+			setAttrs({
+				kind: ''
+			});
+			$20('.js-group-kind').addClass('hidden');
+		} else {
+			$20('.js-group-kind').removeClass('hidden');
+		}
+	});
+
+	$20('button.js-roll').on('click', async e => {
+		await rollDice('2d10', e.htmlAttributes['data-attr']);
+	});
+	$20('button.js-roll-adv').on('click', async e => {
+		await rollDice('3d10kh2', e.htmlAttributes['data-attr']);
+	});
+	$20('button.js-roll-dis').on('click', async e => {
+		await rollDice('3d10kl2', e.htmlAttributes['data-attr']);
+	});
+</script>

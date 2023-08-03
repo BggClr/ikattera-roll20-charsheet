@@ -1,0 +1,12 @@
+﻿@model IList<Models.CharacterAttribute>
+
+<div class="sheet-attributes">
+	<div class="row">
+		<div class="col-4">
+			@foreach (var attr in Model)
+			{
+				@await Html.PartialAsync("~/Views/CharacterFeature.cshtml", attr)
+			}
+		</div>
+	</div>
+</div>

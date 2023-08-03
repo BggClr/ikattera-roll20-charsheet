@@ -1,0 +1,24 @@
+﻿@model IList<Models.Skill>
+
+<div class="sheet-skills">
+	<div class="row">
+		<div class="col">
+			@foreach (var skill in Model.OrderBy(p => p.Title).Select((p, i) => new {Item = p, Index = i}).Where(p => p.Index % 3 == 0).Select(p => p.Item))
+			{
+				@await Html.PartialAsync("~/Views/CharacterFeature.cshtml", skill)
+			}
+		</div>
+		<div class="col">
+			@foreach (var skill in Model.OrderBy(p => p.Title).Select((p, i) => new {Item = p, Index = i}).Where(p => p.Index % 3 == 1).Select(p => p.Item))
+			{
+				@await Html.PartialAsync("~/Views/CharacterFeature.cshtml", skill)
+			}
+		</div>
+		<div class="col">
+			@foreach (var skill in Model.OrderBy(p => p.Title).Select((p, i) => new {Item = p, Index = i}).Where(p => p.Index % 3 == 2).Select(p => p.Item))
+			{
+				@await Html.PartialAsync("~/Views/CharacterFeature.cshtml", skill)
+			}
+		</div>
+	</div>
+</div>

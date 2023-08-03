@@ -1,0 +1,10 @@
+﻿@model Models.CharacterFeature
+
+<div class="input-group mb-2">
+	<span class="input-group-text">@Model.Title</span>
+	<input type="number" name="attr_@Model.Name" class="form-control" id="form_@Model.Name" title="Базовое значение"/>
+	<input type="number" name="attr_@(Model.Name)_mod" class="form-control" id="form_@(Model.Name)_mod" title="Модификатор"/>
+	<button type="button" class='js-roll roll btn btn-outline-primary' data-name="@Model.Name" data-type="@Model.FeatureType"/>
+	<button type="button" class='js-roll-adv roll btn btn-outline-success' data-name="@Model.Name" data-type="@Model.FeatureType"/>
+	<button type="button" class='js-roll-dis roll btn btn-outline-danger' data-name="@Model.Name" data-type="@Model.FeatureType"/>
+</div>
