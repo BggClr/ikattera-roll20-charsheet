@@ -24,5 +24,22 @@ button.roll::after {
 }
 
 .input-group-text {
-    min-width: 100px;
+    min-width: 120px;
+}
+
+.charsheet .sheet-character,
+.charsheet .sheet-attributes,
+.charsheet .sheet-skills,
+.charsheet .sheet-weapons,
+.charsheet .sheet-combat {
+    display: none;
+}
+
+/* show the selected tab */
+.charsheet .sheet-tabstoggle[value="character"] ~ div.sheet-character,
+.charsheet .sheet-tabstoggle[value="attributes"] ~ div.sheet-attributes,
+.charsheet .sheet-tabstoggle[value="skills"] ~ div.sheet-skills,
+.charsheet .sheet-tabstoggle[value="weapons"] ~ div.sheet-weapons,
+.charsheet .sheet-tabstoggle[value="combat"] ~ div.sheet-combat {
+    display: block;
 }
