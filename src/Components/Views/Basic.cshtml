@@ -27,13 +27,10 @@
 				<span class="input-group-text">Класс</span>
 				<select name="attr_class" id="form_class" class="form-select" aria-label="Класс">
 					<option value="" selected disabled>Выберите класс</option>
-					<option value="bard">Бард</option>
-					<option value="warior">Воин</option>
-					<option value="bowman">Лучник</option>
-					<option value="mage">Маг</option>
-					<option value="chakram">Мастер чакрам</option>
-					<option value="rogue">Разбойник</option>
-					<option value="scientist">Ученый</option>
+					@foreach (var characterClass in Model.Classes.OrderBy(p => p.Title))
+                    {
+                    	<option value="@characterClass.Name">@characterClass.Title</option>
+                    }
 				</select>
 			</div>
 			<div class="input-group mb-2 js-group-subclass">

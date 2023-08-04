@@ -2,7 +2,7 @@
 
 <script type="text/worker">
 	const CharsheetData = JSON.parse('@Html.Raw(Model)');
-	const FeaturesList = ['attributes', 'skills'];
+	const FeaturesList = ['attributes', 'skills', 'classes'];
 	const buttonList = ['character', 'attributes', 'skills', 'weapons', 'combat'];
 
 	Array.prototype.distinct = function() {
@@ -38,9 +38,11 @@
 	function getFeaturesValues(values, level) {
 		level = level || values.level || 0;
     	const race = CharsheetData.races.find(r => r.name === values.race);
+    	const characterClass = CharsheetData.classes.find(r => r.name === values.class);
     	const kind = !!race ? (race.kinds && race.kinds.find(k => k.name === values.kind)) : null;
+    	const subclass = !!characterClass ? (characterClass.subclasses && characterClass.subclasses.find(k => k.name === values.subclass)) : null;
 
-		const featureChangesByType = [CharsheetData, race, kind].map(data => getFeaturesValuesByType(data, level));
+		const featureChangesByType = [CharsheetData, race, kind, characterClass, subclass].map(data => getFeaturesValuesByType(data, level));
 		const keys = featureChangesByType
 			.map(p => Object.keys(p))
 			.reduce((agg, keys) => [...agg, ...keys], [])
@@ -76,7 +78,7 @@
 	function getValuesListForCalculate(attrs) {
 		return FeaturesList
 			.map(key => CharsheetData[key].map(f => f.name))
-			.reduce((agg, f) => [...agg, ...f], [...FeaturesList.map(f => `${f}_free`),...(!!attrs ? attrs : []), 'level', 'race', 'kind']);
+			.reduce((agg, f) => [...agg, ...f], [...FeaturesList.map(f => `${f}_free`),...(!!attrs ? attrs : []), 'level', 'race', 'kind', 'class', 'subclass']);
 	}
 
 	function getNotificationClass(value) {
@@ -155,18 +157,27 @@
         	$20('.js-group-kind').addClass('hidden');
 		}
 	}
+	function fillSubClasses(className) {
+		const characterClass = CharsheetData.classes.filter(p => p.name == className)[0];
+		if (characterClass && characterClass.subclasses) {
+			populateListOptions({
+                elemSelector: '#form_subclass',
+                optionsArray: [
+                    {label: 'Выберите подкласс', value: 'none', disabled: true, selected: true},
+                    ...characterClass.subclasses.sort((a, b) => a.title.localeCompare(b.title)).map(k => ({label: k.title, value: k.name}))
+                ]
+            });
+			$20('.js-group-subclass').removeClass('hidden');
+		} else {
+        	$20('.js-group-subclass').addClass('hidden');
+		}
+	}
 
 	on('sheet:opened', async function () {
 		setAttrs({
 			sheetTab: 'character'
 		});
-		getAttrs(['race', 'level'], function(values) {
-			if (values.race != 'revera') {
-				setAttrs({
-					kind: ''
-				});
-				$20('.js-group-kind').addClass('hidden');
-			}
+		getAttrs(['race', 'class', 'level'], function(values) {
 			if (values.level < 3) {
 				setAttrs({
 					subclass: 'none'
@@ -174,15 +185,7 @@
 				$20('.js-group-subclass').addClass('disabled');
 			}
 			fillKinds(values.race);
-		});
-		populateListOptions({
-			elemSelector: '#form_subclass',
-			optionsArray: [
-				{label: 'Выберите подкласс', value: 'none', disabled: true},
-				{label: 'Следопыт', value: 'bowman-pathfinder'},
-				{label: 'Стрелок Эгмы', value: 'bowman-mage'},
-				{label: 'Стремительность', value: 'bowman-swiftness'}
-			]
+			fillSubClasses(values.class)
 		});
 		init();
 	});
@@ -221,7 +224,7 @@
 			const oldValues = e.previousValue && e.previousValue != e.newValue
         		? {...values, level: e.previousValue}
         		: {...values, level: 0};
-			applyFeatureChanges(values, oldValues, level);
+			applyFeatureChanges(values, oldValues);
 		});
 
 		if (currentLevel < 3) {
@@ -236,7 +239,7 @@
 
 	on('change:race', e => {
 		getAttrs(getValuesListForCalculate(), values => {
-			setAttrs({ kind: 'none' }, { silent: true}, () => {
+			setAttrs({ kind: 'none' }, { silent: true }, () => {
                 const oldValues = e.previousValue && e.previousValue != e.newValue
                     ? {...values, race: e.previousValue, kind: values.kind}
                     : {...values, race: null, kind: null};
@@ -244,6 +247,18 @@
             });
         });
         fillKinds(e.newValue);
+	});
+
+	on('change:class', e => {
+		getAttrs(getValuesListForCalculate(), values => {
+			setAttrs({ subclass: 'none' }, { silent: true }, () => {
+                const oldValues = e.previousValue && e.previousValue != e.newValue
+                    ? {...values, class: e.previousValue, subclass : values.subclass}
+                    : {...values, class: null, subclass: null};
+                applyFeatureChanges(values, oldValues);
+            });
+        });
+        fillSubClasses(e.newValue);
 	});
 
 	on('change:kind', e => {
