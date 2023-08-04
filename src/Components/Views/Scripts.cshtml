@@ -184,17 +184,24 @@
 			if (e.sourceType === 'sheetworker') {
 				return;
 			}
-			const currentValue = parseInt(e.newValue);
+
 			getAttrs(getValuesListForCalculate(), values => {
-				applyFeatureChanges(values);
+				const oldValues = e.previousValue && e.previousValue != e.newValue
+        			? {...values, [attr.name]: e.previousValue}
+        			: {...values, [attr.name]: 0};
+				applyFeatureChanges(values, oldValues);
 			});
 		});
 	});
 
-	on('change:level', function (e) {
+	on('change:level', e => {
 		const currentLevel = parseInt(e.newValue);
-		getAttrs(getValuesListForCalculate(['attributes_free']), values => {
-			applyFeatureChanges(values, null, level);
+
+		getAttrs(getValuesListForCalculate(), values => {
+			const oldValues = e.previousValue && e.previousValue != e.newValue
+        		? {...values, level: e.previousValue}
+        		: {...values, level: 0};
+			applyFeatureChanges(values, oldValues, level);
 		});
 
 		if (currentLevel < 3) {
@@ -211,7 +218,7 @@
 		getAttrs(getValuesListForCalculate(['attributes_free']), values => {
 			const oldValues = e.previousValue && e.previousValue != e.newValue
 				? {...values, race: e.previousValue}
-				: null;
+				: {...values, race: null};
 			applyFeatureChanges(values, oldValues);
 		});
 
