@@ -179,20 +179,22 @@
     	});
     });
 
-	CharsheetData.attributes.forEach(attr => {
-		on(`change:${attr.name}`, e => {
-			if (e.sourceType === 'sheetworker') {
-				return;
-			}
+	FeaturesList
+		.reduce((agg, key) => [...agg, ...CharsheetData[key]], [])
+		.forEach(feature => {
+			on(`change:${feature.name}`, e => {
+				if (e.sourceType === 'sheetworker') {
+					return;
+				}
 
-			getAttrs(getValuesListForCalculate(), values => {
-				const oldValues = e.previousValue && e.previousValue != e.newValue
-        			? {...values, [attr.name]: e.previousValue}
-        			: {...values, [attr.name]: 0};
-				applyFeatureChanges(values, oldValues);
+				getAttrs(getValuesListForCalculate(), values => {
+					const oldValues = e.previousValue && e.previousValue != e.newValue
+        				? {...values, [feature.name]: e.previousValue}
+        				: {...values, [feature.name]: 0};
+					applyFeatureChanges(values, oldValues);
+				});
 			});
 		});
-	});
 
 	on('change:level', e => {
 		const currentLevel = parseInt(e.newValue);
