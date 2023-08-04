@@ -2,18 +2,40 @@
 
 <script type="text/worker">
 	const CharsheetData = JSON.parse('@Html.Raw(Model)');
-	const FeaturesList = ['attributes', 'skills', 'classes'];
+	const FeaturesList = ['attributes', 'skills'];
 	const buttonList = ['character', 'attributes', 'skills', 'weapons', 'combat'];
 
 	Array.prototype.distinct = function() {
 		return this.filter((item, pos) => this.indexOf(item) === pos)
     };
 
-	async function rollDice(dice, attributeName) {
-		const roll = `&{template:default} {{name=@@{character_name}}} {{result=[[${dice} + @@{${attributeName}} + @@{${attributeName}_mod}]]}}`;
-		const results = await startRoll(roll);
-		finishRoll(results.rollId);
-		console.log(results.results.result.result);
+	function findFeature(featureName) {
+		return FeaturesList
+        	.reduce((agg, key) => [...agg, ...CharsheetData[key]], [])
+        	.filter(f => f.name == featureName)[0];
+	}
+
+	async function rollDice(dice, featureName) {
+		getAttrs(getValuesListForCalculate(), async values => {
+			const feature = findFeature(featureName);
+			let modifiers = [
+				featureName,
+				`${featureName}_mod`
+			];
+
+			if (feature && feature.depends_on) {
+				const greatestFeature = feature.depends_on
+					.map(p => ({feature: p, value: (parseInt(values[p]) || 0) + (parseInt(values[`${p}_mod`]) || 0)}))
+					.sort((a, b) => b.value - a.value)[0].feature;
+				modifiers = [...modifiers, greatestFeature, `${greatestFeature}_mod`];
+			}
+			const rollModifiers = modifiers.map(p => `@@{${p}}`).join(' + ');
+
+			const roll = `&{template:default} {{name=@@{character_name}}} {{result=[[${dice} + ${rollModifiers}]]}}`;
+			const results = await startRoll(roll);
+			finishRoll(results.rollId);
+			console.log(results.results.result.result);
+		});
 	}
 
 	function getCharsheetFeatures() {
@@ -77,7 +99,7 @@
 
 	function getValuesListForCalculate(attrs) {
 		return FeaturesList
-			.map(key => CharsheetData[key].map(f => f.name))
+			.map(key => CharsheetData[key].map(f => f.name).reduce((agg, f) => [...agg, f, `${f}_mod`], []))
 			.reduce((agg, f) => [...agg, ...f], [...FeaturesList.map(f => `${f}_free`),...(!!attrs ? attrs : []), 'level', 'race', 'kind', 'class', 'subclass']);
 	}
 
