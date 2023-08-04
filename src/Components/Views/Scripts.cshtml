@@ -15,7 +15,7 @@
         	.filter(f => f.name == featureName)[0];
 	}
 
-	async function rollDice(dice, featureName) {
+	async function rollDice(dice, featureName, altKey) {
 		getAttrs(getValuesListForCalculate(), async values => {
 			const feature = findFeature(featureName);
 			let modifiers = [
@@ -29,12 +29,13 @@
 					.sort((a, b) => b.value - a.value)[0].feature;
 				modifiers = [...modifiers, greatestFeature, `${greatestFeature}_mod`];
 			}
-			const rollModifiers = modifiers.map(p => `@@{${p}}`).join(' + ');
+			const rollResultModifiers = modifiers.map(p => `@@{${p}}`).join(' + ');
+			const rollModifier = !!altKey ? '/w gm': '';
 
-			const roll = `&{template:default} {{name=@@{character_name}}} {{result=[[${dice} + ${rollModifiers}]]}}`;
+			const roll = `${rollModifier} &{template:default} {{name=@@{character_name}}} {{Проверка=${feature.title}}} {{Результат=[[${dice} + ${rollResultModifiers}]]}}`;
 			const results = await startRoll(roll);
 			finishRoll(results.rollId);
-			console.log(results.results.result.result);
+			console.log(results.results.result['Результат']);
 		});
 	}
 
@@ -297,12 +298,12 @@
 	});
 
 	$20('button.js-roll').on('click', async e => {
-		await rollDice('2d10', e.htmlAttributes['data-name']);
+		await rollDice('2d10', e.htmlAttributes['data-name'], e.altKey);
 	});
 	$20('button.js-roll-adv').on('click', async e => {
-		await rollDice('3d10kh2', e.htmlAttributes['data-name']);
+		await rollDice('3d10kh2', e.htmlAttributes['data-name'], e.altKey);
 	});
 	$20('button.js-roll-dis').on('click', async e => {
-		await rollDice('3d10kl2', e.htmlAttributes['data-name']);
+		await rollDice('3d10kl2', e.htmlAttributes['data-name'], e.altKey);
 	});
 </script>
