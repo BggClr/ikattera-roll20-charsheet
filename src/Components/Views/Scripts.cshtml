@@ -54,8 +54,9 @@
 		const newFeatures = getFeaturesValues(values, level);
 		const oldFeatures = !!oldValues ? getFeaturesValues(oldValues, level) : {};
 		const charsheetFeatures = getCharsheetFeatures();
+
 		const pickedFeatures = 	FeaturesList
-            .map(key => ({name: `${key}_free`, value: CharsheetData[key].reduce((agg, p) => (agg + (!!values[p.name] ? parseInt(values[p.name] - (newFeatures[p.name] || 0)) : 0)), 0)}))
+            .map(key => ({name: `${key}_free`, value: CharsheetData[key].reduce((agg, p) => (agg + (!!values[p.name] ? parseInt(values[p.name]) - (!!oldValues ? (oldFeatures[p.name] || 0) : (newFeatures[p.name] || 0)) : 0)), 0)}))
             .reduce((agg, f) => ({...agg, [f.name]: f.value}), {});
 
 		const featuresDelta = Object.keys(newFeatures)
@@ -116,7 +117,7 @@
 						[`${key}_free`]: featuresDelta[`${key}_free`]
 					};
 				}, {...featuresToSet, level: values.level || CharsheetData.level});
-			setAttrs(attrs);
+			setAttrs(attrs, {silent: true});
 			applyTabStyles();
 		});
 	}
@@ -131,9 +132,9 @@
 		const attrs = Object
 			.keys(featuresDelta)
 			.filter(key => charsheetFeatures.indexOf(key) >= 0)
-			.reduce((agg, key) => ({...agg, [key]: (values[key] || 0) + featuresDelta[key]}), featuresFree)
+			.reduce((agg, key) => ({...agg, [key]: (parseInt(values[key]) || 0) + featuresDelta[key]}), featuresFree)
 
-		setAttrs(attrs);
+		setAttrs(attrs, {silent: true});
 
 		applyTabStyles();
 	}
@@ -180,6 +181,9 @@
 
 	CharsheetData.attributes.forEach(attr => {
 		on(`change:${attr.name}`, e => {
+			if (e.sourceType === 'sheetworker') {
+				return;
+			}
 			const currentValue = parseInt(e.newValue);
 			getAttrs(getValuesListForCalculate(), values => {
 				applyFeatureChanges(values);
@@ -205,7 +209,10 @@
 
 	on('change:race', function (e) {
 		getAttrs(getValuesListForCalculate(['attributes_free']), values => {
-			applyFeatureChanges(values, {...values, race: e.previousValue});
+			const oldValues = e.previousValue && e.previousValue != e.newValue
+				? {...values, race: e.previousValue}
+				: null;
+			applyFeatureChanges(values, oldValues);
 		});
 
 		if (e.newValue != 'revera') {
