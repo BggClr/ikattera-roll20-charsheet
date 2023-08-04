@@ -94,8 +94,8 @@
             },
             "kinds": [
                 {
-                    "name": "Ёж",
-                    "title": "hedgehog"
+                    "name": "hedgehog",
+                    "title": "Ёж"
                 },
                 {
                     "name": "rodent",
