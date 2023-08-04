@@ -24,7 +24,11 @@ button.roll::after {
 }
 
 .input-group-text {
-    min-width: 120px;
+    min-width: 150px;
+}
+
+.charactersheet {
+    min-width: 1080px;
 }
 
 .charsheet .sheet-character,
@@ -42,4 +46,8 @@ button.roll::after {
 .charsheet .sheet-tabstoggle[value="weapons"] ~ div.sheet-weapons,
 .charsheet .sheet-tabstoggle[value="combat"] ~ div.sheet-combat {
     display: block;
+}
+
+.nav-pills {
+    font-size: 14px;
 }

@@ -2,7 +2,12 @@
 
 <script type="text/worker">
 	const CharsheetData = JSON.parse('@Html.Raw(Model)');
+	const FeaturesList = ['attributes', 'skills'];
 	const buttonList = ['character', 'attributes', 'skills', 'weapons', 'combat'];
+
+	Array.prototype.distinct = function() {
+		return this.filter((item, pos) => this.indexOf(item) === pos)
+    };
 
 	async function rollDice(dice, attributeName) {
 		const roll = `&{template:default} {{name=@@{character_name}}} {{result=[[${dice} + @@{${attributeName}} + @@{${attributeName}_mod}]]}}`;
@@ -11,21 +16,12 @@
 		console.log(results.results.result.result);
 	}
 
-	function setAttributes(attributes) {
-		getAttrs(attributes.map(attr => `${attr.name}`), function(values) {
-			const attributesToInit = attributes
-				.filter(attr => !values[`${attr.name}`])
-				.reduce((agg, attr) => ({
-					...agg,
-					[attr.name]: attr.value,
-					[`${attr.name}_mod`]: 0
-				}), {});
-
-			setAttrs(attributesToInit);
-		});
+	function getCharsheetFeatures() {
+		return CharsheetData.attributes
+			.concat(CharsheetData.skills);
 	}
 
-	function getAttributeChanges(propertyName, data, level) {
+	function getFeaturesValuesByType(data, level) {
 		if (!data || !data.level_bonus) {
         	return 0;
         }
@@ -33,69 +29,113 @@
         return Object
         	.keys(data.level_bonus)
         	.filter(l => parseInt(l) > 0 && parseInt(l) <= level)
-        	.reduce((agg, key) => {
-        		if (!data.level_bonus[key][propertyName]) {
-        			return agg;
-        		}
-        		return CharsheetData[propertyName]
-        			.map(p => ({key: p.name, value: data.level_bonus[key][propertyName][p.name], aggValue: agg[p.name]}))
-        			.filter(p => !!p.value || !!p.aggValue)
-        			.map(p => ({[p.key]: (p.value || 0) + (p.aggValue || 0) }));
-        	}, {});
+        	.reduce((agg, key) => Object.keys(agg).concat(Object.keys(data.level_bonus[key]))
+        		    .distinct()
+        			.reduce((levelAgg, levelKey) => ({...levelAgg, [levelKey]: (agg[levelKey] || 0) + (data.level_bonus[key][levelKey] || 0)}), {})
+        	, {});
 	}
 
-	function calculateObject(propertyName, data, level) {
-		if (!data || !data.level_bonus) {
-			return 0;
-		}
+	function getFeaturesValues(values, level) {
+		level = level || values.level || 0;
+    	const race = CharsheetData.races.find(r => r.name === values.race);
+    	const kind = !!race ? (race.kinds && race.kinds.find(k => k.name === values.kind)) : null;
 
-		const result = Object
-			.keys(data.level_bonus)
-			.filter(l => parseInt(l) > 0 && parseInt(l) <= level)
-			.reduce((agg, key) => {
-				return agg
-					+ (!!data.level_bonus[key][`${propertyName}_free`] ? data.level_bonus[key][`${propertyName}_free`] : 0)
-					+ (!!data.level_bonus[key][propertyName] ? Object.keys(data.level_bonus[key][propertyName]).reduce((propertyAgg, propertyKey) => propertyAgg + data.level_bonus[key][propertyName][propertyKey], 0) : 0)
-			}, 0);
+		const featureChangesByType = [CharsheetData, race, kind].map(data => getFeaturesValuesByType(data, level));
+		const keys = featureChangesByType
+			.map(p => Object.keys(p))
+			.reduce((agg, keys) => [...agg, ...keys], [])
+			.distinct();
 
-		return result;
+		return keys
+			.reduce((agg, key) => ({...agg, [key]: featureChangesByType.reduce((featureValueAgg, features) => featureValueAgg + (features[key] || 0), 0) }), {})
 	}
 
-	function calculate(propertyName, values, level) {
-		level = level || values.level;
-		const race = CharsheetData.races.find(r => r.name === values.race);
-		const kind = !!race ? (race.kinds && race.kinds.find(k => k.name === values.kind)) : null;
+	function calculateFeatures(values, oldValues, level) {
+		const newFeatures = getFeaturesValues(values, level);
+		const oldFeatures = !!oldValues ? getFeaturesValues(oldValues, level) : {};
+		const charsheetFeatures = getCharsheetFeatures();
+		const pickedFeatures = 	FeaturesList
+            .map(key => ({name: `${key}_free`, value: CharsheetData[key].reduce((agg, p) => (agg + (!!values[p.name] ? parseInt(values[p.name] - (newFeatures[p.name] || 0)) : 0)), 0)}))
+            .reduce((agg, f) => ({...agg, [f.name]: f.value}), {});
 
-		const pickedCount = CharsheetData[propertyName]
-			.reduce((agg, p) => (agg + (!!values[p.name] ? parseInt(values[p.name]) : 0)), 0);
+		const featuresDelta = Object.keys(newFeatures)
+			.concat(Object.keys(oldFeatures))
+			.concat(Object.keys(pickedFeatures))
+			.distinct()
+			.reduce((agg, key) => ({
+				...agg,
+				[key]: charsheetFeatures.filter(p => p.name === key).length
+					? (newFeatures[key] || 0) - (oldFeatures[key] || 0)
+					: (newFeatures[key] || 0) - (pickedFeatures[key] || 0)
+			}), {});
 
-		console.log(getAttributeChanges(propertyName, CharsheetData, level));
-		console.log(getAttributeChanges(propertyName, race, level));
-
-		return calculateObject(propertyName, CharsheetData, level)
-			+ calculateObject(propertyName, race, level)
-			+ calculateObject(propertyName, kind, level)
-			- pickedCount;
+		return featuresDelta;
 	}
 
 	function getValuesListForCalculate(attrs) {
-		return CharsheetData.attributes.reduce((agg, attr) => [...agg, attr.name], [...(!!attrs ? attrs : []), 'level', 'race', 'kind']);
+		return FeaturesList
+			.map(key => CharsheetData[key].map(f => f.name))
+			.reduce((agg, f) => [...agg, ...f], [...FeaturesList.map(f => `${f}_free`),...(!!attrs ? attrs : []), 'level', 'race', 'kind']);
+	}
+
+	function getNotificationClass(value) {
+		if (!value) {
+			return 'bg-secondary';
+		}
+		return value > 0 ? 'bg-success' : 'bg-danger';
+	}
+
+	function applyTabStyles() {
+		getAttrs(FeaturesList.map(f => `${f}_free`), values => {
+			FeaturesList.forEach(f => {
+				$20(`[name="attr_${f}_free"]`)
+                    .removeClass('bg-secondary bg-success bg-danger')
+                    .addClass(getNotificationClass(values[`${f}_free`]));
+			});
+		});
 	}
 
 	function init() {
-		setAttributes(CharsheetData.attributes);
-
 		getAttrs(getValuesListForCalculate(), values => {
-			if (!values.level) {
-				const race = CharsheetData.races.find(r => r.name === values.race);
-				const kind = !!race ? (race.kinds && race.kinds.find(k => k.name === values.kind)) : null;
+        	var featuresDelta = calculateFeatures(values, null, values.level || CharsheetData.level);
 
-				setAttrs({
-					level: CharsheetData.level,
-					attributes_free: calculate('attributes', values, CharsheetData.level)
-				});
-			}
+			const defaultFeatures = getCharsheetFeatures()
+        		.reduce((agg, feature) => ({...agg, [feature.name]: feature.value + (featuresDelta[feature.name] || 0), [`${feature.name}_mod`]: 0}), {});
+
+			const featuresToSet = Object.keys(defaultFeatures)
+				.filter(key => values[key] == null || values[key] === '')
+				.reduce((agg, key) => ({...agg, [key]: defaultFeatures[key]}), {});
+
+			const attrs = FeaturesList
+				.reduce((agg, key) => {
+					if (!featuresDelta[`${key}_free`]) {
+						return agg;
+					}
+					return {
+						...agg,
+						[`${key}_free`]: featuresDelta[`${key}_free`]
+					};
+				}, {...featuresToSet, level: values.level || CharsheetData.level});
+			setAttrs(attrs);
+			applyTabStyles();
 		});
+	}
+	function applyFeatureChanges(values, oldValues, level) {
+		const featuresDelta = calculateFeatures(values, oldValues, level || values.level);
+		const charsheetFeatures = getCharsheetFeatures().map(f => f.name);
+
+		const featuresFree = FeaturesList
+			.filter(key => !!featuresDelta[`${key}_free`])
+			.reduce((agg, key) => ({...agg, [`${key}_free`]: featuresDelta[`${key}_free`]}), {})
+
+		const attrs = Object
+			.keys(featuresDelta)
+			.filter(key => charsheetFeatures.indexOf(key) >= 0)
+			.reduce((agg, key) => ({...agg, [key]: (values[key] || 0) + featuresDelta[key]}), featuresFree)
+
+		setAttrs(attrs);
+
+		applyTabStyles();
 	}
 
 	on('sheet:opened', async function () {
@@ -141,10 +181,8 @@
 	CharsheetData.attributes.forEach(attr => {
 		on(`change:${attr.name}`, e => {
 			const currentValue = parseInt(e.newValue);
-			getAttrs(getValuesListForCalculate(['attributes_free']), values => {
-				setAttrs({
-					attributes_free: calculate('attributes', values)
-				});
+			getAttrs(getValuesListForCalculate(), values => {
+				applyFeatureChanges(values);
 			});
 		});
 	});
@@ -152,9 +190,7 @@
 	on('change:level', function (e) {
 		const currentLevel = parseInt(e.newValue);
 		getAttrs(getValuesListForCalculate(['attributes_free']), values => {
-			setAttrs({
-				attributes_free: calculate('attributes', values, currentLevel)
-			});
+			applyFeatureChanges(values, null, level);
 		});
 
 		if (currentLevel < 3) {
@@ -169,9 +205,7 @@
 
 	on('change:race', function (e) {
 		getAttrs(getValuesListForCalculate(['attributes_free']), values => {
-			setAttrs({
-				attributes_free: calculate('attributes', values)
-			});
+			applyFeatureChanges(values, {...values, race: e.previousValue});
 		});
 
 		if (e.newValue != 'revera') {
@@ -185,12 +219,12 @@
 	});
 
 	$20('button.js-roll').on('click', async e => {
-		await rollDice('2d10', e.htmlAttributes['data-attr']);
+		await rollDice('2d10', e.htmlAttributes['data-name']);
 	});
 	$20('button.js-roll-adv').on('click', async e => {
-		await rollDice('3d10kh2', e.htmlAttributes['data-attr']);
+		await rollDice('3d10kh2', e.htmlAttributes['data-name']);
 	});
 	$20('button.js-roll-dis').on('click', async e => {
-		await rollDice('3d10kl2', e.htmlAttributes['data-attr']);
+		await rollDice('3d10kl2', e.htmlAttributes['data-name']);
 	});
 </script>

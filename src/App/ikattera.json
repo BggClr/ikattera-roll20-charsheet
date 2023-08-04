@@ -1,371 +1,605 @@
 {
-  "races": [
-    {
-      "name": "gagan",
-      "title": "Гаган"
-    },
-    {
-      "name": "akir",
-      "title": "Акир"
-    },
-    {
-      "name": "cro",
-      "title": "Кро"
-    },
-    {
-      "name": "paru",
-      "title": "Пару",
-      "level_bonus": {
+    "races": [
+        {
+            "name": "gagan",
+            "title": "Гаган",
+            "level_bonus": {
+                "1": {
+                    "skill_trade": 1,
+                    "skill_medicine": 1,
+                    "skill_botanics": 1,
+                    "weapon_magic": 1
+                },
+                "4": {
+                    "hp": 3
+                },
+                "8": {
+                    "hp": 2
+                },
+                "10": {
+                    "hp": 2
+                }
+            }
+        },
+        {
+            "name": "akir",
+            "title": "Акир",
+            "level_bonus": {
+                "3": {
+                    "hp": 4
+                },
+                "5": {
+                    "hp": 5
+                },
+                "7": {
+                    "hp": 4
+                },
+                "10": {
+                    "hp": 4
+                }
+            }
+        },
+        {
+            "name": "cro",
+            "title": "Кро",
+            "level_bonus": {
+                "1": {
+                    "attribute_strength": 1,
+                    "weapons_free": 1
+                },
+                "3": {
+                    "stamina": 4
+                },
+                "5": {
+                    "hp": 4
+                },
+                "7": {
+                    "stamina": 4
+                },
+                "10": {
+                    "hp": 2,
+                    "stamina": 2
+                }
+            }
+        },
+        {
+            "name": "paru",
+            "title": "Пару",
+            "level_bonus": {
+                "1": {
+                    "attributes_free": 1,
+                    "skills_free": 3,
+                    "hp": 3,
+                    "stamina": 2
+                },
+                "5": {
+                    "hp": 3,
+                    "stamina": 2
+                },
+                "10": {
+                    "hp": 3,
+                    "stamina": 2
+                }
+            }
+        },
+        {
+            "name": "revera",
+            "title": "Ревера-Нгахера",
+            "level_bonus": {
+                "1": {
+                    "attribute_strength": -1,
+                    "attribute_dexterity": 1,
+                    "skill_music": 1
+                }
+            },
+            "kinds": [
+                {
+                    "name": "Ёж",
+                    "title": "hedgehog"
+                },
+                {
+                    "name": "rodent",
+                    "title": "Грызун",
+                    "level_bonus": {
+                        "1": {
+                            "skill_survival": 1
+                        }
+                    }
+                },
+                {
+                    "name": "hare",
+                    "title": "Заяц",
+                    "level_bonus": {
+                        "1": {
+                            "skill_listening": 1
+                        }
+                    }
+                },
+                {
+                    "name": "cat",
+                    "title": "Кошка",
+                    "level_bonus": {
+                        "1": {
+                            "skill_balance": 1
+                        }
+                    }
+                },
+                {
+                    "name": "mole",
+                    "title": "Крот",
+                    "level_bonus": {
+                        "1": {
+                            "skill_fight": 1
+                        }
+                    }
+                },
+                {
+                    "name": "marten",
+                    "title": "Куница",
+                    "level_bonus": {
+                        "1": {
+                            "skill_prestidigitation": 1
+                        }
+                    }
+                },
+                {
+                    "name": "lemur",
+                    "title": "Лемур",
+                    "level_bonus": {
+                        "1": {
+                            "skill_artistry": 1
+                        }
+                    }
+                },
+                {
+                    "name": "opossum",
+                    "title": "Опоссум",
+                    "level_bonus": {
+                        "1": {
+                            "skill_acrobatics": 1
+                        }
+                    }
+                },
+                {
+                    "name": "raptur",
+                    "title": "Раптур"
+                },
+                {
+                    "name": "custom",
+                    "title": "Свой вариант",
+                    "level_bonus": {
+                        "1": {
+                            "skills_free": 1
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "skepsi",
+            "title": "Скепси",
+            "level_bonus": {
+                "1": {
+                    "attribute_strength": -1,
+                    "attribute_wisdom": 1,
+                    "skill_history": 1,
+                    "skill_law": 1,
+                    "skill_renown": 1,
+                    "weapon_magic": 1
+                },
+                "5": {
+                    "hp": 3,
+                    "stamina": 2
+                },
+                "10": {
+                    "hp": 3,
+                    "stamina": 2
+                }
+            }
+        }
+    ],
+    "attributes": [
+        {
+            "name": "attribute_strength",
+            "title": "Сила",
+            "value": 0
+        },
+        {
+            "name": "attribute_dexterity",
+            "title": "Ловкость",
+            "value": 0
+        },
+        {
+            "name": "attribute_charisma",
+            "title": "Харизма",
+            "value": 0
+        },
+        {
+            "name": "attribute_wisdom",
+            "title": "Мудрость",
+            "value": 0
+        },
+        {
+            "name": "attribute_attention",
+            "title": "Внимание",
+            "value": 0
+        },
+        {
+            "name": "attribute_body",
+            "title": "Телосложение",
+            "value": 0
+        }
+    ],
+    "skills": [
+        {
+            "name": "skill_search",
+            "title": "Обыск",
+            "depends_on": [
+                "attribute_attention"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_listening",
+            "title": "Подсулшивание",
+            "depends_on": [
+                "attribute_attention"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_observation",
+            "title": "Наблюдательность",
+            "depends_on": [
+                "attribute_attention"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_surveillance",
+            "title": "Слежение",
+            "depends_on": [
+                "attribute_attention"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_prestidigitation",
+            "title": "Ловкость Рук",
+            "depends_on": [
+                "attribute_dexterity"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_balance",
+            "title": "Баланс",
+            "depends_on": [
+                "attribute_dexterity"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_acrobatics",
+            "title": "Акробатика",
+            "depends_on": [
+                "attribute_dexterity"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_concealment",
+            "title": "Сокрытие",
+            "depends_on": [
+                "attribute_dexterity"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_secrecy",
+            "title": "Скрытность",
+            "depends_on": [
+                "attribute_dexterity"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_riding",
+            "title": "Верховая езда",
+            "depends_on": [
+                "attribute_dexterity",
+                "attribute_strength"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_parry",
+            "title": "Парирование",
+            "depends_on": [
+                "attribute_dexterity",
+                "attribute_strength"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_disarmament",
+            "title": "Обезоруживание",
+            "depends_on": [
+                "attribute_dexterity",
+                "attribute_strength"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_capture",
+            "title": "Захват",
+            "depends_on": [
+                "attribute_strength"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_blocking",
+            "title": "Блокирование",
+            "depends_on": [
+                "attribute_strength"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_fight",
+            "title": "Драка",
+            "depends_on": [
+                "attribute_strength"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_intimidation",
+            "title": "Запугивание",
+            "depends_on": [
+                "attribute_strength"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_swimming",
+            "title": "Плавание",
+            "depends_on": [
+                "attribute_body"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_knowledge",
+            "title": "Знание о мире",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_animal_handling",
+            "title": "Обращение с животными",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_magic_theory",
+            "title": "Теория Магии",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_music",
+            "title": "Музыка",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_medicine",
+            "title": "Медицина",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_art",
+            "title": "Исскуство",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_analysis",
+            "title": "Анализ",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_strategy",
+            "title": "Стратегия",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_survival",
+            "title": "Выживание",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_law",
+            "title": "Закон",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_botanics",
+            "title": "Ботаника",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_craft",
+            "title": "Ремесло",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_professionalism",
+            "title": "Знание о деле",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_history",
+            "title": "История",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_parody",
+            "title": "Пародия",
+            "depends_on": [
+                "attribute_charisma"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_artistry",
+            "title": "Артистицзм",
+            "depends_on": [
+                "attribute_charisma"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_renown",
+            "title": "Репутация",
+            "depends_on": [
+                "attribute_charisma"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_cheat",
+            "title": "Обман",
+            "depends_on": [
+                "attribute_charisma"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_trade",
+            "title": "Торг",
+            "depends_on": [
+                "attribute_charisma"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_magic_mind_control",
+            "title": "ШМ - Контроль Разума",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_magic_attribute_body_control",
+            "title": "ШМ - Контроль Тела",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_magic_healing",
+            "title": "ШМ - Лечение",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_magic_illusion",
+            "title": "ШМ - Иллюзия",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_magic_environment",
+            "title": "ШМ - Окружения",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_magic_air",
+            "title": "ШМ - Стихия Ветер",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_magic_water",
+            "title": "ШМ - Стихии Вода",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_magic_earth",
+            "title": "ШМ - Стихии Земля",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        },
+        {
+            "name": "skill_magic_fire",
+            "title": "ШМ - Стихия Огонь",
+            "depends_on": [
+                "attribute_wisdom"
+            ],
+            "value": 0
+        }
+    ],
+    "level_bonus": {
         "1": {
-          "attributes_free": 1,
-          "skills_free": 3,
-          "hp": 3,
-          "stamina": 2
-        },
-        "5": {
-          "hp": 3,
-          "stamina": 2
-        },
-        "10": {
-          "hp": 3,
-          "stamina": 2
+            "attributes_free": 8,
+            "skills_free": 25
         }
-      }
     },
-    {
-      "name": "revera",
-      "title": "Ревера-Нгахера",
-      "kinds": [
-        {
-          "name": "Ёж",
-          "title": "hedgehog"
-        },
-        {
-          "name": "rodent",
-          "title": "Грызун"
-        },
-        {
-          "name": "hare",
-          "title": "Заяц"
-        },
-        {
-          "name": "cat",
-          "title": "Кошка"
-        },
-        {
-          "name": "mole",
-          "title": "Крот"
-        },
-        {
-          "name": "marten",
-          "title": "Куница"
-        },
-        {
-          "name": "lemur",
-          "title": "Лемур"
-        },
-        {
-          "name": "opossum",
-          "title": "Опоссум"
-        },
-        {
-          "name": "raptur",
-          "title": "Раптур"
-        },
-        {
-          "name": "custom",
-          "title": "Свой вариант"
-        }
-      ]
-    },
-    {
-      "name": "skepsi",
-      "title": "Скепси",
-      "level_bonus": {
-        "1": {
-          "attributes": {
-            "attribute_strength": -1,
-            "attribute_wisdom": 1
-          },
-          "skills": {
-            "skill_history": 1,
-            "skill_law": 1,
-            "skill_renown": 1
-          },
-          "weapons": {
-            "magic": 1
-          }
-        },
-        "5": {
-          "hp": 3,
-          "stamina": 2
-        },
-        "10": {
-          "hp": 3,
-          "stamina": 2
-        }
-      }
-    }
-  ],
-  "attributes": [
-    {
-      "name": "attribute_strength",
-      "title": "Сила",
-      "value": 0
-    },
-    {
-      "name": "attribute_dexterity",
-      "title": "Ловкость",
-      "value": 0
-    },
-    {
-      "name": "attribute_charisma",
-      "title": "Харизма",
-      "value": 0
-    },
-    {
-      "name": "attribute_wisdom",
-      "title": "Мудрость",
-      "value": 0
-    },
-    {
-      "name": "attribute_attention",
-      "title": "Внимание",
-      "value": 0
-    },
-    {
-      "name": "attribute_body",
-      "title": "Телосложение",
-      "value": 0
-    }
-  ],
-  "skills": [
-    {
-      "name": "skill_search",
-      "title": "Обыск",
-      "depends_on": ["attribute_attention"]
-    },
-    {
-      "name": "skill_listening",
-      "title": "Подсулшивание",
-      "depends_on": ["attribute_attention"]
-    },
-    {
-      "name": "skill_observation",
-      "title": "Наблюдательность",
-      "depends_on": ["attribute_attention"]
-    },
-    {
-      "name": "skill_surveillance",
-      "title": "Слежение",
-      "depends_on": ["attribute_attention"]
-    },
-    {
-      "name": "skill_prestidigitation",
-      "title": "Ловкость Рук",
-      "depends_on": ["attribute_dexterity"]
-    },
-    {
-      "name": "skill_balance",
-      "title": "Баланс",
-      "depends_on": ["attribute_dexterity"]
-    },
-    {
-      "name": "skill_acrobatics",
-      "title": "Акробатика",
-      "depends_on": ["attribute_dexterity"]
-    },
-    {
-      "name": "skill_concealment",
-      "title": "Сокрытие",
-      "depends_on": ["attribute_dexterity"]
-    },
-    {
-      "name": "skill_secrecy",
-      "title": "Скрытность",
-      "depends_on": ["attribute_dexterity"]
-    },
-    {
-      "name": "skill_riding",
-      "title": "Верховая езда",
-      "depends_on": ["attribute_dexterity", "attribute_strength"]
-    },
-    {
-      "name": "skill_parry",
-      "title": "Парирование",
-      "depends_on": ["attribute_dexterity", "attribute_strength"]
-    },
-    {
-      "name": "skill_disarmament",
-      "title": "Обезоруживание",
-      "depends_on": ["attribute_dexterity", "attribute_strength"]
-    },
-    {
-      "name": "skill_capture",
-      "title": "Захват",
-      "depends_on": ["attribute_strength"]
-    },
-    {
-      "name": "skill_blocking",
-      "title": "Блокирование",
-      "depends_on": ["attribute_strength"]
-    },
-    {
-      "name": "skill_fight",
-      "title": "Драка",
-      "depends_on": ["attribute_strength"]
-    },
-    {
-      "name": "skill_intimidation",
-      "title": "Запугивание",
-      "depends_on": ["attribute_strength"]
-    },
-    {
-      "name": "skill_swimming",
-      "title": "Плавание",
-      "depends_on": ["attribute_body"]
-    },
-    {
-      "name": "skill_knowledge",
-      "title": "Знание о мире",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_animal_handling",
-      "title": "Обращение с животными",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_magic_theory",
-      "title": "Теория Магии",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_music",
-      "title": "Музыка",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_medicine",
-      "title": "Медицина",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_art",
-      "title": "Исскуство",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_analysis",
-      "title": "Анализ",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_strategy",
-      "title": "Стратегия",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_survival",
-      "title": "Выживание",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_law",
-      "title": "Закон",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_botanics",
-      "title": "Ботаника",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_craft",
-      "title": "Ремесло",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_professionalism",
-      "title": "Знание о деле",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_history",
-      "title": "История",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_parody",
-      "title": "Пародия",
-      "depends_on": ["attribute_charisma"]
-    },
-    {
-      "name": "skill_artistry",
-      "title": "Артистицзм",
-      "depends_on": ["attribute_charisma"]
-    },
-    {
-      "name": "skill_renown",
-      "title": "Репутация",
-      "depends_on": ["attribute_charisma"]
-    },
-    {
-      "name": "skill_cheat",
-      "title": "Обман",
-      "depends_on": ["attribute_charisma"]
-    },
-    {
-      "name": "skill_magic_mind_control",
-      "title": "ШМ - Контроль Разума",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_magic_attribute_body_control",
-      "title": "ШМ - Контроль Тела",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_magic_healing",
-      "title": "ШМ - Лечение",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_magic_illusion",
-      "title": "ШМ - Иллюзия",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_magic_environment",
-      "title": "ШМ - Окружения",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_magic_air",
-      "title": "ШМ - Стихия Ветер",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_magic_water",
-      "title": "ШМ - Стихии Вода",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_magic_earth",
-      "title": "ШМ - Стихии Земля",
-      "depends_on": ["attribute_wisdom"]
-    },
-    {
-      "name": "skill_magic_fire",
-      "title": "ШМ - Стихия Огонь",
-      "depends_on": ["attribute_wisdom"]
-    }
-  ],
-  "level_bonus": {
-    "1": {
-      "attributes_free": 8,
-      "skills_free": 25
-    }
-  },
-  "level": 1
+    "level": 1
 }

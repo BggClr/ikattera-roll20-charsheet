@@ -16,7 +16,7 @@ csharp_using_directive_placement = outside_namespace:silent
 
 [*.{json,yml,tf}]
 indent_style = space
-indent_size = 2
+indent_size = 4
 
 [{Dockerfile,*.sh,*.conf,*.csproj}]
 indent_style = space
