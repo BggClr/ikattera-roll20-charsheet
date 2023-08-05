@@ -1,5 +1,25 @@
 ﻿@model string
 
+<rolltemplate class="sheet-rolltemplate-attack">
+	<div class="sheet-container">
+	  <div class="sheet-header">
+		{{#title}}<div class="sheet-title">{{title}}</div>{{/title}}
+		{{#subtitle}}<div class="sheet-subtitle" data-i18n="{{subtitle}}">{{subtitle}}</div>{{/subtitle}}
+	  </div>
+	  <div class="sheet-content">
+		{{#allprops() total color desc title subtitle}}
+			<div class="sheet-key" data-i18n="{{key}}">{{key}}</div>
+			<div class="sheet-value">{{value}}</div>
+		{{/allprops() total color desc title subtitle}}
+		{{#computed::total}}
+			<div class="sheet-key">Итого</div>
+			<div class="sheet-value">{{computed::total}}</div>
+		{{/computed::total}}
+		{{#desc}}<div class="sheet-desc">{{desc}}</div>{{/desc}}
+	  </div>
+	</div>
+</rolltemplate>
+
 <script type="text/worker">
 	const CharsheetData = JSON.parse('@Html.Raw(Model)');
 	const FeaturesList = ['attributes', 'skills', 'weapons'];
@@ -381,17 +401,20 @@
 					}, {});
 
 				const damageRollGroups = Object.keys(weaponDamageRollData)
-					.map(key => `{{${getDamageTypeTitle(key)}=[[${getDamageRoll(weaponDamageRollData[key])}]]}}`)
+					.map(key => `{{${key}=[[${getDamageRoll(weaponDamageRollData[key])}]]}}`)
 
-				console.log(damageRollGroups);
-
-	            const attackRoll = ['2d10']
+				const attackRoll = ['2d10']
 					.concat(attackRollModifiers)
-                    .join(' + ');
+					.join(' + ');
 
-            	const roll = `&{template:default} {{name=Атака}} {{Оружие=@@{${weaponName}_name}}} {{Попадание=[[${attackRoll}]]}} ${damageRollGroups}`;
-                const results = await startRoll(roll);
-                finishRoll(results.rollId);
+            	const roll = `&{template:attack} {{subtitle=weapon_attack}} {{title=@@{character_name}}} {{weapon=@@{${weaponName}_name}}} {{attack=[[${attackRoll}]]}} ${damageRollGroups} {{total=[[0]]}}`;
+                startRoll(roll, results => {
+					const total = Object.keys(weaponDamageRollData).reduce((agg, key) => agg + results.results[key].result, 0);
+
+                    finishRoll(results.rollId, {
+                		total
+                    });
+                });
             });
 		});
 	});
