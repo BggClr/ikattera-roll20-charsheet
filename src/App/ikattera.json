@@ -829,6 +829,24 @@
             "value": 0
         }
     ],
+    "damage_types": [
+        {
+            "title": "Проникающий",
+            "name": "penetrating"
+        },
+        {
+            "title": "Дробящий",
+            "name": "crushing"
+        },
+        {
+            "title": "Колющий",
+            "name": "piercing"
+        },
+        {
+            "title": "Рубящий",
+            "name": "slashing"
+        }
+    ],
     "level_bonus": {
         "1": {
             "attributes_free": 8,

@@ -1,0 +1,75 @@
+@model Components.ViewModels.CombatWeapon
+
+<div class="combat-weapon-container border rounded-3 js-combat-weapon-@(Model.Index) ">
+	<div class="combat-weapon-header">
+		<span name="attr_combatweapon@(Model.Index)_name" class="combat-weapon-header-component"></span>
+		<span class="combat-weapon-header-component">
+			<span class="combat-weapon-button-container combat-weapon-nav-edit">
+				<button type="button" class='js-combat-weapon-edit edit btn btn-secondary collapse show' data-section="js-combat-weapon-@Model.Index">Редактировать</button>
+				<button type="button" class='js-combat-weapon-complete-edit edit btn btn-primary collapse' data-section="js-combat-weapon-@Model.Index">Сохранить</button>
+			</span>
+			<span class="combat-weapon-nav-rolls collapse show">
+				<button type="button" class='js-weapon-roll roll btn btn-outline-primary' data-name="combatweapon@(Model.Index)" data-type="combatweapon"/>
+                <button type="button" class='js-weapon-roll-adv roll btn btn-outline-success' data-name="combatweapon@(Model.Index)" data-type="combatweapon"/>
+                <button type="button" class='js-weapon-roll-dis roll btn btn-outline-danger' data-name="combatweapon@(Model.Index)" data-type="combatweapon"/>
+			</span>
+		</span>
+	</div>
+	<div class="js-combat-weapon-details collapse">
+		<div class="input-group mb-2">
+			<span class="input-group-text">Название</span>
+			<input type="text" name="attr_combatweapon@(Model.Index)_name" class="form-control"/>
+		</div>
+		<div class="input-group mb-2">
+			<span class="input-group-text">Тип</span>
+			<select type="text" name="attr_combatweapon@(Model.Index)_type" class="form-select">
+				<option value="" selected disabled>Выберите тип вооружения</option>
+                @foreach (var characterClass in Model.Manifest.Weapons.OrderBy(p => p.Title))
+                {
+                    <option value="@characterClass.Name">@characterClass.Title</option>
+                }
+			</select>
+		</div>
+		<div class="input-group mb-2">
+			<span class="input-group-text">Бонус к попаданию</span>
+			<select name="attr_combatweapon@(Model.Index)_attack_attribute_bonus" class="form-select">
+				<option value="">-</option>
+				@foreach (var feature in Model.Manifest.Attributes.OrderBy(p => p.Title))
+				{
+					<option value="@feature.Name">@feature.Title</option>
+				}
+			</select>
+			<input type="number" name="attr_combatweapon@(Model.Index)_attack_value_bonus" class="form-control"/>
+		</div>
+		<div class="combat-weapon-details">
+			<fieldset class="repeating_combatweapon@(Model.Index)">
+				<div class="input-group damage-unit">
+					<span class="input-group-text">Урон</span>
+					<select name="attr_dice_type" class="form-select">
+						<option value="">-</option>
+						<option value="d4">d4</option>
+						<option value="d8">d8</option>
+						<option value="d10">d10</option>
+						<option value="d12">d12</option>
+						<option value="d20">d20</option>
+					</select>
+					<select name="attr_damage_type" class="form-select">
+						<option value="crushing">Дробящий</option>
+						<option value="piercing">Колющий</option>
+						<option value="penetrating">Проникающий</option>
+						<option value="slashing">Рубящий</option>
+					</select>
+					<select name="attr_damage_attribute_bonus" class="form-select">
+						<option value="">-</option>
+						@foreach (var feature in Model.Manifest.Attributes.OrderBy(p => p.Title))
+						{
+							<option value="@feature.Name">@feature.Title</option>
+						}
+					</select>
+					<input type="number" name="attr_damage_value_bonus" class="form-control" title="Модификатор"/>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+
+</div>

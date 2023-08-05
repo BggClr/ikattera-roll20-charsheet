@@ -296,6 +296,106 @@
 		});
 	});
 
+	$20('button.js-combat-weapon-edit').on('click', e => {
+		const section = e.htmlAttributes['data-section'];
+		$20(`.${section} .js-combat-weapon-edit`).removeClass('show');
+		$20(`.${section} .combat-weapon-nav-rolls`).removeClass('show');
+		$20(`.${section} .js-combat-weapon-complete-edit`).addClass('show');
+		$20(`.${section} .js-combat-weapon-details `).addClass('show');
+	});
+
+	$20('button.js-combat-weapon-complete-edit').on('click', e => {
+		const section = e.htmlAttributes['data-section'];
+		$20(`.${section} .js-combat-weapon-edit`).addClass('show');
+		$20(`.${section} .combat-weapon-nav-rolls`).addClass('show');
+		$20(`.${section} .js-combat-weapon-complete-edit`).removeClass('show');
+		$20(`.${section} .js-combat-weapon-details `).removeClass('show');
+	});
+
+	function getDamageTypeTitle(name) {
+		const damageType =  CharsheetData.damage_types.filter(p => p.name == name)[0];
+		return (damageType && damageType.title) || name;
+	}
+
+	function getDamageRoll(weaponDamageRollDataItem) {
+		const dices = weaponDamageRollDataItem.dices;
+		const attributeBonuses = weaponDamageRollDataItem.attributeBonuses.map(p => `@@{${p}}`);
+		const valueBonuses = weaponDamageRollDataItem.valueBonuses;
+
+		return dices.concat(attributeBonuses).concat(valueBonuses).join(' + ');
+	}
+
+	$20('button.js-weapon-roll').on('click', async e => {
+		const weaponName = e.htmlAttributes['data-name'];
+		const weaponPartAttributes = ['dice_type', 'damage_type', 'damage_attribute_bonus', 'damage_value_bonus']
+		getSectionIDs(`repeating_${weaponName}`, async weaponDamageIds => {
+			const parts = weaponDamageIds.reduce((agg, id) => [...agg, ...weaponPartAttributes.map(attr => `repeating_${weaponName}_${id}_${attr}`)], []);
+			const weaponAttributes = [
+            	`${weaponName}_name`,
+            	`${weaponName}_type`,
+            	`${weaponName}_attack_attribute_bonus`,
+            	`${weaponName}_attack_value_bonus`,
+            	...parts
+            ];
+
+            getAttrs(getValuesListForCalculate(weaponAttributes), async values => {
+	            const attackRollModifiers = [
+						`${weaponName}_type`,
+						`${weaponName}_attack_attribute_bonus`
+					]
+                    .filter(key => values[key] != null)
+                    .reduce((agg, key) => [...agg, values[key], `${values[key]}_mod`], [])
+                    .filter(key => values[key] != null)
+                    .concat(values[`${weaponName}_attack_value_bonus`] != null ? [`${weaponName}_attack_value_bonus`] : [])
+                    .map(p => `@@{${p}}`)
+
+				const weaponDamageRollData = weaponDamageIds
+					.map(id => ({id, damageType: `repeating_${weaponName}_${id}_damage_type`}))
+					.reduce((agg, p) => {
+						const dice = values[`repeating_${weaponName}_${p.id}_dice_type`];
+						const damageAttributeBonus = values[`repeating_${weaponName}_${p.id}_damage_attribute_bonus`];
+						const damageValueBonus = values[`repeating_${weaponName}_${p.id}_damage_value_bonus`];
+
+						if (!values[p.damageType]) {
+							return agg;
+						}
+
+						if (!!agg[values[p.damageType]]) {
+							return {
+								...agg,
+								[values[p.damageType]]: {
+									dices: [...agg[values[p.damageType]].dices, dice].filter(p => !!p),
+									attributeBonuses: [...agg[values[p.damageType]].attributeBonuses, damageAttributeBonus, `${damageAttributeBonus}_mod`].filter(p => !!p && !!values[p]),
+									valueBonuses: [...agg[values[p.damageType]].valueBonuses, damageValueBonus].filter(p => !!p)
+								}
+							};
+						}
+						return {
+							...agg,
+							[values[p.damageType]]: {
+								dices: [dice].filter(p => !!p),
+								attributeBonuses: [damageAttributeBonus, `${damageAttributeBonus}_mod`].filter(p => !!p && !!values[p]),
+								valueBonuses: [damageValueBonus].filter(p => !!p)
+							}
+						};
+					}, {});
+
+				const damageRollGroups = Object.keys(weaponDamageRollData)
+					.map(key => `{{${getDamageTypeTitle(key)}=[[${getDamageRoll(weaponDamageRollData[key])}]]}}`)
+
+				console.log(damageRollGroups);
+
+	            const attackRoll = ['2d10']
+					.concat(attackRollModifiers)
+                    .join(' + ');
+
+            	const roll = `&{template:default} {{name=Атака}} {{Оружие=@@{${weaponName}_name}}} {{Попадание=[[${attackRoll}]]}} ${damageRollGroups}`;
+                const results = await startRoll(roll);
+                finishRoll(results.rollId);
+            });
+		});
+	});
+
 	$20('button.js-roll').on('click', async e => {
 		await rollDice('2d10', e.htmlAttributes['data-name'], e.altKey);
 	});

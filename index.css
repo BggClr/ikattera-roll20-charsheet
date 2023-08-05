@@ -18,6 +18,22 @@ button.roll::after {
     font-style: normal;
 }
 
+button.edit::before {
+    content: '\f044';
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    margin-right: 5px;
+}
+
+button.complete-edit::before {
+    content: '\f0c7';
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    margin-right: 5px;
+}
+
 .disabled :is(input, select) {
     pointer-events: none;
     background-color: var(--bs-secondary-bg);
@@ -52,6 +68,28 @@ button.roll::after {
     font-size: 14px;
 }
 
-.combat-weapon .editmode .damage-unit {
+.combat-weapon-details .editmode .damage-unit {
     width: 90%;
+}
+
+.combat-weapon-container {
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+.combat-weapon-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--bs-secondary-bg);
+    font-size: 14px;
+}
+
+.combat-weapon-header .combat-weapon-header-component {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+}
+
+.combat-weapon-button-container {
+    margin: 0 0.5rem;
 }
