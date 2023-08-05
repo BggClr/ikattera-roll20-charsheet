@@ -52,10 +52,11 @@
 	}
 
 	async function rollDice(dice, featureName, altKey, title) {
-		getAttrs(getValuesListForCalculate(), async values => {
+		getAttrs(getValuesListForCalculate(['global_check_mod']), async values => {
 			const feature = findFeature(featureName);
 			let modifiers = [
 				featureName,
+				'global_check_mod',
 				`${featureName}_mod`
 			];
 
@@ -65,7 +66,7 @@
 					.sort((a, b) => b.value - a.value)[0].feature;
 				modifiers = [...modifiers, greatestFeature, `${greatestFeature}_mod`];
 			}
-			const rollResultModifiers = modifiers.map(p => `@@{${p}}`).join(' + ');
+			const rollResultModifiers = modifiers.filter(key => !!values[key]).map(p => `@@{${p}}`).join(' + ');
 			const rollModifier = !!altKey ? '/w gm': '';
 
 			const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${feature.title} ${title}}} {{Результат=[[${dice} + ${rollResultModifiers}]]}}`;
@@ -100,25 +101,31 @@
                     ...parts
                 ];
 
-                getAttrs(getValuesListForCalculate(weaponAttributes), async values => {
+                getAttrs(getValuesListForCalculate([...weaponAttributes, 'global_attack_mod', 'global_damage_mod', 'global_damage_type_mod']), async values => {
                     const attackRollModifiers = [
         					`${weaponName}_type`,
         					`${weaponName}_attack_attribute_bonus`
         				]
-                        .filter(key => values[key] != null)
+                        .filter(key => !!values[key])
                         .reduce((agg, key) => [...agg, values[key], `${values[key]}_mod`], [])
-                        .filter(key => values[key] != null)
-                        .concat(values[`${weaponName}_attack_value_bonus`] != null ? [`${weaponName}_attack_value_bonus`] : [])
+                        .filter(key => !!values[key])
+                        .concat(!!values[`${weaponName}_attack_value_bonus`] ? [`${weaponName}_attack_value_bonus`] : [])
+                        .concat(!!values['global_attack_mod'] ? ['global_attack_mod'] : [])
                         .map(p => `@@{${p}}`)
 
         			const weaponDamageRollData = weaponDamageIds
-        				.map(id => ({id, damageType: `repeating_${weaponName}_${id}_damage_type`}))
+        				.map(id => ({
+        					damageType: `repeating_${weaponName}_${id}_damage_type`,
+        					dice: values[`repeating_${weaponName}_${id}_dice_type`],
+        					attributeBonus: values[`repeating_${weaponName}_${id}_damage_attribute_bonus`],
+        					valueBonus: values[`repeating_${weaponName}_${id}_damage_value_bonus`]
+        				}))
+        				.concat([{
+        					damageType: 'global_damage_type_mod',
+        					valueBonus: values['global_damage_mod']
+        				}])
         				.reduce((agg, p) => {
-        					const dice = values[`repeating_${weaponName}_${p.id}_dice_type`];
-        					const damageAttributeBonus = values[`repeating_${weaponName}_${p.id}_damage_attribute_bonus`];
-        					const damageValueBonus = values[`repeating_${weaponName}_${p.id}_damage_value_bonus`];
-
-        					if (!values[p.damageType]) {
+         					if (!values[p.damageType]) {
         						return agg;
         					}
 
@@ -126,18 +133,18 @@
         						return {
         							...agg,
         							[values[p.damageType]]: {
-        								dices: [...agg[values[p.damageType]].dices, dice].filter(p => !!p),
-        								attributeBonuses: [...agg[values[p.damageType]].attributeBonuses, damageAttributeBonus, `${damageAttributeBonus}_mod`].filter(p => !!p && !!values[p]),
-        								valueBonuses: [...agg[values[p.damageType]].valueBonuses, damageValueBonus].filter(p => !!p)
+        								dices: [...agg[values[p.damageType]].dices, p.dice].filter(p => !!p),
+        								attributeBonuses: [...agg[values[p.damageType]].attributeBonuses, p.attributeBonus, `${p.attributeBonus}_mod`].filter(p => !!p && !!values[p]),
+        								valueBonuses: [...agg[values[p.damageType]].valueBonuses, p.valueBonus].filter(p => !!p)
         							}
         						};
         					}
         					return {
         						...agg,
         						[values[p.damageType]]: {
-        							dices: [dice].filter(p => !!p),
-        							attributeBonuses: [damageAttributeBonus, `${damageAttributeBonus}_mod`].filter(p => !!p && !!values[p]),
-        							valueBonuses: [damageValueBonus].filter(p => !!p)
+        							dices: [p.dice].filter(p => !!p),
+        							attributeBonuses: [p.attributeBonus, `${p.attributeBonus}_mod`].filter(p => !!p && !!values[p]),
+        							valueBonuses: [p.valueBonus].filter(p => !!p)
         						}
         					};
         				}, {});

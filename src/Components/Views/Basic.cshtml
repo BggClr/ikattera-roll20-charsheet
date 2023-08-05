@@ -49,15 +49,22 @@
 			</div>
 			<div class="input-group mb-2">
 				<span class="input-group-text">Бонус к проверкам</span>
-				<input type="number" name="attr_check_mod" class="form-control" id="form_level" />
+				<input type="number" name="attr_global_check_mod" class="form-control" id="form_level" />
 			</div>
 			<div class="input-group mb-2">
             	<span class="input-group-text">Бонус к атаке</span>
-            	<input type="number" name="attr_attack_mod" class="form-control" id="form_level" />
+            	<input type="number" name="attr_global_attack_mod" class="form-control" id="form_level" />
             </div>
 			<div class="input-group mb-2">
-            	<span class="input-group-text">Бонус к урону</span>
-            	<input type="number" name="attr_damage_mod" class="form-control" id="form_level" />
+				<span class="input-group-text">Бонус к урону</span>
+				<select name="attr_global_damage_type_mod" class="form-select">
+                	<option value="" selected disabled>-</option>
+                	@foreach (var damageType in Model.DamageTypes)
+                	{
+                		<option value="@damageType.Name">@damageType.Title</option>
+                	}
+                </select>
+            	<input type="number" name="attr_global_damage_mod" class="form-control" id="form_level" />
             </div>
 		</div>
 	</div>
