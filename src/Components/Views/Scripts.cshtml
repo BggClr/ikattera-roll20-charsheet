@@ -293,7 +293,7 @@
 
 	function applyFeatureChanges(values, oldValues, level) {
 		const featuresDelta = calculateFeatures(values, oldValues, level || values.level);
-		const charsheetFeatures = getCharsheetFeatures().map(f => f.name);
+		const charsheetFeatures = getCharsheetFeatures().map(f => f.name).concat(['hp_base', 'hp_mod', 'hp', 'stamina_base', 'stamina_mod', 'stamina']);
 
 		const featuresFree = FeaturesList
 			.filter(key => featuresDelta[`${key}_free`] != null)
@@ -304,20 +304,21 @@
 			.filter(key => charsheetFeatures.indexOf(key) >= 0)
 			.reduce((agg, key) => ({...agg, [key]: (parseInt(values[key]) || 0) + featuresDelta[key]}), featuresFree)
 
-		setAttrs(attrs, {silent: true}, () => {
-			getAttrs(['hp_base', 'hp_mod', 'attribute_body', 'attribute_body_mod', 'stamina_base', 'stamina_mod'], updatedValues => {
-				const hpMax = (parseInt(updatedValues.hp_base) || 0)
-                    + (parseInt(updatedValues.attribute_body) || 0) * 2
-                    + (parseInt(updatedValues.attribute_body_mod) || 0) * 2
-                    + (parseInt(updatedValues.hp_mod) || 0);
-                const staminaMax = (parseInt(updatedValues.stamina_base) || 0)
-                    + (parseInt(updatedValues.stamina_mod) || 0);
-                setAttrs({
-					hp_max: hpMax,
-					stamina_max: staminaMax
-                });
-			});
-		});
+		setAttrs(attrs, {silent: true});
+		getAttrs(['hp_base', 'hp_mod', 'attribute_body', 'attribute_body_mod', 'stamina_base', 'stamina_mod', 'hp', 'stamina'], updatedValues => {
+	        const hpMax = (parseInt(updatedValues.hp_base) || 0)
+	            + (parseInt(updatedValues.attribute_body) || 0) * 2
+	            + (parseInt(updatedValues.attribute_body_mod) || 0) * 2
+	            + (parseInt(updatedValues.hp_mod) || 0);
+	        const staminaMax = (parseInt(updatedValues.stamina_base) || 0)
+	            + (parseInt(updatedValues.stamina_mod) || 0);
+	        setAttrs({
+        		hp_max: hpMax,
+        		stamina_max: staminaMax,
+        		hp: updatedValues.hp || hpMax,
+        		stamina: updatedValues.stamina || staminaMax
+	        });
+	    });
 
 		applyTabStyles();
 	}
@@ -422,7 +423,7 @@
     		return;
     	}
     	getAttrs(getValuesListForCalculate(), values => {
-    		applyFeatureChanges(values);
+    		applyFeatureChanges(values, values);
     	});
     });
     on('change:stamina_mod', e => {
@@ -430,7 +431,7 @@
     		return;
     	}
     	getAttrs(getValuesListForCalculate(), values => {
-    		applyFeatureChanges(values);
+    		applyFeatureChanges(values, values);
     	});
     });
     on('change:attribute_body_mod', e => {
@@ -438,7 +439,7 @@
     		return;
     	}
     	getAttrs(getValuesListForCalculate(), values => {
-    		applyFeatureChanges(values);
+    		applyFeatureChanges(values, values);
     	});
     });
 

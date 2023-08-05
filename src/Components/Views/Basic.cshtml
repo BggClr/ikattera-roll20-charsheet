@@ -28,15 +28,37 @@
 				<select name="attr_class" id="form_class" class="form-select" aria-label="Класс">
 					<option value="" selected disabled>Выберите класс</option>
 					@foreach (var characterClass in Model.Classes.OrderBy(p => p.Title))
-                    {
-                    	<option value="@characterClass.Name">@characterClass.Title</option>
-                    }
+					{
+						<option value="@characterClass.Name">@characterClass.Title</option>
+					}
 				</select>
 			</div>
 			<div class="input-group mb-2 js-group-subclass">
 				<span class="input-group-text">Подкласс</span>
 				<select name="attr_subclass" id="form_subclass" class="form-select" aria-label="Подкласс"/>
 			</div>
+		</div>
+		<div class="col-4">
+			<div class="input-group mb-2">
+				<span class="input-group-text">Бонус здоровья</span>
+				<input type="number" name="attr_hp_mod" class="form-control" id="form_level" />
+			</div>
+			<div class="input-group mb-2">
+				<span class="input-group-text">Бонус усталости</span>
+				<input type="number" name="attr_stamina_mod" class="form-control" id="form_level" />
+			</div>
+			<div class="input-group mb-2">
+				<span class="input-group-text">Бонус к проверкам</span>
+				<input type="number" name="attr_check_mod" class="form-control" id="form_level" />
+			</div>
+			<div class="input-group mb-2">
+            	<span class="input-group-text">Бонус к атаке</span>
+            	<input type="number" name="attr_attack_mod" class="form-control" id="form_level" />
+            </div>
+			<div class="input-group mb-2">
+            	<span class="input-group-text">Бонус к урону</span>
+            	<input type="number" name="attr_damage_mod" class="form-control" id="form_level" />
+            </div>
 		</div>
 	</div>
 </div>
