@@ -9,4 +9,5 @@ public class CharacterManifest
 	public IList<CharacterAttribute> Attributes { get; set; }
 	public IList<Skill> Skills { get; set; }
 	public IList<Weapon> Weapons { get; set; }
+	public IList<Entity> DamageTypes { get; set; }
 }

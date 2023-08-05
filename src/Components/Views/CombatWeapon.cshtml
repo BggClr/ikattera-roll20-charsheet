@@ -33,7 +33,7 @@
 		<div class="input-group mb-2">
 			<span class="input-group-text">Бонус к попаданию</span>
 			<select name="attr_combatweapon@(Model.Index)_attack_attribute_bonus" class="form-select">
-				<option value="">-</option>
+				<option value="" selected disabled>-</option>
 				@foreach (var feature in Model.Manifest.Attributes.OrderBy(p => p.Title))
 				{
 					<option value="@feature.Name">@feature.Title</option>
@@ -46,7 +46,7 @@
 				<div class="input-group damage-unit">
 					<span class="input-group-text">Урон</span>
 					<select name="attr_dice_type" class="form-select">
-						<option value="">-</option>
+						<option value="" selected disabled>>-</option>
 						<option value="d4">d4</option>
 						<option value="d8">d8</option>
 						<option value="d10">d10</option>
@@ -54,10 +54,11 @@
 						<option value="d20">d20</option>
 					</select>
 					<select name="attr_damage_type" class="form-select">
-						<option value="crushing">Дробящий</option>
-						<option value="piercing">Колющий</option>
-						<option value="penetrating">Проникающий</option>
-						<option value="slashing">Рубящий</option>
+						<option value="" selected disabled>-</option>
+						@foreach (var damageType in Model.Manifest.DamageTypes)
+						{
+							<option value="@damageType.Name">@damageType.Title</option>
+						}
 					</select>
 					<select name="attr_damage_attribute_bonus" class="form-select">
 						<option value="">-</option>
