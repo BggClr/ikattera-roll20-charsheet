@@ -221,7 +221,7 @@
 	function getValuesListForCalculate(attrs) {
 		return FeaturesList
 			.map(key => CharsheetData[key].map(f => f.name).reduce((agg, f) => [...agg, f, `${f}_mod`], []))
-			.reduce((agg, f) => [...agg, ...f], [...FeaturesList.map(f => `${f}_free`),...(!!attrs ? attrs : []), 'level', 'race', 'kind', 'class', 'subclass']);
+			.reduce((agg, f) => [...agg, ...f], [...FeaturesList.map(f => `${f}_free`),...(!!attrs ? attrs : []), 'level', 'race', 'kind', 'class', 'subclass', 'hp_base', 'hp_mod', 'hp_max', 'stamina_base', 'stamina_mod', 'stamina_max']);
 	}
 
 	function getNotificationClass(value) {
@@ -242,15 +242,28 @@
 	}
 
 	function init() {
-		getAttrs(getValuesListForCalculate(), values => {
+		getAttrs(getValuesListForCalculate(['hp', 'stamina']), values => {
         	var featuresDelta = calculateFeatures(values, null, values.level || CharsheetData.level);
 
-			const defaultFeatures = getCharsheetFeatures()
+			const features = getCharsheetFeatures()
         		.reduce((agg, feature) => ({...agg, [feature.name]: feature.value + (featuresDelta[feature.name] || 0), [`${feature.name}_mod`]: 0}), {});
+
+        	const valueFeatures = ['hp_base', 'hp_mod', 'hp_max', 'hp', 'stamina_base', 'stamina_mod', 'stamina_max', 'stamina']
+        		.filter(key => featuresDelta[key] != null)
+        		.reduce((agg, key) => ({...agg, [key]: featuresDelta[key]}), {});
+
+        	const defaultFeatures = {...features, ...valueFeatures};
 
 			const featuresToSet = Object.keys(defaultFeatures)
 				.filter(key => values[key] == null || values[key] === '')
 				.reduce((agg, key) => ({...agg, [key]: defaultFeatures[key]}), {});
+
+			const hpMax = (parseInt(featuresToSet.hp_base || values.hp_base) || 0)
+                + (parseInt(featuresToSet.attribute_body || values.attribute_body) || 0) * 2
+                + (parseInt(featuresToSet.attribute_body_mod || values.attribute_body_mod) || 0) * 2
+                + (parseInt(values.hp_mod) || 0);
+            const staminaMax = (parseInt(featuresToSet.stamina_base || values.stamina_base) || 0)
+                + (parseInt(values.stamina_mod) || 0);
 
 			const attrs = FeaturesList
 				.reduce((agg, key) => {
@@ -261,7 +274,18 @@
 						...agg,
 						[`${key}_free`]: featuresDelta[`${key}_free`]
 					};
-				}, {...featuresToSet, level: values.level || CharsheetData.level});
+				}, {
+					...featuresToSet,
+					level: values.level || CharsheetData.level,
+					hp_max: hpMax,
+					stamina_max: staminaMax,
+					hp: values.hp || hpMax,
+					stamina: values.stamina || staminaMax
+				});
+
+			$20('.js-hp').removeClass([...Array(100).keys()].map(i => `width-${i+1}`).join(' ')).addClass(`width-${Math.min(100, Math.floor(100 * (values.hp || hpMax) / hpMax))}`);
+			$20('.js-stamina').removeClass([...Array(100).keys()].map(i => `width-${i+1}`).join(' ')).addClass(`width-${Math.min(100, Math.floor(100 * (values.stamina || staminaMax) / staminaMax))}`);
+
 			setAttrs(attrs, {silent: true});
 			applyTabStyles();
 		});
@@ -280,7 +304,20 @@
 			.filter(key => charsheetFeatures.indexOf(key) >= 0)
 			.reduce((agg, key) => ({...agg, [key]: (parseInt(values[key]) || 0) + featuresDelta[key]}), featuresFree)
 
-		setAttrs(attrs, {silent: true});
+		setAttrs(attrs, {silent: true}, () => {
+			getAttrs(['hp_base', 'hp_mod', 'attribute_body', 'attribute_body_mod', 'stamina_base', 'stamina_mod'], updatedValues => {
+				const hpMax = (parseInt(updatedValues.hp_base) || 0)
+                    + (parseInt(updatedValues.attribute_body) || 0) * 2
+                    + (parseInt(updatedValues.attribute_body_mod) || 0) * 2
+                    + (parseInt(updatedValues.hp_mod) || 0);
+                const staminaMax = (parseInt(updatedValues.stamina_base) || 0)
+                    + (parseInt(updatedValues.stamina_mod) || 0);
+                setAttrs({
+					hp_max: hpMax,
+					stamina_max: staminaMax
+                });
+			});
+		});
 
 		applyTabStyles();
 	}
@@ -359,6 +396,51 @@
 				});
 			});
 		});
+
+	on('change:hp_max', e => {
+		getAttrs(['hp_max', 'hp'], values => {
+			$20('.js-hp').removeClass([...Array(100).keys()].map(i => `width-${i+1}`).join(' ')).addClass(`width-${Math.min(100, Math.floor(100 * values.hp  / values.hp_max))}`);
+		});
+	});
+	on('change:hp', e => {
+		getAttrs(['hp_max', 'hp'], values => {
+			$20('.js-hp').removeClass([...Array(100).keys()].map(i => `width-${i+1}`).join(' ')).addClass(`width-${Math.min(100, Math.floor(100 * values.hp  / values.hp_max))}`);
+		});
+	});
+	on('change:stamina_max', e => {
+		getAttrs(['stamina_max', 'stamina'], values => {
+			$20('.js-stamina').removeClass([...Array(100).keys()].map(i => `width-${i+1}`).join(' ')).addClass(`width-${Math.min(100, Math.floor(100 * values.stamina  / values.stamina_max))}`);
+		});
+	});
+	on('change:stamina', e => {
+		getAttrs(['stamina_max', 'stamina'], values => {
+			$20('.js-stamina').removeClass([...Array(100).keys()].map(i => `width-${i+1}`).join(' ')).addClass(`width-${Math.min(100, Math.floor(100 * values.stamina  / values.stamina_max))}`);
+		});
+	});
+	on('change:hp_mod', e => {
+    	if (e.sourceType === 'sheetworker') {
+    		return;
+    	}
+    	getAttrs(getValuesListForCalculate(), values => {
+    		applyFeatureChanges(values);
+    	});
+    });
+    on('change:stamina_mod', e => {
+    	if (e.sourceType === 'sheetworker') {
+    		return;
+    	}
+    	getAttrs(getValuesListForCalculate(), values => {
+    		applyFeatureChanges(values);
+    	});
+    });
+    on('change:attribute_body_mod', e => {
+    	if (e.sourceType === 'sheetworker') {
+    		return;
+    	}
+    	getAttrs(getValuesListForCalculate(), values => {
+    		applyFeatureChanges(values);
+    	});
+    });
 
 	on('change:level', e => {
 		const currentLevel = parseInt(e.newValue);

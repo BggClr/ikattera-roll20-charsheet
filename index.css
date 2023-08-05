@@ -5,6 +5,10 @@
     height: 28px;
 }
 
+span.form-control {
+    height: 28px;
+}
+
 .btn {
     text-shadow: none;
     background-image: none;

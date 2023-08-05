@@ -8,7 +8,9 @@
                     "skill_trade": 1,
                     "skill_medicine": 1,
                     "skill_botanics": 1,
-                    "weapon_magic": 1
+                    "weapon_magic": 1,
+                    "hp_base": 16,
+                    "stamina_base": 15
                 },
                 "4": {
                     "hp_base": 3
@@ -25,6 +27,10 @@
             "name": "akir",
             "title": "Акир",
             "level_bonus": {
+                "1": {
+                    "hp_base": 20,
+                    "stamina_base": 15
+                },
                 "3": {
                     "hp_base": 4
                 },
@@ -45,7 +51,9 @@
             "level_bonus": {
                 "1": {
                     "attribute_strength": 1,
-                    "weapons_free": 1
+                    "weapons_free": 1,
+                    "hp_base": 18,
+                    "stamina_base": 18
                 },
                 "3": {
                     "stamina_base": 4
@@ -69,8 +77,8 @@
                 "1": {
                     "attributes_free": 1,
                     "skills_free": 3,
-                    "hp_base": 3,
-                    "stamina_base": 2
+                    "hp_base": 16,
+                    "stamina_base": 14
                 },
                 "5": {
                     "hp_base": 3,
@@ -89,7 +97,30 @@
                 "1": {
                     "attribute_strength": -1,
                     "attribute_dexterity": 1,
-                    "skill_music": 1
+                    "skill_music": 1,
+                    "hp_base": 14,
+                    "stamina_base": 18
+                },
+                "2": {
+                    "hp_base": 2
+                },
+                "3": {
+                    "hp_base": 1
+                },
+                "4": {
+                    "hp_base": 2
+                },
+                "6": {
+                    "hp_base": 2
+                },
+                "7": {
+                    "hp_base": 1
+                },
+                "9": {
+                    "hp_base": 1
+                },
+                "10": {
+                    "hp_base": 2
                 }
             },
             "kinds": [
@@ -185,7 +216,9 @@
                     "skill_history": 1,
                     "skill_law": 1,
                     "skill_renown": 1,
-                    "weapon_magic": 1
+                    "weapon_magic": 1,
+                    "hp_base": 15,
+                    "stamina_base": 16
                 },
                 "5": {
                     "hp_base": 3,
