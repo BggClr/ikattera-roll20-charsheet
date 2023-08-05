@@ -125,7 +125,7 @@ button.edit .edit-icon {
 .sheet-rolltemplate-attack .sheet-content {
     display: grid;
     background: #FFF;
-    grid-template-columns: auto auto;
+    grid-template-columns: 1fr 2fr;
     line-height:1.4em;
 }
 .sheet-rolltemplate-attack .sheet-content > div {
@@ -144,6 +144,72 @@ button.edit .edit-icon {
 }
 
 .sheet-rolltemplate-attack .sheet-desc {
+    grid-column: span 2;
+    padding: 5px;
+    text-align: center;
+}
+
+
+.sheet-rolltemplate-check {
+    margin-left: -40px;
+    margin-top: 8px;
+}
+.withoutavatars .sheet-rolltemplate-check {
+    margin-left: -7px;
+}
+
+.sheet-rolltemplate-check .sheet-container {
+    border: 1px solid;
+    border-color: var(--header-bg-color);
+}
+
+.sheet-rolltemplate-check .sheet-header {
+    background-color: var(--header-bg-color);
+    text-align: left;
+    color: var(--header-text-color);
+    padding: 5px;
+}
+.sheet-rolltemplate-check .sheet-title {
+    font-size:1.1em;
+}
+.sheet-rolltemplate-check .sheet-subtitle {
+    font-size:.9em;
+}
+
+.sheet-rolltemplate-check .sheet-container {
+    --header-bg-color: rgba(112,32,130,1);
+    --header-text-color: #FFF;
+}
+.sheet-rolltemplate-check .sheet-container.sheet-color-red {
+    --header-bg-color: #F00;
+}
+.sheet-rolltemplate-check .sheet-container.sheet-color-green {
+    --header-bg-color: #0F0;
+    --header-text-color: #000;
+}
+
+.sheet-rolltemplate-check .sheet-content {
+    display: grid;
+    background: #FFF;
+    grid-template-columns: 1fr 2fr;
+    line-height:1.4em;
+}
+.sheet-rolltemplate-check .sheet-content > div {
+    padding: 5px;
+}
+
+.sheet-rolltemplate-check .sheet-content .sheet-key {
+    font-weight: bold;
+    padding-right: 10px;
+    text-align: right;
+}
+
+.sheet-rolltemplate-check .sheet-content :nth-child(4n+3),
+.sheet-rolltemplate-check .sheet-content :nth-child(4n) {
+    background:#EEE;
+}
+
+.sheet-rolltemplate-check .sheet-desc {
     grid-column: span 2;
     padding: 5px;
     text-align: center;

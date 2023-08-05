@@ -7,14 +7,30 @@
 		{{#subtitle}}<div class="sheet-subtitle">{{subtitle}}</div>{{/subtitle}}
 	  </div>
 	  <div class="sheet-content">
-		{{#allprops() total color desc title subtitle}}
+		{{#allprops() total desc title subtitle}}
 			<div class="sheet-key">{{key}}</div>
 			<div class="sheet-value">{{value}}</div>
-		{{/allprops() total color desc title subtitle}}
+		{{/allprops() total desc title subtitle}}
 		{{#computed::total}}
 			<div class="sheet-key">Итого</div>
 			<div class="sheet-value">{{computed::total}}</div>
 		{{/computed::total}}
+		{{#desc}}<div class="sheet-desc">{{desc}}</div>{{/desc}}
+	  </div>
+	</div>
+</rolltemplate>
+
+<rolltemplate class="sheet-rolltemplate-check">
+	<div class="sheet-container">
+	  <div class="sheet-header">
+		{{#title}}<div class="sheet-title">{{title}}</div>{{/title}}
+		{{#subtitle}}<div class="sheet-subtitle">{{subtitle}}</div>{{/subtitle}}
+	  </div>
+	  <div class="sheet-content">
+		{{#allprops() desc title subtitle}}
+			<div class="sheet-key">{{key}}</div>
+			<div class="sheet-value">{{value}}</div>
+		{{/allprops() desc title subtitle}}
 		{{#desc}}<div class="sheet-desc">{{desc}}</div>{{/desc}}
 	  </div>
 	</div>
@@ -35,7 +51,7 @@
         	.filter(f => f.name == featureName)[0];
 	}
 
-	async function rollDice(dice, featureName, altKey) {
+	async function rollDice(dice, featureName, altKey, title) {
 		getAttrs(getValuesListForCalculate(), async values => {
 			const feature = findFeature(featureName);
 			let modifiers = [
@@ -52,7 +68,7 @@
 			const rollResultModifiers = modifiers.map(p => `@@{${p}}`).join(' + ');
 			const rollModifier = !!altKey ? '/w gm': '';
 
-			const roll = `${rollModifier} &{template:default} {{name=@@{character_name}}} {{Проверка=${feature.title}}} {{Результат=[[${dice} + ${rollResultModifiers}]]}}`;
+			const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${feature.title} ${title}}} {{Результат=[[${dice} + ${rollResultModifiers}]]}}`;
 			const results = await startRoll(roll);
 			finishRoll(results.rollId);
 		});
@@ -428,12 +444,12 @@
 	});
 
 	$20('button.js-roll').on('click', async e => {
-		await rollDice('2d10', e.htmlAttributes['data-name'], e.altKey);
+		await rollDice('2d10', e.htmlAttributes['data-name'], e.altKey, '');
 	});
 	$20('button.js-roll-adv').on('click', async e => {
-		await rollDice('3d10kh2', e.htmlAttributes['data-name'], e.altKey);
+		await rollDice('3d10kh2', e.htmlAttributes['data-name'], e.altKey, 'с преимуществом');
 	});
 	$20('button.js-roll-dis').on('click', async e => {
-		await rollDice('3d10kl2', e.htmlAttributes['data-name'], e.altKey);
+		await rollDice('3d10kl2', e.htmlAttributes['data-name'], e.altKey, 'с помехой');
 	});
 </script>
