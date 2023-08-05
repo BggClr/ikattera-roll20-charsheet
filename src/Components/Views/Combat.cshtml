@@ -1,0 +1,50 @@
+@model Models.CharacterManifest
+
+<div class="sheet-combat">
+	<div class="row">
+		<div class="col-6">
+			<div class="input-group mb-2">
+				<span class="input-group-text">Бонус к попаданию</span>
+				<select name="attr_combatweapon1_attack_attribute_bonus" class="form-select">
+					<option value="">-</option>
+					@foreach (var feature in Model.Attributes.OrderBy(p => p.Title))
+					{
+						<option value="@feature.Name">@feature.Title</option>
+					}
+                </select>
+				<input type="number" name="attr_combatweapon1_attack_value_bonus" class="form-control" />
+			</div>
+
+			<div class="combat-weapon js--combat-weapon-1">
+				<fieldset class="repeating_combatweapon1">
+					<div class="input-group damage-unit">
+						<span class="input-group-text">Урон</span>
+						<select name="attr_dtype" class="form-select dtype">
+							<option value="">-</option>
+							<option value="d4">d4</option>
+							<option value="d8">d8</option>
+							<option value="d10">d10</option>
+							<option value="d12">d12</option>
+							<option value="d20">d20</option>
+						</select>
+						<select name="attr_damagetype" class="form-select damagetype">
+							<option value="crushing">Дробящий</option>
+							<option value="piercing">Колющий</option>
+							<option value="penetrating">Проникающий</option>
+							<option value="slashing">Рубящий</option>
+						</select>
+						<select name="attr_damage_attribute_bonus" class="form-select">
+                        	<option value="">-</option>
+                        	@foreach (var feature in Model.Attributes.OrderBy(p => p.Title))
+                        	{
+                        		<option value="@feature.Name">@feature.Title</option>
+                        	}
+                        </select>
+						<input type="number" name="attr_damage_mod" class="form-control dmod" title="Модификатор"/>
+					</div>
+
+				</fieldset>
+			</div>
+		</div>
+	</div>
+</div>

@@ -51,3 +51,7 @@ button.roll::after {
 .nav-pills {
     font-size: 14px;
 }
+
+.combat-weapon .editmode .damage-unit {
+    width: 90%;
+}

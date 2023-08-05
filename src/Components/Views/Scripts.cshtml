@@ -2,7 +2,7 @@
 
 <script type="text/worker">
 	const CharsheetData = JSON.parse('@Html.Raw(Model)');
-	const FeaturesList = ['attributes', 'skills'];
+	const FeaturesList = ['attributes', 'skills', 'weapons'];
 	const buttonList = ['character', 'attributes', 'skills', 'weapons', 'combat'];
 
 	Array.prototype.distinct = function() {
@@ -40,8 +40,7 @@
 	}
 
 	function getCharsheetFeatures() {
-		return CharsheetData.attributes
-			.concat(CharsheetData.skills);
+		return FeaturesList.reduce((agg, key) => [...agg, ...CharsheetData[key]], []);
 	}
 
 	function getFeaturesValuesByType(data, level) {
@@ -152,7 +151,7 @@
 		const charsheetFeatures = getCharsheetFeatures().map(f => f.name);
 
 		const featuresFree = FeaturesList
-			.filter(key => !!featuresDelta[`${key}_free`])
+			.filter(key => featuresDelta[`${key}_free`] != null)
 			.reduce((agg, key) => ({...agg, [`${key}_free`]: featuresDelta[`${key}_free`]}), {})
 
 		const attrs = Object

@@ -8,11 +8,7 @@
 @await Html.PartialAsync("~/Views/Basic.cshtml", Model)
 @await Html.PartialAsync("~/Views/Attributes.cshtml", Model.Attributes)
 @await Html.PartialAsync("~/Views/Skills.cshtml", Model.Skills)
-
-<div class="sheet-weapons">
-</div>
-
-<div class="sheet-combat">
-</div>
+@await Html.PartialAsync("~/Views/Weapons.cshtml", Model.Weapons)
+@await Html.PartialAsync("~/Views/Combat.cshtml", Model)
 
 @await Html.PartialAsync("~/Views/Scripts.cshtml", (string)ViewBag.ModelJson)
