@@ -264,6 +264,26 @@
 		});
 	}
 
+	function applyLevelBonusVisibility() {
+		$20('.js-level-option').addClass('hidden');
+		getAttrs(['race', 'kind', 'class', 'subclass', 'level'], values => {
+			[...Array(parseInt(values.level)).keys()]
+				.map(l => l + 1)
+				.reduce((agg, l) => [
+					...agg,
+					`level_option_${l}`,
+					`level_option_${values.race}_${l}`,
+					`level_option_${values.kind}_${l}`,
+					`level_option_${values.class}_${l}`,
+					`level_option_${values.subclass}_${l}`
+				], [])
+				.forEach(key => {
+					$20(`.js-level-option[data-name="${key}"]`)
+                        .removeClass('hidden');
+				});
+		});
+	}
+
 	function init() {
 		getAttrs(getValuesListForCalculate(['hp', 'stamina']), values => {
         	var featuresDelta = calculateFeatures(values, null, values.level || CharsheetData.level);
@@ -311,6 +331,7 @@
 
 			setAttrs(attrs, {silent: true});
 			applyTabStyles();
+			applyLevelBonusVisibility();
 		});
 	}
 
@@ -344,6 +365,7 @@
 	    });
 
 		applyTabStyles();
+		applyLevelBonusVisibility();
 	}
 
 	function fillKinds(raceName) {
@@ -421,6 +443,22 @@
 			});
 		});
 
+	LevelBonusOptionKeys
+		.forEach(optionKey => {
+			on(`change:${optionKey}`, e => {
+				if (e.sourceType === 'sheetworker') {
+					return;
+				}
+
+				getAttrs(getValuesListForCalculate(), values => {
+					const oldValues = e.previousValue && e.previousValue != e.newValue
+        				? {...values, [optionKey]: e.previousValue}
+        				: {...values, [optionKey]: ''};
+					applyFeatureChanges(values, oldValues);
+				});
+			});
+		});
+
 	on('change:hp_max', e => {
 		getAttrs(['hp_max', 'hp'], values => {
 			$20('.js-hp').removeClass([...Array(100).keys()].map(i => `width-${i+1}`).join(' ')).addClass(`width-${Math.min(100, Math.floor(100 * values.hp  / values.hp_max))}`);
@@ -457,6 +495,7 @@
     		applyFeatureChanges(values, values);
     	});
     });
+
     on('change:attribute_body_mod', e => {
     	if (e.sourceType === 'sheetworker') {
     		return;

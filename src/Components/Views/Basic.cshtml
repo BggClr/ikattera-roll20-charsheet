@@ -71,7 +71,7 @@
 		<div class="col-4">
 			@foreach (var bonusOption in Model.GetLevelBonusOptions())
 			{
-				<div class="input-group mb-2 js-level-option" data-name="@bonusOption.Key">
+				<div class="input-group mb-2 js-level-option hidden" data-name="@bonusOption.Key">
 					<span class="input-group-text">@bonusOption.Description</span>
 					<select name="attr_@bonusOption.Key" class="form-select">
 						<option value="">-</option>
