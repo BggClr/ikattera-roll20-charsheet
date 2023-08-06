@@ -169,7 +169,7 @@
     	}
 
 	function getCharsheetFeatures() {
-		return FeaturesList.reduce((agg, key) => [...agg, ...CharsheetData[key]], []);
+		return FeaturesList.reduce((agg, key) => [...agg, ...CharsheetData[key]], [{name: 'hp_base', title: ''}, {name: 'stamina_base', title: ''}]);
 	}
 
 	function getFeaturesValuesByType(data, level) {
