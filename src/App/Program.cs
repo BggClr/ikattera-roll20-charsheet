@@ -21,4 +21,4 @@ var viewDataOrViewBag = new Dictionary<string, object>
 	}
 };
 var html = await RazorTemplateEngine.RenderAsync("/Views/Charsheet.cshtml", data, viewDataOrViewBag);
-await File.WriteAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "index.html"), html);
+await File.WriteAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ikattera.html"), html);

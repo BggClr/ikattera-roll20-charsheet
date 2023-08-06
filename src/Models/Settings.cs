@@ -7,9 +7,8 @@ namespace Models;
 
 public static class Settings
 {
-	public static JsonSerializerOptions JsonSerializerOptions => new JsonSerializerOptions
+	public static JsonSerializerOptions JsonSerializerOptions => new()
 	{
-		PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
 		PropertyNameCaseInsensitive = true,
 		Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
 		DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
