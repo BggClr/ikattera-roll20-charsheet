@@ -38,6 +38,10 @@ button.edit .edit-icon {
     padding: 0.375rem 0.25rem;
 }
 
+.sheet-darkmode .charactersheet {
+    background-color: var(--dark-surface1);
+}
+
 .charactersheet {
     min-width: 1080px;
 }
@@ -128,7 +132,7 @@ button.edit .edit-icon {
 
 .sheet-rolltemplate-attack .sheet-content {
     display: grid;
-    background: #FFF;
+    background: var(--banner-background);
     grid-template-columns: 1fr 2fr;
     line-height:1.4em;
 }
@@ -144,7 +148,7 @@ button.edit .edit-icon {
 
 .sheet-rolltemplate-attack .sheet-content :nth-child(4n+3),
 .sheet-rolltemplate-attack .sheet-content :nth-child(4n) {
-    background:#EEE;
+    background:var(--primary-background-light);
 }
 
 .sheet-rolltemplate-attack .sheet-desc {
@@ -194,7 +198,7 @@ button.edit .edit-icon {
 
 .sheet-rolltemplate-check .sheet-content {
     display: grid;
-    background: #FFF;
+    background:var(--banner-background);
     grid-template-columns: 1fr 2fr;
     line-height:1.4em;
 }
@@ -210,7 +214,7 @@ button.edit .edit-icon {
 
 .sheet-rolltemplate-check .sheet-content :nth-child(4n+3),
 .sheet-rolltemplate-check .sheet-content :nth-child(4n) {
-    background:#EEE;
+    background:var(--primary-background-light);
 }
 
 .sheet-rolltemplate-check .sheet-desc {
