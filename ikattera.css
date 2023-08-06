@@ -143,7 +143,6 @@ button.edit .edit-icon {
 .sheet-rolltemplate-attack .sheet-content .sheet-key {
     font-weight: bold;
     padding-right: 10px;
-    text-align: right;
 }
 
 .sheet-rolltemplate-attack .sheet-content :nth-child(4n+3),
@@ -209,7 +208,6 @@ button.edit .edit-icon {
 .sheet-rolltemplate-check .sheet-content .sheet-key {
     font-weight: bold;
     padding-right: 10px;
-    text-align: right;
 }
 
 .sheet-rolltemplate-check .sheet-content :nth-child(4n+3),
