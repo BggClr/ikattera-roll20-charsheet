@@ -1433,9 +1433,6 @@
                 {
                     "hp_base": 3,
                     "stamina_base": 3
-                },
-                {
-                    "potion_mod": 2
                 }
             ]
         },

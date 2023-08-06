@@ -14,28 +14,28 @@
 		<div class="col-4">
 			<div>
 				<div class="input-group mb-2">
-                	<span class="input-group-text">Здоровье</span>
-                	<input type="number" name="attr_hp" class="form-control"/>
-                	<span name="attr_hp_max" class="form-control" readonly></span>
-					<button type="button" class='js-heal heal heal-small btn btn-outline-danger' data-name="1d4"><i class="btn-icon">&#xf06c</i></button>
-					<button type="button" class='js-heal heal heal-medium btn btn-outline-danger' data-name="1d8"><i class="btn-icon">&#xf0c3</i></button>
-					<button type="button" class='js-heal heal heal-large btn btn-outline-danger' data-name="1d12"><i class="btn-icon">&#xe4f3</i></button>
-					<button type="button" class='js-heal heal heal-giant btn btn-outline-danger' data-name="1d16"><i class="btn-icon">&#xf0f9</i></button>
-                </div>
+					<span class="input-group-text">Здоровье</span>
+					<input type="number" name="attr_hp" class="form-control"/>
+					<span name="attr_hp_max" class="form-control" readonly></span>
+					<button type="button" class='js-roll-potion heal-small btn btn-outline-danger' data-dice="1d4" data-name="hp" data-title="Малое зелье кровавика"><i class="btn-icon">&#xf06c</i></button>
+					<button type="button" class='js-roll-potion heal-medium btn btn-outline-danger' data-dice="1d8" data-name="hp" data-title="Среднее зелье кровавика"><i class="btn-icon">&#xf0c3</i></button>
+					<button type="button" class='js-roll-potion heal-large btn btn-outline-danger' data-dice="1d12" data-name="hp" data-title="Большое зелье кровавика"><i class="btn-icon">&#xe4f3</i></button>
+					<button type="button" class='js-roll-potion heal-giant btn btn-outline-danger' data-dice="1d16" data-name="hp" data-title="Гигантское зелье кровавика"><i class="btn-icon">&#xf0f9</i></button>
+				</div>
 				<div class="progress">
 					<div class="progress-bar bg-danger js-hp" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
 				</div>
 			</div>
 			<div>
 				<div class="input-group mb-2">
-                    <span class="input-group-text">Усталость</span>
+					<span class="input-group-text">Усталость</span>
 					<input type="number" name="attr_stamina" class="form-control"/>
 					<span name="attr_stamina_max" class="form-control" readonly></span>
-					<button type="button" class='js-restore restore restore-small btn btn-outline-info' data-name="1d4"><i class="btn-icon">&#xf06c</i></button>
-					<button type="button" class='js-restore restore restore-medium btn btn-outline-info' data-name="1d8"><i class="btn-icon">&#xf0c3</i></button>
-					<button type="button" class='js-restore restore restore-large btn btn-outline-info' data-name="1d12"><i class="btn-icon">&#xe4f3</i></button>
-					<button type="button" class='js-restore restore restore-giant btn btn-outline-info' data-name="1d16"><i class="btn-icon">&#xf0f9</i></button>
-                </div>
+					<button type="button" class='js-roll-potion restore-small btn btn-outline-info' data-dice="1d4" data-name="stamina" data-title="Малое зелье Фархада"><i class="btn-icon">&#xf06c</i></button>
+					<button type="button" class='js-roll-potion restore-medium btn btn-outline-info' data-dice="1d8" data-name="stamina" data-title="Среднее зелье Фархада"><i class="btn-icon">&#xf0c3</i></button>
+					<button type="button" class='js-roll-potion restore-large btn btn-outline-info' data-dice="1d12" data-name="stamina "data-title="Большое зелье Фархада"><i class="btn-icon">&#xe4f3</i></button>
+					<button type="button" class='js-roll-potion restore-giant btn btn-outline-info' data-dice="1d16" data-name="stamina" data-title="Гигантское зелье Фархада"><i class="btn-icon">&#xf0f9</i></button>
+				</div>
 				<div class="progress">
 					<div class="progress-bar bg-info js-stamina" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
 				</div>
