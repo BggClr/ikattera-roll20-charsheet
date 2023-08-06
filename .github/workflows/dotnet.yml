@@ -29,7 +29,8 @@ jobs:
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "1.0.${{github.run_number}}"
-        title: "$1.0.{{github.run_number}}"
+        title: "1.0.${{github.run_number}}"
+        prerelease: false
         files: |
           ./ikattera.html
           ./ikattera.css
