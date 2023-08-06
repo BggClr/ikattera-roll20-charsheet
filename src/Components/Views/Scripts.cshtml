@@ -191,12 +191,12 @@
         	.keys(data.level_bonus)
         	.filter(l => parseInt(l) > 0 && parseInt(l) <= level)
         	.reduce((agg, key) => Object.keys(agg)
-        			.concat(Object.keys(data.level_bonus[key].default))
+        			.concat(Object.keys(data.level_bonus[key].default || {}))
         			.concat(Object.keys(getLevelOptionBonus(data, key, values)))
         		    .distinct()
         			.reduce((levelAgg, levelKey) => ({
         				...levelAgg,
-        				[levelKey]: (agg[levelKey] || 0) + (data.level_bonus[key].default[levelKey] || 0) + (getLevelOptionBonus(data, key, values)[levelKey] || 0)
+        				[levelKey]: (agg[levelKey] || 0) + ((data.level_bonus[key].default || {})[levelKey] || 0) + (getLevelOptionBonus(data, key, values)[levelKey] || 0)
         			}), {})
         	, {});
 	}
