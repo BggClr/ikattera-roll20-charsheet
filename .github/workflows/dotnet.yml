@@ -1,0 +1,33 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.100-preview.6
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Run
+      run: dotnet run --project ./src/App --no-build --verbosity normal
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: files
+        path: |
+          ./src/App/bin/Debug/net8.0/ikattera.html
+          ./ikattera.css
+      
