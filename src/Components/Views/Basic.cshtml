@@ -1,4 +1,5 @@
-﻿@model Models.CharacterManifest
+﻿@using Components.Extensions
+@model Models.CharacterManifest
 
 <div class="sheet-character">
 	<div class="row">
@@ -52,20 +53,35 @@
 				<input type="number" name="attr_global_check_mod" class="form-control" id="form_level" />
 			</div>
 			<div class="input-group mb-2">
-            	<span class="input-group-text">Бонус к атаке</span>
-            	<input type="number" name="attr_global_attack_mod" class="form-control" id="form_level" />
-            </div>
+				<span class="input-group-text">Бонус к атаке</span>
+				<input type="number" name="attr_global_attack_mod" class="form-control" id="form_level" />
+			</div>
 			<div class="input-group mb-2">
 				<span class="input-group-text">Бонус к урону</span>
 				<select name="attr_global_damage_type_mod" class="form-select">
-                	<option value="" selected disabled>-</option>
-                	@foreach (var damageType in Model.DamageTypes)
-                	{
-                		<option value="@damageType.Name">@damageType.Title</option>
-                	}
-                </select>
-            	<input type="number" name="attr_global_damage_mod" class="form-control" id="form_level" />
-            </div>
+					<option value="" selected disabled>-</option>
+					@foreach (var damageType in Model.DamageTypes)
+					{
+						<option value="@damageType.Name">@damageType.Title</option>
+					}
+				</select>
+				<input type="number" name="attr_global_damage_mod" class="form-control" id="form_level" />
+			</div>
+		</div>
+		<div class="col-4">
+			@foreach (var bonusOption in Model.GetLevelBonusOptions())
+			{
+				<div class="input-group mb-2 js-level-option" data-name="@bonusOption.Key">
+					<span class="input-group-text">@bonusOption.Description</span>
+					<select name="attr_@bonusOption.Key" class="form-select">
+						<option value="">-</option>
+						@foreach (var option in bonusOption.Options.Select((p, i) => new {Title = p, Value = i}))
+						{
+							<option value="@option.Value">@option.Title</option>
+						}
+					</select>
+				</div>
+			}
 		</div>
 	</div>
 </div>

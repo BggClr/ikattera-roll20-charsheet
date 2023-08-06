@@ -1,4 +1,5 @@
-﻿@model string
+﻿@using Components.Extensions
+@model Models.CharacterManifest
 
 <rolltemplate class="sheet-rolltemplate-attack">
 	<div class="sheet-container">
@@ -37,9 +38,10 @@
 </rolltemplate>
 
 <script type="text/worker">
-	const CharsheetData = JSON.parse('@Html.Raw(Model)');
+	const CharsheetData = JSON.parse('@Html.Raw((string)ViewBag.ModelJson)');
 	const FeaturesList = ['attributes', 'skills', 'weapons'];
 	const buttonList = ['character', 'attributes', 'skills', 'weapons', 'combat'];
+	const LevelBonusOptionKeys = [@Html.Raw(string.Join(", ", Model.GetLevelBonusOptions().Select(p => $"'{p.Key}'")))];
 
 	Array.prototype.distinct = function() {
 		return this.filter((item, pos) => this.indexOf(item) === pos)
@@ -172,17 +174,30 @@
 		return FeaturesList.reduce((agg, key) => [...agg, ...CharsheetData[key]], [{name: 'hp_base', title: ''}, {name: 'stamina_base', title: ''}]);
 	}
 
-	function getFeaturesValuesByType(data, level) {
-		if (!data || !data.level_bonus || !data.level_bonus) {
+	function getLevelOptionBonus(data, key, values) {
+		const optionValueKey = ['level_option', data.name, key].filter(p => p != null).join('_');
+		if (!!data.level_bonus[key].options && !!values[optionValueKey]) {
+			return data.level_bonus[key].options[values[optionValueKey]] || {};
+		}
+		return {};
+	}
+
+	function getFeaturesValuesByType(data, level, values) {
+		if (!data || !data.level_bonus) {
         	return 0;
         }
 
         return Object
         	.keys(data.level_bonus)
         	.filter(l => parseInt(l) > 0 && parseInt(l) <= level)
-        	.reduce((agg, key) => Object.keys(agg).concat(Object.keys(data.level_bonus[key].default))
+        	.reduce((agg, key) => Object.keys(agg)
+        			.concat(Object.keys(data.level_bonus[key].default))
+        			.concat(Object.keys(getLevelOptionBonus(data, key, values)))
         		    .distinct()
-        			.reduce((levelAgg, levelKey) => ({...levelAgg, [levelKey]: (agg[levelKey] || 0) + (data.level_bonus[key].default[levelKey] || 0)}), {})
+        			.reduce((levelAgg, levelKey) => ({
+        				...levelAgg,
+        				[levelKey]: (agg[levelKey] || 0) + (data.level_bonus[key].default[levelKey] || 0) + (getLevelOptionBonus(data, key, values)[levelKey] || 0)
+        			}), {})
         	, {});
 	}
 
@@ -193,7 +208,7 @@
     	const kind = !!race ? (race.kinds && race.kinds.find(k => k.name === values.kind)) : null;
     	const subclass = !!characterClass ? (characterClass.subclasses && characterClass.subclasses.find(k => k.name === values.subclass)) : null;
 
-		const featureChangesByType = [CharsheetData, race, kind, characterClass, subclass].map(data => getFeaturesValuesByType(data, level));
+		const featureChangesByType = [CharsheetData, race, kind, characterClass, subclass].map(data => getFeaturesValuesByType(data, level, values));
 		const keys = featureChangesByType
 			.map(p => Object.keys(p))
 			.reduce((agg, keys) => [...agg, ...keys], [])
@@ -229,7 +244,7 @@
 	function getValuesListForCalculate(attrs) {
 		return FeaturesList
 			.map(key => CharsheetData[key].map(f => f.name).reduce((agg, f) => [...agg, f, `${f}_mod`], []))
-			.reduce((agg, f) => [...agg, ...f], [...FeaturesList.map(f => `${f}_free`),...(!!attrs ? attrs : []), 'level', 'race', 'kind', 'class', 'subclass', 'hp_base', 'hp_mod', 'hp_max', 'stamina_base', 'stamina_mod', 'stamina_max']);
+			.reduce((agg, f) => [...agg, ...f], [...FeaturesList.map(f => `${f}_free`),...(!!attrs ? attrs : []), 'level', 'race', 'kind', 'class', 'subclass', 'hp_base', 'hp_mod', 'hp_max', 'stamina_base', 'stamina_mod', 'stamina_max', ...LevelBonusOptionKeys]);
 	}
 
 	function getNotificationClass(value) {
