@@ -150,6 +150,7 @@
         				}, {});
 
         			const damageRollGroups = Object.keys(weaponDamageRollData)
+        				.filter(key => !!weaponDamageRollData[key].dices.length || !!weaponDamageRollData[key].attributeBonuses.length || !!weaponDamageRollData[key].valueBonuses.length)
         				.map(key => `{{${getDamageTypeTitle(key)}=[[${getDamageRoll(weaponDamageRollData[key])}]]}}`)
 
         			const attackRoll = [dice]
@@ -172,16 +173,16 @@
 	}
 
 	function getFeaturesValuesByType(data, level) {
-		if (!data || !data.level_bonus) {
+		if (!data || !data.level_bonus || !data.level_bonus) {
         	return 0;
         }
 
         return Object
         	.keys(data.level_bonus)
         	.filter(l => parseInt(l) > 0 && parseInt(l) <= level)
-        	.reduce((agg, key) => Object.keys(agg).concat(Object.keys(data.level_bonus[key]))
+        	.reduce((agg, key) => Object.keys(agg).concat(Object.keys(data.level_bonus[key].default))
         		    .distinct()
-        			.reduce((levelAgg, levelKey) => ({...levelAgg, [levelKey]: (agg[levelKey] || 0) + (data.level_bonus[key][levelKey] || 0)}), {})
+        			.reduce((levelAgg, levelKey) => ({...levelAgg, [levelKey]: (agg[levelKey] || 0) + (data.level_bonus[key].default[levelKey] || 0)}), {})
         	, {});
 	}
 

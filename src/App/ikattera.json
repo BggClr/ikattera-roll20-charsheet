@@ -5,21 +5,14 @@
             "title": "Гаган",
             "level_bonus": {
                 "1": {
-                    "skill_trade": 1,
-                    "skill_medicine": 1,
-                    "skill_botanics": 1,
-                    "weapon_magic": 1,
-                    "hp_base": 16,
-                    "stamina_base": 15
-                },
-                "4": {
-                    "hp_base": 3
-                },
-                "8": {
-                    "hp_base": 2
-                },
-                "10": {
-                    "hp_base": 2
+                    "default": {
+                        "skill_trade": 1,
+                        "skill_medicine": 1,
+                        "skill_botanics": 1,
+                        "weapon_magic": 1,
+                        "hp_base": 16,
+                        "stamina_base": 15
+                    }
                 }
             }
         },
@@ -28,20 +21,30 @@
             "title": "Акир",
             "level_bonus": {
                 "1": {
-                    "hp_base": 20,
-                    "stamina_base": 15
+                    "default": {
+                        "hp_base": 20,
+                        "stamina_base": 15
+                    }
                 },
                 "3": {
-                    "hp_base": 4
+                    "default": {
+                        "hp_base": 4
+                    }
                 },
                 "5": {
-                    "hp_base": 5
+                    "default": {
+                        "hp_base": 5
+                    }
                 },
                 "7": {
-                    "hp_base": 4
+                    "default": {
+                        "hp_base": 4
+                    }
                 },
                 "10": {
-                    "hp_base": 4
+                    "default": {
+                        "hp_base": 4
+                    }
                 }
             }
         },
@@ -50,23 +53,40 @@
             "title": "Кро",
             "level_bonus": {
                 "1": {
-                    "attribute_strength": 1,
-                    "weapons_free": 1,
-                    "hp_base": 18,
-                    "stamina_base": 18
+                    "default": {
+                        "attribute_strength": 1,
+                        "hp_base": 18,
+                        "stamina_base": 18
+                    },
+                    "options": [
+                        {
+                            "weapon_light": 1
+                        },
+                        {
+                            "weapon_heavy": 1
+                        }
+                    ]
                 },
                 "3": {
-                    "stamina_base": 4
+                    "default": {
+                        "stamina_base": 4
+                    }
                 },
                 "5": {
-                    "hp_base": 4
+                    "default": {
+                        "hp_base": 4
+                    }
                 },
                 "7": {
-                    "stamina_base": 4
+                    "default": {
+                        "stamina_base": 4
+                    }
                 },
                 "10": {
-                    "hp_base": 2,
-                    "stamina_base": 2
+                    "default": {
+                        "hp_base": 2,
+                        "stamina_base": 2
+                    }
                 }
             }
         },
@@ -75,18 +95,24 @@
             "title": "Пару",
             "level_bonus": {
                 "1": {
-                    "attributes_free": 1,
-                    "skills_free": 3,
-                    "hp_base": 16,
-                    "stamina_base": 14
+                    "default": {
+                        "attributes_free": 1,
+                        "skills_free": 3,
+                        "hp_base": 16,
+                        "stamina_base": 14
+                    }
                 },
                 "5": {
-                    "hp_base": 3,
-                    "stamina_base": 2
+                    "default": {
+                        "hp_base": 3,
+                        "stamina_base": 2
+                    }
                 },
                 "10": {
-                    "hp_base": 3,
-                    "stamina_base": 2
+                    "default": {
+                        "hp_base": 3,
+                        "stamina_base": 2
+                    }
                 }
             }
         },
@@ -95,32 +121,48 @@
             "title": "Ревера-Нгахера",
             "level_bonus": {
                 "1": {
-                    "attribute_strength": -1,
-                    "attribute_dexterity": 1,
-                    "skill_music": 1,
-                    "hp_base": 14,
-                    "stamina_base": 18
+                    "default": {
+                        "attribute_strength": -1,
+                        "attribute_dexterity": 1,
+                        "skill_music": 1,
+                        "hp_base": 14,
+                        "stamina_base": 18
+                    }
                 },
                 "2": {
-                    "hp_base": 2
+                    "default": {
+                        "hp_base": 2
+                    }
                 },
                 "3": {
-                    "hp_base": 1
+                    "default": {
+                        "hp_base": 1
+                    }
                 },
                 "4": {
-                    "hp_base": 2
+                    "default": {
+                        "hp_base": 2
+                    }
                 },
                 "6": {
-                    "hp_base": 2
+                    "default": {
+                        "hp_base": 2
+                    }
                 },
                 "7": {
-                    "hp_base": 1
+                    "default": {
+                        "hp_base": 1
+                    }
                 },
                 "9": {
-                    "hp_base": 1
+                    "default": {
+                        "hp_base": 1
+                    }
                 },
                 "10": {
-                    "hp_base": 2
+                    "default": {
+                        "hp_base": 2
+                    }
                 }
             },
             "kinds": [
@@ -133,7 +175,9 @@
                     "title": "Грызун",
                     "level_bonus": {
                         "1": {
-                            "skill_survival": 1
+                            "default": {
+                                "skill_survival": 1
+                            }
                         }
                     }
                 },
@@ -142,7 +186,9 @@
                     "title": "Заяц",
                     "level_bonus": {
                         "1": {
-                            "skill_listening": 1
+                            "default": {
+                                "skill_listening": 1
+                            }
                         }
                     }
                 },
@@ -151,7 +197,9 @@
                     "title": "Кошка",
                     "level_bonus": {
                         "1": {
-                            "skill_balance": 1
+                            "default": {
+                                "skill_balance": 1
+                            }
                         }
                     }
                 },
@@ -160,7 +208,9 @@
                     "title": "Крот",
                     "level_bonus": {
                         "1": {
-                            "skill_fight": 1
+                            "default": {
+                                "skill_fight": 1
+                            }
                         }
                     }
                 },
@@ -169,7 +219,9 @@
                     "title": "Куница",
                     "level_bonus": {
                         "1": {
-                            "skill_prestidigitation": 1
+                            "default": {
+                                "skill_prestidigitation": 1
+                            }
                         }
                     }
                 },
@@ -178,7 +230,9 @@
                     "title": "Лемур",
                     "level_bonus": {
                         "1": {
-                            "skill_artistry": 1
+                            "default": {
+                                "skill_artistry": 1
+                            }
                         }
                     }
                 },
@@ -187,7 +241,9 @@
                     "title": "Опоссум",
                     "level_bonus": {
                         "1": {
-                            "skill_acrobatics": 1
+                            "default": {
+                                "skill_acrobatics": 1
+                            }
                         }
                     }
                 },
@@ -200,7 +256,9 @@
                     "title": "Свой вариант",
                     "level_bonus": {
                         "1": {
-                            "skills_free": 1
+                            "default": {
+                                "skills_free": 1
+                            }
                         }
                     }
                 }
@@ -211,22 +269,28 @@
             "title": "Скепси",
             "level_bonus": {
                 "1": {
-                    "attribute_strength": -1,
-                    "attribute_wisdom": 1,
-                    "skill_history": 1,
-                    "skill_law": 1,
-                    "skill_renown": 1,
-                    "weapon_magic": 1,
-                    "hp_base": 15,
-                    "stamina_base": 16
+                    "default": {
+                        "attribute_strength": -1,
+                        "attribute_wisdom": 1,
+                        "skill_history": 1,
+                        "skill_law": 1,
+                        "skill_renown": 1,
+                        "weapon_magic": 1,
+                        "hp_base": 15,
+                        "stamina_base": 16
+                    }
                 },
                 "5": {
-                    "hp_base": 3,
-                    "stamina_base": 2
+                    "default": {
+                        "hp_base": 3,
+                        "stamina_base": 2
+                    }
                 },
                 "10": {
-                    "hp_base": 3,
-                    "stamina_base": 2
+                    "default": {
+                        "hp_base": 3,
+                        "stamina_base": 2
+                    }
                 }
             }
         }
@@ -237,21 +301,31 @@
             "title": "Воин",
             "level_bonus": {
                 "1": {
-                    "hp_base": 3,
-                    "stamina_base": 2
+                    "default": {
+                        "hp_base": 3,
+                        "stamina_base": 2
+                    }
                 },
                 "2": {
-                    "hp_base": 1
+                    "default": {
+                        "hp_base": 1
+                    }
                 },
                 "5": {
-                    "stamina_base": 3
+                    "default": {
+                        "stamina_base": 3
+                    }
                 },
                 "6": {
-                    "hp_base": 1
+                    "default": {
+                        "hp_base": 1
+                    }
                 },
                 "10": {
-                    "hp_base": 1,
-                    "stamina_base": 3
+                    "default": {
+                        "hp_base": 1,
+                        "stamina_base": 3
+                    }
                 }
             },
             "subclasses": [
@@ -318,34 +392,54 @@
             "title": "Маг",
             "level_bonus": {
                 "1": {
-                    "stamina_base": 1
+                    "default": {
+                        "stamina_base": 1
+                    }
                 },
                 "2": {
-                    "stamina_base": 1
+                    "default": {
+                        "stamina_base": 1
+                    }
                 },
                 "3": {
-                    "stamina_base": 1
+                    "default": {
+                        "stamina_base": 1
+                    }
                 },
                 "4": {
-                    "stamina_base": 1
+                    "default": {
+                        "stamina_base": 1
+                    }
                 },
                 "5": {
-                    "stamina_base": 1
+                    "default": {
+                        "stamina_base": 1
+                    }
                 },
                 "6": {
-                    "stamina_base": 1
+                    "default": {
+                        "stamina_base": 1
+                    }
                 },
                 "7": {
-                    "stamina_base": 1
+                    "default": {
+                        "stamina_base": 1
+                    }
                 },
                 "8": {
-                    "stamina_base": 1
+                    "default": {
+                        "stamina_base": 1
+                    }
                 },
                 "9": {
-                    "stamina_base": 1
+                    "default": {
+                        "stamina_base": 1
+                    }
                 },
                 "10": {
-                    "stamina_base": 1
+                    "default": {
+                        "stamina_base": 1
+                    }
                 }
             },
             "subclasses": [
@@ -375,7 +469,49 @@
                     "name": "chakram-mage",
                     "title": "Чакрам Эгмы"
                 }
-            ]
+            ],
+            "level_bonus": {
+                "3": {
+                    "options": [
+                        {
+                            "weapons_free": -1,
+                            "skills_free": 1
+                        }
+                    ]
+                },
+                "5": {
+                    "options": [
+                        {
+                            "weapons_free": -1,
+                            "skills_free": 1
+                        }
+                    ]
+                },
+                "7": {
+                    "options": [
+                        {
+                            "weapons_free": -1,
+                            "skills_free": 1
+                        }
+                    ]
+                },
+                "8": {
+                    "options": [
+                        {
+                            "weapons_free": -1,
+                            "skills_free": 1
+                        }
+                    ]
+                },
+                "10": {
+                    "options": [
+                        {
+                            "weapons_free": -1,
+                            "skills_free": 1
+                        }
+                    ]
+                }
+            }
         },
         {
             "name": "bard",
@@ -396,34 +532,54 @@
             "title": "Ученый",
             "level_bonus": {
                 "1": {
-                    "skills_free": 1
+                    "default": {
+                        "skills_free": 1
+                    }
                 },
                 "2": {
-                    "skills_free": 1
+                    "default": {
+                        "skills_free": 1
+                    }
                 },
                 "3": {
-                    "skills_free": 1
+                    "default": {
+                        "skills_free": 1
+                    }
                 },
                 "4": {
-                    "skills_free": 1
+                    "default": {
+                        "skills_free": 1
+                    }
                 },
                 "5": {
-                    "skills_free": 1
+                    "default": {
+                        "skills_free": 1
+                    }
                 },
                 "6": {
-                    "skills_free": 1
+                    "default": {
+                        "skills_free": 1
+                    }
                 },
                 "7": {
-                    "skills_free": 1
+                    "default": {
+                        "skills_free": 1
+                    }
                 },
                 "8": {
-                    "skills_free": 1
+                    "default": {
+                        "skills_free": 1
+                    }
                 },
                 "9": {
-                    "skills_free": 1
+                    "default": {
+                        "skills_free": 1
+                    }
                 },
                 "10": {
-                    "skills_free": 1
+                    "default": {
+                        "skills_free": 1
+                    }
                 }
             },
             "subclasses": [
@@ -882,9 +1038,94 @@
     ],
     "level_bonus": {
         "1": {
-            "attributes_free": 8,
-            "skills_free": 25,
-            "weapons_free": 2
+            "default": {
+                "attributes_free": 8,
+                "skills_free": 25,
+                "weapons_free": 2
+            }
+        },
+        "3": {
+            "options": [
+                {
+                    "attributes_free": 1
+                },
+                {
+                    "weapons_free": 1
+                }
+            ],
+            "default": {
+                "skills_free": 2,
+                "stamina_base": 2
+            }
+        },
+        "4": {
+            "options": [
+                {
+                    "hp_base": 6
+                },
+                {
+                    "stamina_base": 6
+                },
+                {
+                    "hp_base": 3,
+                    "stamina_base": 3
+                },
+                {
+                    "potion_mod": 2
+                }
+            ]
+        },
+        "5": {
+            "default": {
+                "hp_base": 2,
+                "stamina_base": 2,
+                "weapons_free": 1,
+                "skills_free": 3,
+                "attributes_free": 1
+            }
+        },
+        "6": {
+            "options": [
+                {
+                    "skills_free": 2,
+                    "attributes_free": 1
+                },
+                {
+                    "hp_base": 2,
+                    "stamina_base": 2
+                }
+            ]
+        },
+        "7": {
+            "default": {
+                "hp_base": 1,
+                "stamina_base": 1,
+                "weapons_free": 1,
+                "skills_free": 2
+            }
+        },
+        "8": {
+            "default": {
+                "attributes_free": 1,
+                "weapons_free": 1
+            }
+        },
+        "9": {
+            "default": {
+                "hp_base": 2,
+                "stamina_base": 2,
+                "attributes_free": 1,
+                "skills_free": 3
+            }
+        },
+        "10": {
+            "default": {
+                "hp_base": 3,
+                "stamina_base": 3,
+                "attributes_free": 1,
+                "weapons_free": 1,
+                "skills_free": 3
+            }
         }
     },
     "level": 1
