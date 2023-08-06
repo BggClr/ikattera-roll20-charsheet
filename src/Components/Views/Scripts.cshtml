@@ -203,12 +203,13 @@
 
 	function getFeaturesValues(values, level) {
 		level = level || values.level || 0;
+    	const origin = CharsheetData.origins.find(r => r.name === values.origin);
     	const race = CharsheetData.races.find(r => r.name === values.race);
     	const characterClass = CharsheetData.classes.find(r => r.name === values.class);
     	const kind = !!race ? (race.kinds && race.kinds.find(k => k.name === values.kind)) : null;
     	const subclass = !!characterClass ? (characterClass.subclasses && characterClass.subclasses.find(k => k.name === values.subclass)) : null;
 
-		const featureChangesByType = [CharsheetData, race, kind, characterClass, subclass].map(data => getFeaturesValuesByType(data, level, values));
+		const featureChangesByType = [CharsheetData, race, kind, characterClass, subclass, origin].map(data => getFeaturesValuesByType(data, level, values));
 		const keys = featureChangesByType
 			.map(p => Object.keys(p))
 			.reduce((agg, keys) => [...agg, ...keys], [])
@@ -244,7 +245,7 @@
 	function getValuesListForCalculate(attrs) {
 		return FeaturesList
 			.map(key => CharsheetData[key].map(f => f.name).reduce((agg, f) => [...agg, f, `${f}_mod`], []))
-			.reduce((agg, f) => [...agg, ...f], [...FeaturesList.map(f => `${f}_free`),...(!!attrs ? attrs : []), 'level', 'race', 'kind', 'class', 'subclass', 'hp_base', 'hp_mod', 'hp_max', 'stamina_base', 'stamina_mod', 'stamina_max', ...LevelBonusOptionKeys]);
+			.reduce((agg, f) => [...agg, ...f], [...FeaturesList.map(f => `${f}_free`),...(!!attrs ? attrs : []), 'level', 'race', 'kind', 'class', 'subclass', 'origin', 'hp_base', 'hp_mod', 'hp_max', 'stamina_base', 'stamina_mod', 'stamina_max', ...LevelBonusOptionKeys]);
 	}
 
 	function getNotificationClass(value) {
@@ -272,6 +273,7 @@
 				.reduce((agg, l) => [
 					...agg,
 					`level_option_${l}`,
+					`level_option_${values.origin}_${l}`,
 					`level_option_${values.race}_${l}`,
 					`level_option_${values.kind}_${l}`,
 					`level_option_${values.class}_${l}`,
@@ -558,6 +560,19 @@
 			const oldValues = e.previousValue && e.previousValue != e.newValue
 				? {...values, kind: e.previousValue}
 				: {...values, kind: 'none'};
+			applyFeatureChanges(values, oldValues);
+		});
+	});
+
+	on('change:origin', e => {
+		if (e.sourceType === 'sheetworker') {
+			return;
+		}
+
+		getAttrs(getValuesListForCalculate(), values => {
+			const oldValues = e.previousValue && e.previousValue != e.newValue
+				? {...values, origin: e.previousValue}
+				: {...values, origin: 'none'};
 			applyFeatureChanges(values, oldValues);
 		});
 	});

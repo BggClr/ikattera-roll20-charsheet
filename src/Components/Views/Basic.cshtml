@@ -38,6 +38,16 @@
 				<span class="input-group-text">Подкласс</span>
 				<select name="attr_subclass" id="form_subclass" class="form-select" aria-label="Подкласс"/>
 			</div>
+			<div class="input-group mb-2">
+            	<span class="input-group-text">Прошлое</span>
+            	<select name="attr_origin" id="form_class" class="form-select" aria-label="Прошлое">
+            		<option value="" selected disabled>Выберите биографию</option>
+            		@foreach (var origin in Model.Origins.OrderBy(p => p.Title))
+            		{
+            			<option value="@origin.Name">@origin.Title</option>
+            		}
+            	</select>
+            </div>
 		</div>
 		<div class="col-4">
 			<div class="input-group mb-2">

@@ -594,6 +594,370 @@
             ]
         }
     ],
+    "origins": [
+        {
+            "name": "soldier",
+            "title": "Солдат",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_parry": 1,
+                        "skill_survival": 1,
+                        "skill_strategy": 1,
+                        "weapon_light": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "sailor",
+            "title": "Мореплаватель",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_balance": 1,
+                        "skill_swimming": 1,
+                        "skill_professionalism": 1,
+                        "weapon_light": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "pirate",
+            "title": "Пират",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_concealment": 1,
+                        "skill_swimming": 1,
+                        "skill_professionalism": 1,
+                        "weapon_gunpowder": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "officer",
+            "title": "Офицер",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_blocking": 1,
+                        "skill_law": 1,
+                        "skill_strategy": 1,
+                        "weapon_heavy": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "merchant",
+            "title": "Торговец",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_concealment": 1,
+                        "skill_trade": 1,
+                        "skill_analysis": 1,
+                        "weapon_light": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "shaman",
+            "title": "Шаман",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_medicine": 1,
+                        "skill_botanics": 1,
+                        "skill_animal_handling": 1,
+                        "weapon_magic": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "healer",
+            "title": "Лекарь",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_medicine": 1,
+                        "skill_analysis": 1,
+                        "skill_observation": 1,
+                        "weapon_magic": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "battlemage",
+            "title": "Боевый Маг",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_magic_theory": 1,
+                        "skill_survival": 1,
+                        "skill_fight": 1,
+                        "weapon_magic": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "trickster",
+            "title": "Фокусник",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_magic_theory": 1,
+                        "skill_survival": 1,
+                        "skill_prestidigitation": 1,
+                        "weapon_magic": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "blacksmith",
+            "title": "Кузнец",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "attribute_body": 1,
+                        "skill_craft": 1,
+                        "skill_professionalism": 1,
+                        "weapon_magic": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "builder",
+            "title": "Строитель",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "attribute_body": 1,
+                        "skill_craft": 1,
+                        "skill_knowledge": 1,
+                        "weapon_magic": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "nobleman",
+            "title": "Вельможа",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_renown": 1,
+                        "skill_law": 1,
+                        "skill_history": 1,
+                        "weapon_light": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "primal-hunter",
+            "title": "Охотник на праймалов",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_survival": 1,
+                        "skill_secrecy": 1,
+                        "skill_animal_handling": 1,
+                        "weapon_range": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "artilleryman",
+            "title": "Артиллерист",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "attribute_body": 1,
+                        "skill_craft": 1,
+                        "skill_strategy": 1,
+                        "weapon_gunpowder": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "actor",
+            "title": "Актер театра",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_artistry": 1,
+                        "skill_parody": 1,
+                        "skill_prestidigitation": 1,
+                        "weapon_range": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "musician",
+            "title": "Музыкант",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_artistry": 1,
+                        "skill_music": 1,
+                        "skill_craft": 1,
+                        "weapon_light": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "hermit",
+            "title": "Отшельник",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skills_free": 1,
+                        "skill_survival": 1,
+                        "skill_animal_handling": 1,
+                        "weapon_range": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "archivist",
+            "title": "Архивариус",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_history": 1,
+                        "skill_magic_theory": 1,
+                        "skill_knowledge": 1,
+                        "weapon_magic": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "thief",
+            "title": "Вор",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_secrecy": 1,
+                        "skill_search": 1,
+                        "skill_prestidigitation": 1,
+                        "weapon_light": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "guardian",
+            "title": "Стражник",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_survival": 1,
+                        "skill_law": 1,
+                        "skill_analysis": 1,
+                        "weapon_heavy": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "scientist",
+            "title": "Ученый",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_history": 1,
+                        "skill_magic_theory": 1,
+                        "skill_analysis": 1,
+                        "weapon_magic": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "herbalist",
+            "title": "Травник",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_survival": 1,
+                        "skill_botanics": 1,
+                        "skill_search": 1,
+                        "weapon_magic": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "cavalryman",
+            "title": "Кавалерист",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "attribute_body": 1,
+                        "skill_riding": 1,
+                        "skill_balance": 1,
+                        "weapon_heavy": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "gunnery",
+            "title": "Стрелок",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skill_survival": 1,
+                        "skill_observation": 1,
+                        "skill_surveillance": 1,
+                        "weapon_gunpowder": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "spy",
+            "title": "Шпион",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skills_free": 1,
+                        "skill_concealment": 1,
+                        "skill_prestidigitation": 1,
+                        "weapon_range": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "custom",
+            "title": "Своя биография",
+            "level_bonus": {
+                "1": {
+                    "default": {
+                        "skills_free": 3,
+                        "weapons_free": 1
+                    }
+                }
+            }
+        }
+    ],
     "attributes": [
         {
             "name": "attribute_strength",
