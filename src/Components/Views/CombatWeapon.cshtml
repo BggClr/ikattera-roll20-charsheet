@@ -45,11 +45,12 @@
 			<fieldset class="repeating_combatweapon@(Model.Index)">
 				<div class="input-group damage-unit">
 					<span class="input-group-text">Урон</span>
+					<input type="number" name="attr_dice_count" class="form-control" title="Количество кубов" value="1"/>
 					<select name="attr_dice_type" class="form-select">
 						<option value="" selected disabled>-</option>
 						<option value="d4">d4</option>
+						<option value="d6">d6</option>
 						<option value="d8">d8</option>
-						<option value="d8">d6</option>
 						<option value="d10">d10</option>
 						<option value="d12">d12</option>
 						<option value="d20">d20</option>

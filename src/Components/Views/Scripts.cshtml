@@ -110,7 +110,7 @@
 
     async function rollWeaponDice(dice, weaponName, altKey, title) {
     	const rollModifier = !!altKey ? '/w gm': '';
-    	const weaponPartAttributes = ['dice_type', 'damage_type', 'damage_attribute_bonus', 'damage_value_bonus']
+    	const weaponPartAttributes = ['dice_type', 'dice_count', 'damage_type', 'damage_attribute_bonus', 'damage_value_bonus']
         getSectionIDs(`repeating_${weaponName}`, async weaponDamageIds => {
         	const parts = weaponDamageIds.reduce((agg, id) => [...agg, ...weaponPartAttributes.map(attr => `repeating_${weaponName}_${id}_${attr}`)], []);
         	const weaponAttributes = [
@@ -137,6 +137,7 @@
         			.map(id => ({
         				damageType: `repeating_${weaponName}_${id}_damage_type`,
         				dice: values[`repeating_${weaponName}_${id}_dice_type`],
+        				diceCount: values[`repeating_${weaponName}_${id}_dice_count`],
         				attributeBonus: values[`repeating_${weaponName}_${id}_damage_attribute_bonus`],
         				valueBonus: values[`repeating_${weaponName}_${id}_damage_value_bonus`]
         			}))
@@ -153,7 +154,7 @@
         					return {
         						...agg,
         						[values[p.damageType]]: {
-        							dices: [...agg[values[p.damageType]].dices, p.dice].filter(p => !!p),
+        							dices: [...agg[values[p.damageType]].dices, !!p.dice && `${p.diceCount}${p.dice}`].filter(p => !!p),
         							attributeBonuses: [...agg[values[p.damageType]].attributeBonuses, p.attributeBonus, `${p.attributeBonus}_mod`].filter(p => !!p && !!values[p]),
         							valueBonuses: [...agg[values[p.damageType]].valueBonuses, p.valueBonus].filter(p => !!p)
         						}
@@ -162,7 +163,7 @@
         				return {
         					...agg,
         					[values[p.damageType]]: {
-        						dices: [p.dice].filter(p => !!p),
+        						dices: [!!p.dice && `${p.diceCount}${p.dice}`].filter(p => !!p),
         						attributeBonuses: [p.attributeBonus, `${p.attributeBonus}_mod`].filter(p => !!p && !!values[p]),
         						valueBonuses: [p.valueBonus].filter(p => !!p)
         					}
