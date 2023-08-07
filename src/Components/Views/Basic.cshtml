@@ -3,7 +3,7 @@
 
 <div class="sheet-character">
 	<div class="row">
-		<div class="col-4">
+		<div class="col-6">
 			<div class="input-group mb-2">
 				<span class="input-group-text">Уровень</span>
 				<input type="number" name="attr_level" class="form-control" id="form_level" />
@@ -39,17 +39,31 @@
 				<select name="attr_subclass" id="form_subclass" class="form-select" aria-label="Подкласс"/>
 			</div>
 			<div class="input-group mb-2">
-            	<span class="input-group-text">Прошлое</span>
-            	<select name="attr_origin" id="form_class" class="form-select" aria-label="Прошлое">
-            		<option value="" selected disabled>Выберите биографию</option>
-            		@foreach (var origin in Model.Origins.OrderBy(p => p.Title))
-            		{
-            			<option value="@origin.Name">@origin.Title</option>
-            		}
-            	</select>
-            </div>
+				<span class="input-group-text">Прошлое</span>
+				<select name="attr_origin" id="form_class" class="form-select" aria-label="Прошлое">
+					<option value="" selected disabled>Выберите биографию</option>
+					@foreach (var origin in Model.Origins.OrderBy(p => p.Title))
+					{
+						<option value="@origin.Name">@origin.Title</option>
+					}
+				</select>
+			</div>
+			<hr class="js-level-option-separator"/>
+			@foreach (var bonusOption in Model.GetLevelBonusOptions())
+			{
+				<div class="input-group mb-2 js-level-option hidden" data-name="@bonusOption.Key">
+					<span class="input-group-text">@bonusOption.Description</span>
+					<select name="attr_@bonusOption.Key" class="form-select">
+						<option value="">-</option>
+						@foreach (var option in bonusOption.Options.Select((p, i) => new {Title = p, Value = i}))
+						{
+							<option value="@option.Value">@option.Title</option>
+						}
+					</select>
+				</div>
+			}
 		</div>
-		<div class="col-4">
+		<div class="col-6">
 			<div class="input-group mb-2">
 				<span class="input-group-text">Бонус здоровья</span>
 				<input type="number" name="attr_hp_mod" class="form-control" id="form_level" />
@@ -77,21 +91,6 @@
 				</select>
 				<input type="number" name="attr_global_damage_mod" class="form-control" id="form_level" />
 			</div>
-		</div>
-		<div class="col-4">
-			@foreach (var bonusOption in Model.GetLevelBonusOptions())
-			{
-				<div class="input-group mb-2 js-level-option hidden" data-name="@bonusOption.Key">
-					<span class="input-group-text">@bonusOption.Description</span>
-					<select name="attr_@bonusOption.Key" class="form-select">
-						<option value="">-</option>
-						@foreach (var option in bonusOption.Options.Select((p, i) => new {Title = p, Value = i}))
-						{
-							<option value="@option.Value">@option.Title</option>
-						}
-					</select>
-				</div>
-			}
 		</div>
 	</div>
 </div>

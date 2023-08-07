@@ -40,7 +40,9 @@
 <script type="text/worker">
 	const CharsheetData = JSON.parse('@Html.Raw((string)ViewBag.ModelJson)');
 	const FeaturesList = ['attributes', 'skills', 'weapons'];
-	const buttonList = ['character', 'attributes', 'skills', 'weapons', 'combat'];
+	const TabsButtonList = ['character', 'attributes', 'skills', 'weapons', 'combat'];
+	const SkillTabsButtonList = ['attribute_strength', 'attribute_dexterity', 'attribute_body', 'attribute_charisma', 'attribute_wisdom', 'custom_magic'];
+
 	const LevelBonusOptionKeys = [@Html.Raw(string.Join(", ", Model.GetLevelBonusOptions().Select(p => $"'{p.Key}'")))];
 
 	Array.prototype.distinct = function() {
@@ -156,7 +158,7 @@
         						[values[p.damageType]]: {
         							dices: [...agg[values[p.damageType]].dices, !!p.dice && `${p.diceCount}${p.dice}`].filter(p => !!p),
         							attributeBonuses: [...agg[values[p.damageType]].attributeBonuses, p.attributeBonus, `${p.attributeBonus}_mod`].filter(p => !!p && !!values[p]),
-        							valueBonuses: [...agg[values[p.damageType]].valueBonuses, p.valueBonus].filter(p => !!p)
+        							valueBonuses: [...agg[values[p.damageType]].valueBonuses, parseInt(p.valueBonus)].filter(p => !!p)
         						}
         					};
         				}
@@ -165,7 +167,7 @@
         					[values[p.damageType]]: {
         						dices: [!!p.dice && `${p.diceCount}${p.dice}`].filter(p => !!p),
         						attributeBonuses: [p.attributeBonus, `${p.attributeBonus}_mod`].filter(p => !!p && !!values[p]),
-        						valueBonuses: [p.valueBonus].filter(p => !!p)
+        						valueBonuses: [parseInt(p.valueBonus)].filter(p => !!p)
         					}
         				};
         			}, {});
@@ -180,7 +182,7 @@
 
                 const roll = `${rollModifier} &{template:attack} {{subtitle=${title}}} {{title=@@{character_name}}} {{weapon=@@{${weaponName}_name}}} {{Попадание=[[${attackRoll}]]}} ${damageRollGroups} {{total=[[0]]}}`;
                 const results = await startRoll(roll);
-                const total = Object.keys(weaponDamageRollData).reduce((agg, key) => agg + results.results[getDamageTypeTitle(key)].result, 0);
+                const total = Object.keys(weaponDamageRollData).reduce((agg, key) => agg + ((results.results[getDamageTypeTitle(key)] && results.results[getDamageTypeTitle(key)].result) || 0), 0);
 
                 finishRoll(results.rollId, {
                     total
@@ -220,8 +222,8 @@
         	, {});
 	}
 
-	function getFeaturesValues(values, level) {
-		level = level || values.level || 0;
+	function getFeaturesValues(values) {
+		const level = values.level || 0;
     	const origin = CharsheetData.origins.find(r => r.name === values.origin);
     	const race = CharsheetData.races.find(r => r.name === values.race);
     	const characterClass = CharsheetData.classes.find(r => r.name === values.class);
@@ -238,9 +240,9 @@
 			.reduce((agg, key) => ({...agg, [key]: featureChangesByType.reduce((featureValueAgg, features) => featureValueAgg + (features[key] || 0), 0) }), {})
 	}
 
-	function calculateFeatures(values, oldValues, level) {
-		const newFeatures = getFeaturesValues(values, level);
-		const oldFeatures = !!oldValues ? getFeaturesValues(oldValues, level) : {};
+	function calculateFeatures(values, oldValues) {
+		const newFeatures = getFeaturesValues(values);
+		const oldFeatures = !!oldValues ? getFeaturesValues(oldValues) : {};
 		const charsheetFeatures = getCharsheetFeatures();
 
 		const pickedFeatures = 	FeaturesList
@@ -356,8 +358,8 @@
 		});
 	}
 
-	function applyFeatureChanges(values, oldValues, level) {
-		const featuresDelta = calculateFeatures(values, oldValues, level || values.level);
+	function applyFeatureChanges(values, oldValues) {
+		const featuresDelta = calculateFeatures(values, oldValues);
 		const charsheetFeatures = getCharsheetFeatures().map(f => f.name).concat(['hp_base', 'hp_mod', 'hp', 'stamina_base', 'stamina_mod', 'stamina']);
 
 		const featuresFree = FeaturesList
@@ -424,7 +426,7 @@
 		setAttrs({
 			sheetTab: 'character'
 		});
-		getAttrs(['race', 'class', 'level'], function(values) {
+		getAttrs(['race', 'class', 'level', 'skillsTab'], function(values) {
 			if (values.level < 3) {
 				setAttrs({
 					subclass: 'none'
@@ -433,17 +435,34 @@
 			}
 			fillKinds(values.race);
 			fillSubClasses(values.class)
+		    $20('.js-skill-container').addClass('hidden');
+            $20(`.js-skill-container[data-category~="${values.skillsTab}"]`).removeClass('hidden');
 		});
 		init();
 	});
 
-	buttonList.forEach(button => {
+	TabsButtonList.forEach(button => {
     	on(`clicked:${button}`, function() {
     		$20('.nav-link').removeClass('active');
     		$20(`button[name='act_${button}']`).addClass('active');
     		setAttrs({
     			sheetTab: button
     		});
+    	    getAttrs(['skillsTab'], values => {
+                $20(`button[name='act_${values.skillsTab}']`).addClass('active');
+            });
+    	});
+    });
+
+	SkillTabsButtonList.forEach(button => {
+    	on(`clicked:${button}`, function() {
+    		$20('.nav-link').removeClass('active');
+    		$20(`button[name='act_${button}']`).addClass('active');
+    		setAttrs({
+    			skillsTab: button
+    		});
+    		$20('.js-skill-container').addClass('hidden');
+    		$20(`.js-skill-container[data-category~="${button}"]`).removeClass('hidden');
     	});
     });
 

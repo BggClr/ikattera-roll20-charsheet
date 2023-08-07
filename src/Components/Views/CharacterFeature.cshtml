@@ -1,6 +1,9 @@
 ﻿@model Models.CharacterFeature
+@{
+	var category = (IList<string>)ViewBag.Category ?? Array.Empty<string>();
+}
 
-<div class="input-group mb-2">
+<div class="input-group mb-2 @ViewBag.CustomClass" data-category="@string.Join(" ", category.Where(p => !string.IsNullOrEmpty(p)))">
 	<span class="input-group-text">@Model.Title</span>
 	<input type="number" name="attr_@Model.Name" class="form-control" id="form_@Model.Name" title="Базовое значение"/>
 	<input type="number" name="attr_@(Model.Name)_mod" class="form-control" id="form_@(Model.Name)_mod" title="Модификатор"/>

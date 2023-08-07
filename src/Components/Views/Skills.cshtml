@@ -1,23 +1,36 @@
 ﻿@model IList<Models.Skill>
 
 <div class="sheet-skills">
+	<input type="hidden" class="sheet-tabstoggle" name="attr_skillsTab"  value="strength"  />
+    <ul class="nav nav-tabs skills-nav mb-3">
+    	<li class="nav-item">
+    		<button type="action" name="act_attribute_strength" class="nav-link active">Сила</button>
+    	</li>
+    	<li class="nav-item">
+    		<button type="action" name="act_attribute_dexterity" class="nav-link">Ловкость</button>
+    	</li>
+	    <li class="nav-item">
+		    <button type="action" name="act_attribute_body" class="nav-link">Телосложение</button>
+	    </li>
+	    <li class="nav-item">
+    		<button type="action" name="act_attribute_charisma" class="nav-link">Харизма</button>
+    	</li>
+	    <li class="nav-item">
+		    <button type="action" name="act_attribute_wisdom" class="nav-link">Мудрость</button>
+	    </li>
+	    <li class="nav-item">
+    		<button type="action" name="act_custom_magic" class="nav-link">Магия</button>
+    	</li>
+    </ul>
 	<div class="row">
-		<div class="col">
-			@foreach (var skill in Model.OrderBy(p => p.Title).Select((p, i) => new {Item = p, Index = i}).Where(p => p.Index % 3 == 0).Select(p => p.Item))
+		<div class="col-6">
+			@foreach (var skill in Model.OrderBy(p => p.Title))
 			{
-				@await Html.PartialAsync("~/Views/CharacterFeature.cshtml", skill)
-			}
-		</div>
-		<div class="col">
-			@foreach (var skill in Model.OrderBy(p => p.Title).Select((p, i) => new {Item = p, Index = i}).Where(p => p.Index % 3 == 1).Select(p => p.Item))
-			{
-				@await Html.PartialAsync("~/Views/CharacterFeature.cshtml", skill)
-			}
-		</div>
-		<div class="col">
-			@foreach (var skill in Model.OrderBy(p => p.Title).Select((p, i) => new {Item = p, Index = i}).Where(p => p.Index % 3 == 2).Select(p => p.Item))
-			{
-				@await Html.PartialAsync("~/Views/CharacterFeature.cshtml", skill)
+				@await Html.PartialAsync("~/Views/CharacterFeature.cshtml", skill, new ViewDataDictionary(ViewData)
+				       {
+					       {"Category", skill.CustomType!= null && skill.CustomType.Count > 0 ? skill.CustomType  : skill.DependsOn},
+					       {"CustomClass", "hidden js-skill-container"}
+				       });
 			}
 		</div>
 	</div>

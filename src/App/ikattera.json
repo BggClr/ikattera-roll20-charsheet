@@ -22,7 +22,7 @@
             "level_bonus": {
                 "1": {
                     "default": {
-                        "hp_base": 20,
+                        "hp_base": 14,
                         "stamina_base": 15
                     }
                 },
@@ -1152,6 +1152,7 @@
             "depends_on": [
                 "attribute_wisdom"
             ],
+            "custom_type": ["custom_magic"],
             "value": 0
         },
         {
@@ -1288,6 +1289,7 @@
             "depends_on": [
                 "attribute_wisdom"
             ],
+            "custom_type": ["custom_magic"],
             "value": 0
         },
         {
@@ -1296,6 +1298,7 @@
             "depends_on": [
                 "attribute_wisdom"
             ],
+            "custom_type": ["custom_magic"],
             "value": 0
         },
         {
@@ -1304,6 +1307,7 @@
             "depends_on": [
                 "attribute_wisdom"
             ],
+            "custom_type": ["custom_magic"],
             "value": 0
         },
         {
@@ -1312,6 +1316,7 @@
             "depends_on": [
                 "attribute_wisdom"
             ],
+            "custom_type": ["custom_magic"],
             "value": 0
         },
         {
@@ -1320,6 +1325,7 @@
             "depends_on": [
                 "attribute_wisdom"
             ],
+            "custom_type": ["custom_magic"],
             "value": 0
         },
         {
@@ -1328,6 +1334,7 @@
             "depends_on": [
                 "attribute_wisdom"
             ],
+            "custom_type": ["custom_magic"],
             "value": 0
         },
         {
@@ -1336,6 +1343,7 @@
             "depends_on": [
                 "attribute_wisdom"
             ],
+            "custom_type": ["custom_magic"],
             "value": 0
         },
         {
@@ -1344,6 +1352,7 @@
             "depends_on": [
                 "attribute_wisdom"
             ],
+            "custom_type": ["custom_magic"],
             "value": 0
         },
         {
@@ -1352,6 +1361,7 @@
             "depends_on": [
                 "attribute_wisdom"
             ],
+            "custom_type": ["custom_magic"],
             "value": 0
         }
     ],
