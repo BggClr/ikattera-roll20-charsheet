@@ -158,7 +158,7 @@
         						[values[p.damageType]]: {
         							dices: [...agg[values[p.damageType]].dices, !!p.dice && `${p.diceCount}${p.dice}`].filter(p => !!p),
         							attributeBonuses: [...agg[values[p.damageType]].attributeBonuses, p.attributeBonus, `${p.attributeBonus}_mod`].filter(p => !!p && !!values[p]),
-        							valueBonuses: [...agg[values[p.damageType]].valueBonuses, p.valueBonus].filter(p => !!p)
+        							valueBonuses: [...agg[values[p.damageType]].valueBonuses, parseInt(p.valueBonus)].filter(p => !!p)
         						}
         					};
         				}
@@ -167,7 +167,7 @@
         					[values[p.damageType]]: {
         						dices: [!!p.dice && `${p.diceCount}${p.dice}`].filter(p => !!p),
         						attributeBonuses: [p.attributeBonus, `${p.attributeBonus}_mod`].filter(p => !!p && !!values[p]),
-        						valueBonuses: [p.valueBonus].filter(p => !!p)
+        						valueBonuses: [parseInt(p.valueBonus)].filter(p => !!p)
         					}
         				};
         			}, {});
@@ -182,7 +182,7 @@
 
                 const roll = `${rollModifier} &{template:attack} {{subtitle=${title}}} {{title=@@{character_name}}} {{weapon=@@{${weaponName}_name}}} {{Попадание=[[${attackRoll}]]}} ${damageRollGroups} {{total=[[0]]}}`;
                 const results = await startRoll(roll);
-                const total = Object.keys(weaponDamageRollData).reduce((agg, key) => agg + results.results[getDamageTypeTitle(key)].result, 0);
+                const total = Object.keys(weaponDamageRollData).reduce((agg, key) => agg + ((results.results[getDamageTypeTitle(key)] && results.results[getDamageTypeTitle(key)].result) || 0), 0);
 
                 finishRoll(results.rollId, {
                     total
