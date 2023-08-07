@@ -22,7 +22,7 @@
             "level_bonus": {
                 "1": {
                     "default": {
-                        "hp_base": 20,
+                        "hp_base": 14,
                         "stamina_base": 15
                     }
                 },

@@ -222,8 +222,8 @@
         	, {});
 	}
 
-	function getFeaturesValues(values, level) {
-		level = level || values.level || 0;
+	function getFeaturesValues(values) {
+		const level = values.level || 0;
     	const origin = CharsheetData.origins.find(r => r.name === values.origin);
     	const race = CharsheetData.races.find(r => r.name === values.race);
     	const characterClass = CharsheetData.classes.find(r => r.name === values.class);
@@ -240,9 +240,9 @@
 			.reduce((agg, key) => ({...agg, [key]: featureChangesByType.reduce((featureValueAgg, features) => featureValueAgg + (features[key] || 0), 0) }), {})
 	}
 
-	function calculateFeatures(values, oldValues, level) {
-		const newFeatures = getFeaturesValues(values, level);
-		const oldFeatures = !!oldValues ? getFeaturesValues(oldValues, level) : {};
+	function calculateFeatures(values, oldValues) {
+		const newFeatures = getFeaturesValues(values);
+		const oldFeatures = !!oldValues ? getFeaturesValues(oldValues) : {};
 		const charsheetFeatures = getCharsheetFeatures();
 
 		const pickedFeatures = 	FeaturesList
@@ -358,8 +358,8 @@
 		});
 	}
 
-	function applyFeatureChanges(values, oldValues, level) {
-		const featuresDelta = calculateFeatures(values, oldValues, level || values.level);
+	function applyFeatureChanges(values, oldValues) {
+		const featuresDelta = calculateFeatures(values, oldValues);
 		const charsheetFeatures = getCharsheetFeatures().map(f => f.name).concat(['hp_base', 'hp_mod', 'hp', 'stamina_base', 'stamina_mod', 'stamina']);
 
 		const featuresFree = FeaturesList
