@@ -42,10 +42,6 @@ button.edit .edit-icon {
     background-color: var(--dark-surface1);
 }
 
-.charactersheet {
-    min-width: 1080px;
-}
-
 .charsheet .sheet-character,
 .charsheet .sheet-attributes,
 .charsheet .sheet-skills,
@@ -90,6 +86,17 @@ button.edit .edit-icon {
 
 .combat-weapon-button-container {
     margin: 0 0.5rem;
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.skills-nav {
+    padding-top: 0;
 }
 
 .sheet-rolltemplate-attack {

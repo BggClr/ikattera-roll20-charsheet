@@ -40,7 +40,9 @@
 <script type="text/worker">
 	const CharsheetData = JSON.parse('@Html.Raw((string)ViewBag.ModelJson)');
 	const FeaturesList = ['attributes', 'skills', 'weapons'];
-	const buttonList = ['character', 'attributes', 'skills', 'weapons', 'combat'];
+	const TabsButtonList = ['character', 'attributes', 'skills', 'weapons', 'combat'];
+	const SkillTabsButtonList = ['attribute_strength', 'attribute_dexterity', 'attribute_body', 'attribute_charisma', 'attribute_wisdom', 'custom_magic'];
+
 	const LevelBonusOptionKeys = [@Html.Raw(string.Join(", ", Model.GetLevelBonusOptions().Select(p => $"'{p.Key}'")))];
 
 	Array.prototype.distinct = function() {
@@ -424,7 +426,7 @@
 		setAttrs({
 			sheetTab: 'character'
 		});
-		getAttrs(['race', 'class', 'level'], function(values) {
+		getAttrs(['race', 'class', 'level', 'skillsTab'], function(values) {
 			if (values.level < 3) {
 				setAttrs({
 					subclass: 'none'
@@ -433,17 +435,34 @@
 			}
 			fillKinds(values.race);
 			fillSubClasses(values.class)
+		    $20('.js-skill-container').addClass('hidden');
+            $20(`.js-skill-container[data-category~="${values.skillsTab}"]`).removeClass('hidden');
 		});
 		init();
 	});
 
-	buttonList.forEach(button => {
+	TabsButtonList.forEach(button => {
     	on(`clicked:${button}`, function() {
     		$20('.nav-link').removeClass('active');
     		$20(`button[name='act_${button}']`).addClass('active');
     		setAttrs({
     			sheetTab: button
     		});
+    	    getAttrs(['skillsTab'], values => {
+                $20(`button[name='act_${values.skillsTab}']`).addClass('active');
+            });
+    	});
+    });
+
+	SkillTabsButtonList.forEach(button => {
+    	on(`clicked:${button}`, function() {
+    		$20('.nav-link').removeClass('active');
+    		$20(`button[name='act_${button}']`).addClass('active');
+    		setAttrs({
+    			skillsTab: button
+    		});
+    		$20('.js-skill-container').addClass('hidden');
+    		$20(`.js-skill-container[data-category~="${button}"]`).removeClass('hidden');
     	});
     });
 
