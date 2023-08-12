@@ -40,7 +40,7 @@
 <script type="text/worker">
 	const CharsheetData = JSON.parse('@Html.Raw((string)ViewBag.ModelJson)');
 	const FeaturesList = ['attributes', 'skills', 'weapons'];
-	const TabsButtonList = ['character', 'attributes', 'skills', 'weapons', 'combat'];
+	const TabsButtonList = ['character', 'attributes', 'skills', 'weapons', 'combat', 'baggage', 'notes'];
 	const SkillTabsButtonList = ['attribute_attention', 'attribute_strength', 'attribute_dexterity', 'attribute_body', 'attribute_charisma', 'attribute_wisdom', 'custom_magic'];
 
 	const LevelBonusOptionKeys = [@Html.Raw(string.Join(", ", Model.GetLevelBonusOptions().Select(p => $"'{p.Key}'")))];
