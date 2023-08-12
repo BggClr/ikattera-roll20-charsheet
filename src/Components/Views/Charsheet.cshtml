@@ -14,3 +14,5 @@
 @await Html.PartialAsync("~/Views/Notes.cshtml", Model)
 
 @await Html.PartialAsync("~/Views/Scripts.cshtml", Model)
+
+<button type="roll" class="tokenaction hidden" name="roll_⚡" value="&{template:check} {{title=@@{character_name}}} {{subtitle=Инициатива - Ловкость}} {{Roll=[[2d10 + @@{attribute_dexterity} + @@{attribute_dexterity_mod} + @@{global_check_mod} &{tracker}]]}}"></button>
