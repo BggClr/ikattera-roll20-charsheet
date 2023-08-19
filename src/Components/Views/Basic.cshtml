@@ -83,7 +83,7 @@
 			<div class="input-group mb-2">
 				<span class="input-group-text">Бонус к урону</span>
 				<select name="attr_global_damage_type_mod" class="form-select">
-					<option value="" selected disabled>-</option>
+					<option value="" selected>-</option>
 					@foreach (var damageType in Model.DamageTypes)
 					{
 						<option value="@damageType.Name">@damageType.Title</option>

@@ -23,7 +23,7 @@
 		<div class="input-group mb-2">
 			<span class="input-group-text">Тип</span>
 			<select type="text" name="attr_combatweapon@(Model.Index)_type" class="form-select">
-				<option value="" selected disabled>Выберите тип вооружения</option>
+				<option value="" selected>-</option>
                 @foreach (var characterClass in Model.Manifest.Weapons.OrderBy(p => p.Title))
                 {
                     <option value="@characterClass.Name">@characterClass.Title</option>
@@ -33,7 +33,7 @@
 		<div class="input-group mb-2">
 			<span class="input-group-text">Бонус к попаданию</span>
 			<select name="attr_combatweapon@(Model.Index)_attack_attribute_bonus" class="form-select">
-				<option value="" selected disabled>-</option>
+				<option value="" selected>-</option>
 				@foreach (var feature in Model.Manifest.Attributes.OrderBy(p => p.Title))
 				{
 					<option value="@feature.Name">@feature.Title</option>
@@ -47,7 +47,7 @@
 					<span class="input-group-text">Урон</span>
 					<input type="number" name="attr_dice_count" class="form-control" title="Количество кубов" value="1"/>
 					<select name="attr_dice_type" class="form-select">
-						<option value="" selected disabled>-</option>
+						<option value="" selected>-</option>
 						<option value="d4">d4</option>
 						<option value="d6">d6</option>
 						<option value="d8">d8</option>
@@ -56,14 +56,14 @@
 						<option value="d20">d20</option>
 					</select>
 					<select name="attr_damage_type" class="form-select">
-						<option value="" selected disabled>-</option>
+						<option value="" selected>-</option>
 						@foreach (var damageType in Model.Manifest.DamageTypes)
 						{
 							<option value="@damageType.Name">@damageType.Title</option>
 						}
 					</select>
 					<select name="attr_damage_attribute_bonus" class="form-select">
-						<option value="">-</option>
+						<option value="" selected>-</option>
 						@foreach (var feature in Model.Manifest.Attributes.OrderBy(p => p.Title))
 						{
 							<option value="@feature.Name">@feature.Title</option>
