@@ -1,42 +1,6 @@
 ﻿@using Components.Extensions
 @model Models.CharacterManifest
 
-<rolltemplate class="sheet-rolltemplate-attack">
-	<div class="sheet-container">
-	  <div class="sheet-header">
-		{{#title}}<div class="sheet-title">{{title}}</div>{{/title}}
-		{{#subtitle}}<div class="sheet-subtitle">{{subtitle}}</div>{{/subtitle}}
-	  </div>
-	  <div class="sheet-content">
-		{{#allprops() total desc title subtitle}}
-			<div class="sheet-key">{{key}}</div>
-			<div class="sheet-value">{{value}}</div>
-		{{/allprops() total desc title subtitle}}
-		{{#computed::total}}
-			<div class="sheet-key">Итого</div>
-			<div class="sheet-value">{{computed::total}}</div>
-		{{/computed::total}}
-		{{#desc}}<div class="sheet-desc">{{desc}}</div>{{/desc}}
-	  </div>
-	</div>
-</rolltemplate>
-
-<rolltemplate class="sheet-rolltemplate-check">
-	<div class="sheet-container">
-	  <div class="sheet-header">
-		{{#title}}<div class="sheet-title">{{title}}</div>{{/title}}
-		{{#subtitle}}<div class="sheet-subtitle">{{subtitle}}</div>{{/subtitle}}
-	  </div>
-	  <div class="sheet-content">
-		{{#allprops() desc title subtitle}}
-			<div class="sheet-key">{{key}}</div>
-			<div class="sheet-value">{{value}}</div>
-		{{/allprops() desc title subtitle}}
-		{{#desc}}<div class="sheet-desc">{{desc}}</div>{{/desc}}
-	  </div>
-	</div>
-</rolltemplate>
-
 <script type="text/worker">
 	const CharsheetData = JSON.parse('@Html.Raw((string)ViewBag.ModelJson)');
 	const FeaturesList = ['attributes', 'skills', 'weapons'];
@@ -288,6 +252,7 @@
 
 	function applyLevelBonusVisibility() {
 		$20('.js-level-option').addClass('hidden');
+		$20('.js-level-options').addClass('hidden');
 		getAttrs(['race', 'kind', 'class', 'subclass', 'level'], values => {
 			[...Array(parseInt(values.level)).keys()]
 				.map(l => l + 1)
@@ -301,8 +266,10 @@
 					`level_option_${values.subclass}_${l}`
 				], [])
 				.forEach(key => {
-					$20(`.js-level-option[data-name="${key}"]`)
-                        .removeClass('hidden');
+					if (LevelBonusOptionKeys.indexOf(key) >= 0) {
+						$20(`.js-level-option[data-name="${key}"]`).removeClass('hidden');
+						$20('.js-level-options').removeClass('hidden');
+                    }
 				});
 		});
 	}

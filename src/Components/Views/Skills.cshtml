@@ -27,14 +27,17 @@
     </ul>
 	<div class="row">
 		<div class="col-6">
-			@foreach (var skill in Model.OrderBy(p => p.Title))
-			{
-				@await Html.PartialAsync("~/Views/CharacterFeature.cshtml", skill, new ViewDataDictionary(ViewData)
-				       {
-					       {"Category", skill.CustomType!= null && skill.CustomType.Count > 0 ? skill.CustomType  : skill.DependsOn},
-					       {"CustomClass", "hidden js-skill-container"}
-				       });
-			}
+			<div class="fancy-border">
+				@foreach (var skill in Model.OrderBy(p => p.Title))
+				{
+					@await Html.PartialAsync("~/Views/CharacterFeature.cshtml", skill, new ViewDataDictionary(ViewData)
+					       {
+						       { "Category", skill.CustomType != null && skill.CustomType.Count > 0 ? skill.CustomType : skill.DependsOn },
+						       { "CustomClass", "hidden js-skill-container" }
+					       })
+					;
+				}
+			</div>
 		</div>
 	</div>
 </div>

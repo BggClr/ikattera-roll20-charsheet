@@ -3,10 +3,12 @@
 <div class="sheet-attributes">
 	<div class="row">
 		<div class="col-6">
-			@foreach (var attr in Model)
-			{
-				@await Html.PartialAsync("~/Views/CharacterFeature.cshtml", attr)
-			}
+			<div class="fancy-border">
+				@foreach (var attr in Model)
+				{
+					@await Html.PartialAsync("~/Views/CharacterFeature.cshtml", attr)
+				}
+			</div>
 		</div>
 	</div>
 </div>
