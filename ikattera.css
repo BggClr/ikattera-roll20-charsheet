@@ -156,26 +156,6 @@ button.edit .edit-icon {
     font-size: 12px;
 }
 
-.charsheet .sheet-character,
-.charsheet .sheet-attributes,
-.charsheet .sheet-skills,
-.charsheet .sheet-weapons,
-.charsheet .sheet-notes,
-.charsheet .sheet-baggage,
-.charsheet .sheet-combat {
-    display: none;
-}
-
-.charsheet .sheet-tabstoggle[value="character"] ~ div.sheet-character,
-.charsheet .sheet-tabstoggle[value="attributes"] ~ div.sheet-attributes,
-.charsheet .sheet-tabstoggle[value="skills"] ~ div.sheet-skills,
-.charsheet .sheet-tabstoggle[value="weapons"] ~ div.sheet-weapons,
-.charsheet .sheet-tabstoggle[value="baggage"] ~ div.sheet-baggage,
-.charsheet .sheet-tabstoggle[value="notes"] ~ div.sheet-notes,
-.charsheet .sheet-tabstoggle[value="combat"] ~ div.sheet-combat {
-    display: block;
-}
-
 .nav-pills {
     font-size: 14px;
 }

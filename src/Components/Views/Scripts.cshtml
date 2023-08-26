@@ -9,6 +9,9 @@
 
 	const LevelBonusOptionKeys = [@Html.Raw(string.Join(", ", Model.GetLevelBonusOptions().Select(p => $"'{p.Key}'")))];
 
+	let currentTab = 'character';
+	let currentSkillTab = 'attribute_attention';
+
 	Array.prototype.distinct = function() {
 		return this.filter((item, pos) => this.indexOf(item) === pos)
     };
@@ -250,6 +253,11 @@
 		});
 	}
 
+	function applyTabVisibility(tabsType, name) {
+    	$20(`.${tabsType}`).addClass('hidden');
+    	$20(`.${name}`).removeClass('hidden');
+    }
+
 	function applyLevelBonusVisibility() {
 		$20('.js-level-option').addClass('hidden');
 		$20('.js-level-options').addClass('hidden');
@@ -275,6 +283,7 @@
 	}
 
 	function init() {
+		applyTabVisibility('sheet-tab', `sheet-${currentTab}`);
 		getAttrs(getValuesListForCalculate(['hp', 'stamina']), values => {
         	var featuresDelta = calculateFeatures(values, null, values.level || CharsheetData.level);
 
@@ -390,9 +399,6 @@
 	}
 
 	on('sheet:opened', async function () {
-		setAttrs({
-			sheetTab: 'character'
-		});
 		getAttrs(['race', 'class', 'level', 'skillsTab'], function(values) {
 			if (values.level < 3) {
 				setAttrs({
@@ -403,7 +409,7 @@
 			fillKinds(values.race);
 			fillSubClasses(values.class)
 		    $20('.js-skill-container').addClass('hidden');
-            $20(`.js-skill-container[data-category~="${values.skillsTab}"]`).removeClass('hidden');
+            $20(`.js-skill-container[data-category~="${currentSkillTab}"]`).removeClass('hidden');
 		});
 		init();
 	});
@@ -412,12 +418,9 @@
     	on(`clicked:${button}`, function() {
     		$20('.nav-link').removeClass('active');
     		$20(`button[name='act_${button}']`).addClass('active');
-    		setAttrs({
-    			sheetTab: button
-    		});
-    	    getAttrs(['skillsTab'], values => {
-                $20(`button[name='act_${values.skillsTab}']`).addClass('active');
-            });
+    		currentTab = button;
+    		$20(`button[name='act_${currentSkillTab}']`).addClass('active');
+    		applyTabVisibility('sheet-tab', `sheet-${currentTab}`);
     	});
     });
 
@@ -425,11 +428,9 @@
     	on(`clicked:${button}`, function() {
     		$20('.nav-link').removeClass('active');
     		$20(`button[name='act_${button}']`).addClass('active');
-    		setAttrs({
-    			skillsTab: button
-    		});
+    		currentSkillTab = button;
     		$20('.js-skill-container').addClass('hidden');
-    		$20(`.js-skill-container[data-category~="${button}"]`).removeClass('hidden');
+    		$20(`.js-skill-container[data-category~="${currentSkillTab}"]`).removeClass('hidden');
     	});
     });
 
