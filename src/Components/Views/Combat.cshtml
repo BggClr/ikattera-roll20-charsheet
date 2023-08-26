@@ -7,7 +7,7 @@
 	<div class="row">
 		<div class="col-6">
 			<div class="fancy-border">
-				@foreach (var combatWeapon in Enumerable.Range(1, CombatWeaponsCount).Select(p => new CombatWeapon { Index = p, Manifest = Model }))
+				@foreach (var combatWeapon in Enumerable.Range(1, CombatWeaponsCount).Select(p => new CombatWeapon { Index = p, Manifest = Model, Last = p == CombatWeaponsCount - 1}))
 				{
 					@await Html.PartialAsync("~/Views/CombatWeapon.cshtml", combatWeapon)
 				}

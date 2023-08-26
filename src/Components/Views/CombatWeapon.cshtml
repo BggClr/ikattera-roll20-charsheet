@@ -1,6 +1,6 @@
 @model Components.ViewModels.CombatWeapon
 
-<div class="combat-weapon-container border rounded-3 js-combat-weapon-@(Model.Index) ">
+<div class="combat-weapon-container border rounded-3 js-combat-weapon-@(Model.Index) @(Model.Last ? "last" : "")">
 	<div class="combat-weapon-header">
 		<span name="attr_combatweapon@(Model.Index)_name" class="combat-weapon-header-component"></span>
 		<span class="combat-weapon-header-component">

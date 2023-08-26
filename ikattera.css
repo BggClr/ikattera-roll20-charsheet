@@ -188,6 +188,10 @@ button.edit .edit-icon {
     padding: 0;
     margin-bottom: 16px;
 }
+.combat-weapon-container.last {
+    padding: 0;
+    margin-bottom: 3px;
+}
 
 .combat-weapon-header {
     display: flex;
