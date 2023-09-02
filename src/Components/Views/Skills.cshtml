@@ -4,31 +4,31 @@
 	<input type="hidden" class="sheet-tabstoggle" name="attr_skillsTab"  value="strength"  />
     <ul class="nav nav-tabs skills-nav mb-3">
 	    <li class="nav-item">
-		    <button type="action" name="act_attribute_attention" class="nav-link active">Внимание</button>
+		    <button type="action" name="act_attribute_attention" class="nav-link active" data-i18n="attribute_attention">Attention</button>
 	    </li>
 	    <li class="nav-item">
-    		<button type="action" name="act_attribute_strength" class="nav-link active">Сила</button>
+    		<button type="action" name="act_attribute_strength" class="nav-link active" data-i18n="attribute_strength">Strength</button>
     	</li>
     	<li class="nav-item">
-    		<button type="action" name="act_attribute_dexterity" class="nav-link">Ловкость</button>
+    		<button type="action" name="act_attribute_dexterity" class="nav-link" data-i18n="attribute_dexterity">Dexterity</button>
     	</li>
 	    <li class="nav-item">
-		    <button type="action" name="act_attribute_body" class="nav-link">Телосложение</button>
+		    <button type="action" name="act_attribute_body" class="nav-link" data-i18n="attribute_body">Body</button>
 	    </li>
 	    <li class="nav-item">
-    		<button type="action" name="act_attribute_charisma" class="nav-link">Харизма</button>
+    		<button type="action" name="act_attribute_charisma" class="nav-link" data-i18n="attribute_charisma">Charisma</button>
     	</li>
 	    <li class="nav-item">
-		    <button type="action" name="act_attribute_wisdom" class="nav-link">Мудрость</button>
+		    <button type="action" name="act_attribute_wisdom" class="nav-link" data-i18n="attribute_wisdom">Wisdom</button>
 	    </li>
 	    <li class="nav-item">
-    		<button type="action" name="act_custom_magic" class="nav-link">Магия</button>
+    		<button type="action" name="act_custom_magic" class="nav-link" data-i18n="custom_magic">Magic</button>
     	</li>
     </ul>
 	<div class="row">
 		<div class="col-6">
 			<div class="fancy-border">
-				@foreach (var skill in Model.OrderBy(p => p.Title))
+				@foreach (var skill in Model)
 				{
 					@await Html.PartialAsync("~/Views/CharacterFeature.cshtml", skill, new ViewDataDictionary(ViewData)
 					       {

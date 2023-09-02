@@ -4,9 +4,9 @@
 }
 
 <div class="input-group mb-2 @ViewBag.CustomClass" data-category="@string.Join(" ", category.Where(p => !string.IsNullOrEmpty(p)))">
-	<span class="input-group-text">@Model.Title</span>
-	<input type="number" name="attr_@Model.Name" class="form-control" id="form_@Model.Name" title="Базовое значение"/>
-	<input type="number" name="attr_@(Model.Name)_mod" class="form-control" id="form_@(Model.Name)_mod" title="Модификатор"/>
+	<span class="input-group-text" data-i18n="@Model.Name">@Model.Name</span>
+	<input type="number" name="attr_@Model.Name" class="form-control" id="form_@Model.Name"/>
+	<input type="number" name="attr_@(Model.Name)_mod" class="form-control" id="form_@(Model.Name)_mod">
 	<button type="button" class='js-roll roll btn btn-outline-primary' data-name="@Model.Name" data-type="@Model.FeatureType"><i class="btn-icon">&#xf6cf</i></button>
 	<button type="button" class='js-roll-adv roll btn btn-outline-success' data-name="@Model.Name" data-type="@Model.FeatureType"><i class="btn-icon">&#xf6cf</i></button>
 	<button type="button" class='js-roll-dis roll btn btn-outline-danger' data-name="@Model.Name" data-type="@Model.FeatureType"><i class="btn-icon">&#xf6cf</i></button>

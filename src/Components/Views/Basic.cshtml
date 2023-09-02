@@ -6,65 +6,55 @@
 		<div class="col-6">
 			<div class="fancy-border">
 				<div class="input-group mb-2">
-					<span class="input-group-text">Имя</span>
+					<span class="input-group-text" data-i18n="name">Name</span>
 					<input type="text" name="attr_character_name" class="form-control" id="form_character_name"/>
 				</div>
 				<div class="input-group mb-2">
-                	<span class="input-group-text">Уровень</span>
+                	<span class="input-group-text" data-i18n="level">Level</span>
                 	<input type="number" name="attr_level" class="form-control" id="form_level"/>
                 </div>
                 <div class="input-group mb-2">
-                	<span class="input-group-text">Раса</span>
-                	<select name="attr_race" id="form_race" class="form-select" aria-label="Раса">
-                		<option value="" selected disabled>Выберите расу</option>
-                		@foreach (var race in Model.Races.OrderBy(p => p.Title))
-                		{
-                			<option value="@race.Name">@race.Title</option>
-                		}
-                	</select>
+                	<span class="input-group-text" data-i18n="race">Race</span>
+	                <select name="attr_race" id="form_race" class="form-select" aria-label="race"></select>
                 </div>
                 <div class="input-group mb-2 js-group-kind">
-                	<span class="input-group-text">Вид</span>
-                	<select name="attr_kind" id="form_kind" class="form-select" aria-label="Вид">
-                		<option value="" selected disabled>Выберите вид</option>
-                	</select>
+                	<span class="input-group-text" data-i18n="kind">Kind</span>
+	                <select name="attr_kind" id="form_kind" class="form-select" aria-label="Kind"></select>
+
                 </div>
                 <div class="input-group mb-2">
-                	<span class="input-group-text">Класс</span>
-                	<select name="attr_class" id="form_class" class="form-select" aria-label="Класс">
-                		<option value="" selected disabled>Выберите класс</option>
-                		@foreach (var characterClass in Model.Classes.OrderBy(p => p.Title))
-                		{
-                			<option value="@characterClass.Name">@characterClass.Title</option>
-                		}
-                	</select>
+                	<span class="input-group-text" data-i18n="class">Class</span>
+	                <select name="attr_class" id="form_class" class="form-select" aria-label="Class"></select>
                 </div>
                 <div class="input-group mb-2 js-group-subclass">
-                	<span class="input-group-text">Подкласс</span>
-                	<select name="attr_subclass" id="form_subclass" class="form-select" aria-label="Подкласс"/>
+                	<span class="input-group-text" data-i18n="subclass">Subclass</span>
+	                <select name="attr_subclass" id="form_subclass" class="form-select" aria-label="SubClass"></select>
                 </div>
                 <div class="input-group mb-2">
-                	<span class="input-group-text">Прошлое</span>
-                	<select name="attr_origin" id="form_class" class="form-select" aria-label="Прошлое">
-                		<option value="" selected disabled>Выберите биографию</option>
-                		@foreach (var origin in Model.Origins.OrderBy(p => p.Title))
-                		{
-                			<option value="@origin.Name">@origin.Title</option>
-                		}
-                	</select>
+                	<span class="input-group-text" data-i18n="origin">Origin</span>
+	                <select name="attr_origin" id="form_origin" class="form-select" aria-label="Origin"></select>
                 </div>
 			</div>
 			<div class="fancy-border js-level-options hidden">
 				@foreach (var bonusOption in Model.GetLevelBonusOptions())
                 {
                 	<div class="input-group mb-2 js-level-option hidden" data-name="@bonusOption.Key">
-                		<span class="input-group-text">@bonusOption.Description</span>
-                		<select name="attr_@bonusOption.Key" class="form-select">
-                			<option value="">-</option>
-                			@foreach (var option in bonusOption.Options.Select((p, i) => new { Title = p, Value = i }))
-                			{
-                				<option value="@option.Value">@option.Title</option>
-                			}
+		                <span class="input-group-text">
+			                @foreach (var label in bonusOption.Label)
+			                {
+				                if (label.IsTranslated)
+				                {
+					                <text>@Html.Raw(label.Divider)</text>
+					                <span data-i18n="@label.Value">@label.Value</span>
+				                }
+				                else
+				                {
+					                <text>@Html.Raw(label.Divider)</text>
+					                <text>@label.Value</text>
+				                }
+			                }
+		                </span>
+                		<select name="attr_@bonusOption.Key" class="form-select" id="form_@bonusOption.Key">
                 		</select>
                 	</div>
                 }
@@ -73,35 +63,30 @@
 		<div class="col-6">
 			<div class="fancy-border">
 				<div class="input-group mb-2">
-                	<span class="input-group-text">Бонус здоровья</span>
-                	<input type="number" name="attr_hp_mod" class="form-control" id="form_level" value="0"/>
+                	<span class="input-group-text" data-i18n="bonus_hp">Bonus HP</span>
+                	<input type="number" name="attr_hp_mod" class="form-control" value="0"/>
                 </div>
                 <div class="input-group mb-2">
-                	<span class="input-group-text">Бонус усталости</span>
-                	<input type="number" name="attr_stamina_mod" class="form-control" id="form_level" value="0"/>
+                	<span class="input-group-text" data-i18n="bonus_stamina">Bonus stamina</span>
+                	<input type="number" name="attr_stamina_mod" class="form-control" value="0"/>
                 </div>
 				<div class="input-group mb-2">
-					<span class="input-group-text">Бонус к проверкам</span>
-					<input type="number" name="attr_global_check_mod" class="form-control" id="form_level" value="0"/>
+					<span class="input-group-text" data-i18n="bonus_check">Bonus checks</span>
+					<input type="number" name="attr_global_check_mod" class="form-control" value="0"/>
 				</div>
 				<div class="input-group mb-2">
-                	<span class="input-group-text">Бонус к инициативе</span>
-                	<input type="number" name="attr_global_initiative_mod" class="form-control" id="form_level" value="0"/>
+                	<span class="input-group-text" data-i18n="bonus_initiative">Bonus initiative</span>
+                	<input type="number" name="attr_global_initiative_mod" class="form-control" value="0"/>
                 </div>
                 <div class="input-group mb-2">
-                	<span class="input-group-text">Бонус к атаке</span>
-                	<input type="number" name="attr_global_attack_mod" class="form-control" id="form_level" value="0"/>
+                	<span class="input-group-text" data-i18n="bonus_attack">Bonus attack</span>
+                	<input type="number" name="attr_global_attack_mod" class="form-control" value="0"/>
                 </div>
                 <div class="input-group mb-2">
-                	<span class="input-group-text">Бонус к урону</span>
-                	<select name="attr_global_damage_type_mod" class="form-select">
-                		<option value="" selected>-</option>
-                		@foreach (var damageType in Model.DamageTypes)
-                		{
-                			<option value="@damageType.Name">@damageType.Title</option>
-                		}
+                	<span class="input-group-text" data-i18n="bonus_damage">Bonus damage</span>
+                	<select name="attr_global_damage_type_mod" id="form_global_damage_mod" class="form-select">
                 	</select>
-                	<input type="number" name="attr_global_damage_mod" class="form-control" id="form_level"/>
+                	<input type="number" name="attr_global_damage_mod" class="form-control"/>
                 </div>
 			</div>
 		</div>

@@ -16,6 +16,10 @@
 		return this.filter((item, pos) => this.indexOf(item) === pos)
     };
 
+	function translate(key) {
+		return getTranslationByKey(key) || key;
+	}
+
 	function findFeature(featureName) {
 		return FeaturesList
         	.reduce((agg, key) => [...agg, ...CharsheetData[key]], [])
@@ -83,7 +87,7 @@
 		return 0;
 	}
 
-	async function rollDice(dice, featureName, altKey, title) {
+	async function rollDice(dice, featureName, title, altKey) {
 		getAttrs(getValuesListForCalculate(['global_check_mod']), async values => {
 			const feature = findFeature(featureName);
 			let modifiers = [
@@ -101,7 +105,7 @@
 			const rollResultModifiers = modifiers.filter(key => !!values[key]).map(p => `@@{${p}}`).join(' + ');
 			const rollModifier = !!altKey ? '/w gm': '';
 
-			const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${feature.title} ${title}}} {{result=[[${dice} + ${rollResultModifiers}]]}} {{modifier=[[0]]}}`;
+			const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${translate(feature.name)} ${translate(title) || ''}}} {{result=[[${dice} + ${rollResultModifiers}]]}} {{modifier=[[0]]}}`;
 			const results = await startRoll(roll);
 			finishRoll(results.rollId, {
 				modifier: getRollModifierValue(results.results['result'])
@@ -117,7 +121,7 @@
 
     		const rollModifier = !!altKey ? '/w gm': '';
 
-    		const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${title}}} {{result=[[${rollString}]]}} {{modifier=[[0]]}}`;
+    		const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${translate(title) || ''}}} {{result=[[${rollString}]]}} {{modifier=[[0]]}}`;
     		const results = await startRoll(roll);
     		finishRoll(results.rollId);
     		const value = results.results['result'].result;
@@ -126,11 +130,6 @@
     			modifier: 0
     		});
     	});
-    }
-
-	function getDamageTypeTitle(name) {
-    	const damageType =  CharsheetData.damage_types.filter(p => p.name == name)[0];
-    	return (damageType && damageType.title) || name;
     }
 
     function getDamageRoll(weaponDamageRollDataItem) {
@@ -432,31 +431,86 @@
 		applyLevelBonusVisibility();
 	}
 
+	function sortTranslated(items, prefix) {
+		return items.sort((a, b) => (translate(`${prefix}_${a.name}`) || '').localeCompare(translate(`${prefix}_${b.name}`) || ''));
+	}
+
+	function populateList(items, name, prefix, defaultOptionDisabled) {
+		populateListOptions({
+			elemSelector: name,
+			optionsArray: [
+				{label: translate(`${prefix}_choose`), value: 'none', disabled: defaultOptionDisabled, selected: true},
+				...sortTranslated(items, prefix).map(r => ({label: translate(`${prefix}_${r.name}`), value: r.name}))
+			]
+		});
+	}
+
+	function getLevelBonusOptions(levelBonus, optionName) {
+		return Object.keys(levelBonus)
+    		.filter(key => !!levelBonus[key].options && levelBonus[key].options.length > 0)
+    		.map(key => ({
+    			key: !!optionName ? `form_level_option_${optionName}_${key}` : `form_level_option_${key}`,
+    			options: levelBonus[key].options
+    	}));
+	}
+
+	function getOptionLabel(option) {
+		return Object.keys(option)
+			.map(key => `${translate(key)}: ${option[key]}`)
+			.join(', ')
+	}
+
+	function fillLevelOptions() {
+		const rootLevelBonusOptions = getLevelBonusOptions(CharsheetData.level_bonus);
+		const dedicatedLevelBonusOptions = CharsheetData.races
+			.concat(CharsheetData.classes)
+			.concat(CharsheetData.races.reduce((agg, race) => [...agg, ...(race.kinds || [])], []))
+			.concat(CharsheetData.classes.reduce((agg, c) => [...agg, ...(c.subclasses || [])], []))
+			.filter(p => !!p.level_bonus)
+			.reduce((agg, p) => [...agg, ...getLevelBonusOptions(p.level_bonus, p.name)], []);
+		const levelBonusOptions = [...rootLevelBonusOptions, ...dedicatedLevelBonusOptions];
+
+		levelBonusOptions.forEach(p => {
+			populateListOptions({
+				elemSelector: `#${p.key}`,
+				optionsArray: [
+					{label: '-', value: 'none', disabled: false, selected: true},
+					...p.options.map((o, i) => ({label: getOptionLabel(o), value: `${i}`}))
+				]
+			});
+		});
+	}
+
+	function fillRaces() {
+		populateList(CharsheetData.races, '#form_race', 'race', true);
+	}
+
+	function fillClasses() {
+		populateList(CharsheetData.classes, '#form_class', 'class', true);
+    }
+
+    function fillOrigins() {
+		populateList(CharsheetData.origins, '#form_origin', 'origin', true);
+    }
+
+    function fillGlobalDamageMod() {
+		populateList(CharsheetData.damage_types, '#form_global_damage_mod', 'damage_type', false);
+    }
+
 	function fillKinds(raceName) {
 		const race = CharsheetData.races.filter(p => p.name == raceName)[0];
 		if (race && race.kinds) {
-			populateListOptions({
-                elemSelector: '#form_kind',
-                optionsArray: [
-                    {label: 'Выберите вид', value: 'none', disabled: true, selected: true},
-                    ...race.kinds.sort((a, b) => a.title.localeCompare(b.title)).map(k => ({label: k.title, value: k.name}))
-                ]
-            });
+			populateList(race.kinds, '#form_kind', 'kind', true);
 			$20('.js-group-kind').removeClass('hidden');
 		} else {
         	$20('.js-group-kind').addClass('hidden');
 		}
 	}
+
 	function fillSubClasses(className) {
 		const characterClass = CharsheetData.classes.filter(p => p.name == className)[0];
 		if (characterClass && characterClass.subclasses) {
-			populateListOptions({
-                elemSelector: '#form_subclass',
-                optionsArray: [
-                    {label: 'Выберите подкласс', value: 'none', disabled: true, selected: true},
-                    ...characterClass.subclasses.sort((a, b) => a.title.localeCompare(b.title)).map(k => ({label: k.title, value: k.name}))
-                ]
-            });
+			populateList(characterClass.subclasses, '#form_subclass', 'subclass', true);
 			$20('.js-group-subclass').removeClass('hidden');
 		} else {
         	$20('.js-group-subclass').addClass('hidden');
@@ -471,8 +525,13 @@
 				});
 				$20('.js-group-subclass').addClass('disabled');
 			}
+			fillRaces();
+			fillClasses();
+			fillOrigins();
 			fillKinds(values.race);
-			fillSubClasses(values.class)
+			fillSubClasses(values.class);
+			fillLevelOptions();
+			fillGlobalDamageMod();
 		    $20('.js-skill-container').addClass('hidden');
             $20(`.js-skill-container[data-category~="${currentSkillTab}"]`).removeClass('hidden');
 		});
@@ -675,14 +734,15 @@
 	});
 
 	$20('button.js-roll').on('click', async e => {
-		await rollDice('2d10', e.htmlAttributes['data-name'], e.altKey, '');
+		await rollDice('2d10', e.htmlAttributes['data-name'], '', e.altKey);
 	});
 	$20('button.js-roll-adv').on('click', async e => {
-		await rollDice('3d10kh2', e.htmlAttributes['data-name'], e.altKey, 'с преимуществом');
+		await rollDice('3d10kh2', e.htmlAttributes['data-name'], 'roll_adv', e.altKey);
 	});
 	$20('button.js-roll-dis').on('click', async e => {
-		await rollDice('3d10kl2', e.htmlAttributes['data-name'], e.altKey, 'с помехой');
+		await rollDice('3d10kl2', e.htmlAttributes['data-name'], 'roll_disadv', e.altKey);
 	});
+
 	$20('button.js-roll-potion').on('click', async e => {
 		await rollPotionDice(e.htmlAttributes['data-dice'], e.htmlAttributes['data-name'], e.htmlAttributes['data-title'], e.altKey);
 	});
