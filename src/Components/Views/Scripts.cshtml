@@ -432,32 +432,76 @@
 		applyLevelBonusVisibility();
 	}
 
-	function sortTranslated(items) {
-		return items.sort((a, b) => (getTranslationByKey(`race_${a.name}`) || '').localeCompare(getTranslationByKey(`race_${b.name}`) || ''));
+	function sortTranslated(items, prefix) {
+		return items.sort((a, b) => (getTranslationByKey(`${prefix}_${a.name}`) || '').localeCompare(getTranslationByKey(`${prefix}_${b.name}`) || ''));
 	}
 
-	function populateList(items, name, prefix) {
+	function populateList(items, name, prefix, defaultOptionDisabled) {
 		populateListOptions({
 			elemSelector: name,
 			optionsArray: [
-				{label: getTranslationByKey(`${prefix}_choose`), value: 'none', disabled: true, selected: true},
-				...sortTranslated(items).map(r => ({label: getTranslationByKey(`${prefix}_${r.name}`), value: r.name}))
+				{label: getTranslationByKey(`${prefix}_choose`), value: 'none', disabled: defaultOptionDisabled, selected: true},
+				...sortTranslated(items, prefix).map(r => ({label: getTranslationByKey(`${prefix}_${r.name}`), value: r.name}))
 			]
 		});
 	}
 
+	function getLevelBonusOptions(levelBonus, optionName) {
+		return Object.keys(levelBonus)
+    		.filter(key => !!levelBonus[key].options && levelBonus[key].options.length > 0)
+    		.map(key => ({
+    			key: !!optionName ? `form_level_option_${optionName}_${key}` : `form_level_option_${key}`,
+    			options: levelBonus[key].options
+    	}));
+	}
+
+	function getOptionLabel(option) {
+		return Object.keys(option)
+			.map(key => `${getTranslationByKey(key)}: ${option[key]}`)
+			.join(', ')
+	}
+
+	function fillLevelOptions() {
+		const rootLevelBonusOptions = getLevelBonusOptions(CharsheetData.level_bonus);
+		const dedicatedLevelBonusOptions = CharsheetData.races
+			.concat(CharsheetData.classes)
+			.concat(CharsheetData.races.reduce((agg, race) => [...agg, ...(race.kinds || [])], []))
+			.concat(CharsheetData.classes.reduce((agg, c) => [...agg, ...(c.subclasses || [])], []))
+			.filter(p => !!p.level_bonus)
+			.reduce((agg, p) => [...agg, ...getLevelBonusOptions(p.level_bonus, p.name)], []);
+		const levelBonusOptions = [...rootLevelBonusOptions, ...dedicatedLevelBonusOptions];
+
+		levelBonusOptions.forEach(p => {
+			populateListOptions({
+				elemSelector: `#${p.key}`,
+				optionsArray: [
+					{label: '-', value: 'none', disabled: false, selected: true},
+					...p.options.map((o, i) => ({label: getOptionLabel(o), value: `${i}`}))
+				]
+			});
+		});
+	}
+
 	function fillRaces() {
-		populateList(CharsheetData.races, '#form_race', 'race');
+		populateList(CharsheetData.races, '#form_race', 'race', true);
 	}
 
 	function fillClasses() {
-		populateList(CharsheetData.classes, '#form_class', 'class');
+		populateList(CharsheetData.classes, '#form_class', 'class', true);
+    }
+
+    function fillOrigins() {
+		populateList(CharsheetData.origins, '#form_origin', 'origin', true);
+    }
+
+    function fillGlobalDamageMod() {
+		populateList(CharsheetData.damage_types, '#form_global_damage_mod', 'damage_type', false);
     }
 
 	function fillKinds(raceName) {
 		const race = CharsheetData.races.filter(p => p.name == raceName)[0];
 		if (race && race.kinds) {
-			populateList(race.kinds, '#form_kind', 'kind');
+			populateList(race.kinds, '#form_kind', 'kind', true);
 			$20('.js-group-kind').removeClass('hidden');
 		} else {
         	$20('.js-group-kind').addClass('hidden');
@@ -467,7 +511,7 @@
 	function fillSubClasses(className) {
 		const characterClass = CharsheetData.classes.filter(p => p.name == className)[0];
 		if (characterClass && characterClass.subclasses) {
-			populateList(characterClass.subclasses, '#form_subclass', 'subclass');
+			populateList(characterClass.subclasses, '#form_subclass', 'subclass', true);
 			$20('.js-group-subclass').removeClass('hidden');
 		} else {
         	$20('.js-group-subclass').addClass('hidden');
@@ -484,8 +528,11 @@
 			}
 			fillRaces();
 			fillClasses();
+			fillOrigins();
 			fillKinds(values.race);
-			fillSubClasses(values.class)
+			fillSubClasses(values.class);
+			fillLevelOptions();
+			fillGlobalDamageMod();
 		    $20('.js-skill-container').addClass('hidden');
             $20(`.js-skill-container[data-category~="${currentSkillTab}"]`).removeClass('hidden');
 		});

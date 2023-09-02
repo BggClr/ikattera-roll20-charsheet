@@ -1025,7 +1025,7 @@
         },
         {
             "name": "skill_listening",
-            "title": "Подсулшивание",
+            "title": "Подслушивание",
             "depends_on": [
                 "attribute_attention"
             ],
