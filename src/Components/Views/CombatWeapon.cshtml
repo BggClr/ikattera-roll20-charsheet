@@ -5,8 +5,8 @@
 		<span name="attr_combatweapon@(Model.Index)_name" class="combat-weapon-header-component"></span>
 		<span class="combat-weapon-header-component">
 			<span class="combat-weapon-button-container combat-weapon-nav-edit">
-				<button type="button" class='js-combat-weapon-edit edit btn btn-secondary collapse show' data-section="js-combat-weapon-@Model.Index"><i class="edit-icon">&#xf044</i>Редактировать</button>
-				<button type="button" class='js-combat-weapon-complete-edit edit btn btn-primary collapse' data-section="js-combat-weapon-@Model.Index"><i class="edit-icon">&#xf0c7</i>Сохранить</button>
+				<button type="button" class='js-combat-weapon-edit edit btn btn-secondary collapse show' data-section="js-combat-weapon-@Model.Index"><i class="edit-icon">&#xf044</i><span data-i18n="edit">Edit</span></button>
+				<button type="button" class='js-combat-weapon-complete-edit edit btn btn-primary collapse' data-section="js-combat-weapon-@Model.Index"><i class="edit-icon">&#xf0c7</i><span data-i18n="save">Save</span></button>
 			</span>
 			<span class="combat-weapon-nav-rolls collapse show">
 				<button type="button" class='js-weapon-roll roll btn btn-outline-primary' data-name="combatweapon@(Model.Index)" data-type="combatweapon"><i class="btn-icon">&#xf6cf</i></button>
@@ -17,26 +17,26 @@
 	</div>
 	<div class="js-combat-weapon-details collapse">
 		<div class="input-group mb-2">
-			<span class="input-group-text">Название</span>
+			<span class="input-group-text" data-i18n="weapon_name">Name</span>
 			<input type="text" name="attr_combatweapon@(Model.Index)_name" class="form-control"/>
 		</div>
 		<div class="input-group mb-2">
-			<span class="input-group-text">Тип</span>
+			<span class="input-group-text" data-i18n="weapon_type">Type</span>
 			<select type="text" name="attr_combatweapon@(Model.Index)_type" class="form-select">
 				<option value="" selected>-</option>
-                @foreach (var characterClass in Model.Manifest.Weapons.OrderBy(p => p.Title))
+                @foreach (var weapon in Model.Manifest.Weapons)
                 {
-                    <option value="@characterClass.Name">@characterClass.Title</option>
+                    <option value="@weapon.Name" data-i18n="@weapon.Name">@weapon.Name</option>
                 }
 			</select>
 		</div>
 		<div class="input-group mb-2">
-			<span class="input-group-text">Бонус к попаданию</span>
+			<span class="input-group-text" data-i18n="bonus_attack">Bonus attack</span>
 			<select name="attr_combatweapon@(Model.Index)_attack_attribute_bonus" class="form-select">
 				<option value="" selected>-</option>
-				@foreach (var feature in Model.Manifest.Attributes.OrderBy(p => p.Title))
+				@foreach (var feature in Model.Manifest.Attributes)
 				{
-					<option value="@feature.Name">@feature.Title</option>
+					<option value="@feature.Name" data-i18n="@feature.Name">@feature.Name</option>
 				}
 			</select>
 			<input type="number" name="attr_combatweapon@(Model.Index)_attack_value_bonus" class="form-control"/>
@@ -44,8 +44,8 @@
 		<div class="combat-weapon-details">
 			<fieldset class="repeating_combatweapon@(Model.Index)">
 				<div class="input-group damage-unit">
-					<span class="input-group-text">Урон</span>
-					<input type="number" name="attr_dice_count" class="form-control" title="Количество кубов" value="1"/>
+					<span class="input-group-text" data-i18n="weapon_damage">Damage</span>
+					<input type="number" name="attr_dice_count" class="form-control" value="1"/>
 					<select name="attr_dice_type" class="form-select">
 						<option value="" selected>-</option>
 						<option value="d4">d4</option>
@@ -59,17 +59,17 @@
 						<option value="" selected>-</option>
 						@foreach (var damageType in Model.Manifest.DamageTypes)
 						{
-							<option value="@damageType.Name">@damageType.Title</option>
+							<option value="@damageType.Name" data-i18n="damage_type_@damageType.Name">@damageType.Name</option>
 						}
 					</select>
 					<select name="attr_damage_attribute_bonus" class="form-select">
 						<option value="" selected>-</option>
-						@foreach (var feature in Model.Manifest.Attributes.OrderBy(p => p.Title))
+						@foreach (var feature in Model.Manifest.Attributes)
 						{
-							<option value="@feature.Name">@feature.Title</option>
+							<option value="@feature.Name" data-i18n="@feature.Name">@feature.Name</option>
 						}
 					</select>
-					<input type="number" name="attr_damage_value_bonus" class="form-control" title="Модификатор"/>
+					<input type="number" name="attr_damage_value_bonus" class="form-control" />
 				</div>
 			</fieldset>
 		</div>

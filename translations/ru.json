@@ -98,7 +98,7 @@
     "bonus_stamina": "Бонус усталости",
     "bonus_check": "Бонус к проверкам",
     "bonus_initiative": "Бонус к инициативе",
-    "bonus_attack": "Бонус к атаке",
+    "bonus_attack": "Бонус к попаданию",
     "bonus_damage": "Бонус к урону",
 
     "hp_base": "Здоровье",
@@ -172,6 +172,9 @@
     "weapon_ranged": "Дальнобойное оружие",
     "weapon_gunpowder": "Пороховое оружие",
     "weapon_magic": "Магичность",
+    "weapon_name": "Название",
+    "weapon_type": "Тип",
+    "weapon_damage": "Урон",
 
     "potion_hp_s": "Малое зелье кровавика",
     "potion_hp_m": "Среднее зелье кровавика",
@@ -185,6 +188,11 @@
 
     "roll_adv": "с преимуществом",
     "roll_disadv": "с помехой",
+
+    "edit": "Редактировать",
+    "add": "Добавить",
+    "modify": "Изменить",
+    "save": "Сохранить",
 
     "Attack": "Попадание",
     "Weapon": "Оружие",
