@@ -4,7 +4,6 @@ public class OptionModel
 {
 	public string Key { get; set; }
 	public IList<OptionLabelModel> Label { get; set; }
-	public IList<OptionLabelModel[]> Options { get; set; }
 }
 
 public class OptionLabelModel

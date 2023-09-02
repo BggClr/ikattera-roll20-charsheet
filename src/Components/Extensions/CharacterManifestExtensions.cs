@@ -29,24 +29,7 @@ public static class CharacterManifestExtensions
 				{
 					new() {Value = "level", IsTranslated = true},
 					new() {Value = p.Key.ToString(), IsTranslated = false, Divider = "&nbsp;"},
-				},
-				Options = p.Value.Options
-					.Select(q => q.SelectMany((t, i) => new OptionLabelModel[]
-					{
-						new ()
-						{
-							Value = t.Key,
-							IsTranslated = true,
-							Divider = i > 0 ? ",&nbsp;": ""
-						},
-						new ()
-						{
-							Value = t.Value.ToString(),
-							IsTranslated = false,
-							Divider = ":&nbsp;"
-						}
-					}).ToArray())
-				.ToArray()
+				}
 			}).ToArray();
 		var featureBonusesOptions = manifest.Races
 			.Concat(manifest.Races.SelectMany(p => p.Kinds?.OfType<AttributeEntity>().ToArray() ?? Array.Empty<AttributeEntity>()))
@@ -62,25 +45,8 @@ public static class CharacterManifestExtensions
 				{
 					new() {Value = "level", IsTranslated = true},
 					new() {Value = p.Level.ToString(), IsTranslated = false, Divider = "&nbsp;"},
-					new() {Value =  $"{GetEntityPrefix(p.Entity)}_{p.Entity.Name}", IsTranslated = true, Divider = "&nbsp;-&nbsp;"},
-				},
-				Options = p.Value.Options
-					.Select(q => q.SelectMany((t, i) => new OptionLabelModel[]
-					{
-						new ()
-						{
-							Value = t.Key,
-							IsTranslated = true,
-							Divider = i > 0 ? ",&nbsp;": ""
-						},
-						new ()
-						{
-							Value = t.Value.ToString(),
-							IsTranslated = false,
-							Divider = ":&nbsp;"
-						}
-					}).ToArray())
-					.ToArray()
+					new() {Value =  $"{p.Entity.GetEntityPrefix()}_{p.Entity.Name}", IsTranslated = true, Divider = "&nbsp;-&nbsp;"},
+				}
 			}).ToArray();
 
 		return rootBonusesOptions
@@ -88,11 +54,4 @@ public static class CharacterManifestExtensions
 			.ToArray();
 	}
 
-	private static string GetEntityPrefix(AttributeEntity entity)
-	{
-		var type = entity.GetType();
-		var prefix = type.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? type.Name;
-
-		return prefix.ToLowerInvariant();
-	}
 }
