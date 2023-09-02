@@ -30,43 +30,13 @@
 
 <rolltemplate class="sheet-rolltemplate-check">
 	{{#rollGreater() computed::modifier 0}}
-		<div class="sheet-container sheet-success">
-        	{{#title}}
-        	<div class="sheet-label">{{title}}</div>
-        	{{/title}}
-        	<div class="sheet-result">
-        		{{result}}
-        	</div>
-        	{{#subtitle}}
-        	<div class="sheet-label">{{subtitle}}</div>
-        	{{/subtitle}}
-        </div>
+		@await Html.PartialAsync("~/Views/RollTemplates/Check.cshtml", "success")
 	{{/rollGreater() computed::modifier 0}}
 	{{#rollLess() computed::modifier 0}}
-		<div class="sheet-container sheet-failure">
-            {{#title}}
-            <div class="sheet-label">{{title}}</div>
-            {{/title}}
-            <div class="sheet-result">
-            	{{result}}
-            </div>
-            {{#subtitle}}
-            <div class="sheet-label">{{subtitle}}</div>
-            {{/subtitle}}
-        </div>
+		@await Html.PartialAsync("~/Views/RollTemplates/Check.cshtml", "failure")
 	{{/rollLess() computed::modifier 0}}
 	{{#rollBetween() computed::modifier 0 0}}
-		<div class="sheet-container">
-    		{{#title}}
-    		<div class="sheet-label">{{title}}</div>
-    		{{/title}}
-    		<div class="sheet-result">
-    			{{result}}
-    		</div>
-    		{{#subtitle}}
-    		<div class="sheet-label">{{subtitle}}</div>
-    		{{/subtitle}}
-	    </div>
+		@await Html.PartialAsync("~/Views/RollTemplates/Check.cshtml", model: null)
 	{{/rollBetween() computed::modifier 0 0}}
 
 </rolltemplate>
