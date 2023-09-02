@@ -22,6 +22,67 @@
         	.filter(f => f.name == featureName)[0];
 	}
 
+	function getDiceModifiers(expr) {
+		const diceModifier = expr.match(/^\d*d\d+(?<diceModifier>[dk][^\s]+)?$/).groups['diceModifier'];
+		if (!diceModifier) {
+			return;
+		}
+		var result = diceModifier.match(/^(?<modifierKind>[kd])(?<modifierValueType>[hl])(?<modifierValue>\d+)/);
+
+		return {
+			kind: result.groups['modifierKind'],
+			valueType: result.groups['modifierValueType'],
+			value: result.groups['modifierValue']
+		};
+	}
+
+	function getCalculatedRollDice(dices, diceModifier) {
+		if (!diceModifier) {
+			return dices;
+		}
+
+		const sortedDices = dices.sort((a, b) => a - b);
+
+		if (diceModifier.kind === 'k') {
+			if (diceModifier.valueType === 'l') {
+				return sortedDices.slice(0, diceModifier.value);
+			}
+			if (diceModifier.valueType === 'h') {
+				return sortedDices.slice(dices.length - diceModifier.value);
+			}
+		}
+
+		if (diceModifier.kind === 'd') {
+			if (diceModifier.valueType === 'l') {
+				return sortedDices.slice(diceModifier.value);
+			}
+			if (diceModifier.valueType === 'h') {
+				return sortedDices.slice(0, dices.length - diceModifier.value);
+			}
+		}
+	}
+
+	function getRollModifierValue(roll) {
+		const rollExpressions = roll.expression.match(/\d*d\d+([dk][^\s]+)?/g);
+
+		if (rollExpressions.length != 1) {
+			return 0;
+		}
+
+		const diceModifier = getDiceModifiers(rollExpressions[0]);
+		const selectedDices = getCalculatedRollDice(roll.rolls[0].results, diceModifier);
+
+		if (selectedDices.filter(v => v === roll.rolls[0].sides).length == selectedDices.length) {
+			return 1;
+		}
+
+		if (selectedDices.filter(v => v === 1).length == selectedDices.length) {
+			return -1;
+		}
+
+		return 0;
+	}
+
 	async function rollDice(dice, featureName, altKey, title) {
 		getAttrs(getValuesListForCalculate(['global_check_mod']), async values => {
 			const feature = findFeature(featureName);
@@ -40,9 +101,11 @@
 			const rollResultModifiers = modifiers.filter(key => !!values[key]).map(p => `@@{${p}}`).join(' + ');
 			const rollModifier = !!altKey ? '/w gm': '';
 
-			const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${feature.title} ${title}}} {{Результат=[[${dice} + ${rollResultModifiers}]]}}`;
+			const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${feature.title} ${title}}} {{result=[[${dice} + ${rollResultModifiers}]]}} {{modifier=[[0]]}}`;
 			const results = await startRoll(roll);
-			finishRoll(results.rollId);
+			finishRoll(results.rollId, {
+				modifier: getRollModifierValue(results.results['result'])
+			});
 		});
 	}
 
@@ -54,12 +117,13 @@
 
     		const rollModifier = !!altKey ? '/w gm': '';
 
-    		const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${title}}} {{Результат=[[${rollString}]]}}`;
+    		const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${title}}} {{result=[[${rollString}]]}} {{modifier=[[0]]}}`;
     		const results = await startRoll(roll);
     		finishRoll(results.rollId);
-    		const value = results.results['Результат'].result;
+    		const value = results.results['result'].result;
     		setAttrs({
-    			[name]: Math.min(parseInt(values[`${name}_max`]), value + parseInt(values[name]))
+    			[name]: Math.min(parseInt(values[`${name}_max`]), value + parseInt(values[name])),
+    			modifier: 0
     		});
     	});
     }
@@ -141,18 +205,19 @@
 
         		const damageRollGroups = Object.keys(weaponDamageRollData)
         			.filter(key => !!weaponDamageRollData[key].dices.length || !!weaponDamageRollData[key].attributeBonuses.length || !!weaponDamageRollData[key].valueBonuses.length)
-        			.map(key => `{{${getDamageTypeTitle(key)}=[[${getDamageRoll(weaponDamageRollData[key])}]]}}`)
+        			.map(key => `{{${key}=[[${getDamageRoll(weaponDamageRollData[key])}]]}}`)
 
         		const attackRoll = [dice]
         			.concat(attackRollModifiers)
         			.join(' + ');
 
-                const roll = `${rollModifier} &{template:attack} {{subtitle=${title}}} {{title=@@{character_name}}} {{weapon=@@{${weaponName}_name}}} {{Попадание=[[${attackRoll}]]}} ${damageRollGroups} {{total=[[0]]}}`;
+                const roll = `${rollModifier} &{template:attack} {{subtitle=${title}}} {{title=@@{character_name}}} {{weapon=@@{${weaponName}_name}}} {{attack=[[${attackRoll}]]}} ${damageRollGroups} {{total=[[0]]}} {{modifier=[[0]]}}`;
                 const results = await startRoll(roll);
-                const total = Object.keys(weaponDamageRollData).reduce((agg, key) => agg + ((results.results[getDamageTypeTitle(key)] && results.results[getDamageTypeTitle(key)].result) || 0), 0);
+                const total = Object.keys(weaponDamageRollData).reduce((agg, key) => agg + ((results.results[key] && results.results[key].result) || 0), 0);
 
                 finishRoll(results.rollId, {
-                    total
+                    total,
+                    modifier: getRollModifierValue(results.results['attack'])
                 });
             });
         });
@@ -600,13 +665,13 @@
 	});
 
 	$20('button.js-weapon-roll').on('click', async e => {
-		await rollWeaponDice('2d10', e.htmlAttributes['data-name'], e.altKey, 'Атака');
+		await rollWeaponDice('2d10', e.htmlAttributes['data-name'], e.altKey, 'WeaponAttack');
 	});
 	$20('button.js-weapon-roll-adv').on('click', async e => {
-		await rollWeaponDice('3d10kh2', e.htmlAttributes['data-name'], e.altKey, 'Атака с преимуществом');
+		await rollWeaponDice('3d10kh2', e.htmlAttributes['data-name'], e.altKey, 'WeaponAdvAttack');
 	});
 	$20('button.js-weapon-roll-dis').on('click', async e => {
-		await rollWeaponDice('3d10kl2', e.htmlAttributes['data-name'], e.altKey, 'Атака с помехой');
+		await rollWeaponDice('3d10kl2', e.htmlAttributes['data-name'], e.altKey, 'WeaponDisAdvAttack');
 	});
 
 	$20('button.js-roll').on('click', async e => {

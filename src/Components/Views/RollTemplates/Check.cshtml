@@ -1,0 +1,12 @@
+﻿@model string
+<div class="sheet-container@(!string.IsNullOrWhiteSpace(Model) ? $" sheet-{Model}" : "")">
+    {{#title}}
+		<div class="sheet-label">{{title}}</div>
+    {{/title}}
+    <div class="sheet-result">
+        {{result}}
+    </div>
+    {{#subtitle}}
+		<div class="sheet-label">{{subtitle}}</div>
+    {{/subtitle}}
+</div>

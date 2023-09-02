@@ -1,11 +1,13 @@
 {
 	"Attack": "Попадание",
 	"attack": "попадание",
-	"weapon_attack": "Атака",
 	"Weapon": "Оружие",
 	"Piercing": "Колющий урон",
 	"Penetrating": "Проникающий урон",
 	"Crushing": "Дробящий урон",
 	"Slashing": "Рубящий урон",
-	"Total": "Итого"
+	"Total": "Итого",
+	"WeaponAttack": "Атака",
+	"WeaponAdvAttack": "Атака с помехой",
+	"WeaponDisAdvAttack": "Атака с преимуществом"
 }
