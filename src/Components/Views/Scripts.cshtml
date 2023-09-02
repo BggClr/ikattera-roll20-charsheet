@@ -16,6 +16,10 @@
 		return this.filter((item, pos) => this.indexOf(item) === pos)
     };
 
+	function translate(key) {
+		return getTranslationByKey(key) || key;
+	}
+
 	function findFeature(featureName) {
 		return FeaturesList
         	.reduce((agg, key) => [...agg, ...CharsheetData[key]], [])
@@ -101,7 +105,7 @@
 			const rollResultModifiers = modifiers.filter(key => !!values[key]).map(p => `@@{${p}}`).join(' + ');
 			const rollModifier = !!altKey ? '/w gm': '';
 
-			const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${getTranslationByKey(feature.name)} ${getTranslationByKey(title) || ''}}} {{result=[[${dice} + ${rollResultModifiers}]]}} {{modifier=[[0]]}}`;
+			const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${translate(feature.name)} ${translate(title) || ''}}} {{result=[[${dice} + ${rollResultModifiers}]]}} {{modifier=[[0]]}}`;
 			const results = await startRoll(roll);
 			finishRoll(results.rollId, {
 				modifier: getRollModifierValue(results.results['result'])
@@ -117,7 +121,7 @@
 
     		const rollModifier = !!altKey ? '/w gm': '';
 
-    		const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${getTranslationByKey(title) || ''}}} {{result=[[${rollString}]]}} {{modifier=[[0]]}}`;
+    		const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${translate(title) || ''}}} {{result=[[${rollString}]]}} {{modifier=[[0]]}}`;
     		const results = await startRoll(roll);
     		finishRoll(results.rollId);
     		const value = results.results['result'].result;
@@ -428,15 +432,15 @@
 	}
 
 	function sortTranslated(items, prefix) {
-		return items.sort((a, b) => (getTranslationByKey(`${prefix}_${a.name}`) || '').localeCompare(getTranslationByKey(`${prefix}_${b.name}`) || ''));
+		return items.sort((a, b) => (translate(`${prefix}_${a.name}`) || '').localeCompare(translate(`${prefix}_${b.name}`) || ''));
 	}
 
 	function populateList(items, name, prefix, defaultOptionDisabled) {
 		populateListOptions({
 			elemSelector: name,
 			optionsArray: [
-				{label: getTranslationByKey(`${prefix}_choose`), value: 'none', disabled: defaultOptionDisabled, selected: true},
-				...sortTranslated(items, prefix).map(r => ({label: getTranslationByKey(`${prefix}_${r.name}`), value: r.name}))
+				{label: translate(`${prefix}_choose`), value: 'none', disabled: defaultOptionDisabled, selected: true},
+				...sortTranslated(items, prefix).map(r => ({label: translate(`${prefix}_${r.name}`), value: r.name}))
 			]
 		});
 	}
@@ -452,7 +456,7 @@
 
 	function getOptionLabel(option) {
 		return Object.keys(option)
-			.map(key => `${getTranslationByKey(key)}: ${option[key]}`)
+			.map(key => `${translate(key)}: ${option[key]}`)
 			.join(', ')
 	}
 
