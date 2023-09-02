@@ -188,11 +188,11 @@
             },
             "kinds": [
                 {
-                    "name": "hedgehog",
+                    "name": "revera-hedgehog",
                     "title": "Ёж"
                 },
                 {
-                    "name": "rodent",
+                    "name": "revera-rodent",
                     "title": "Грызун",
                     "level_bonus": {
                         "1": {
@@ -203,7 +203,7 @@
                     }
                 },
                 {
-                    "name": "hare",
+                    "name": "revera-hare",
                     "title": "Заяц",
                     "level_bonus": {
                         "1": {
@@ -214,7 +214,7 @@
                     }
                 },
                 {
-                    "name": "cat",
+                    "name": "revera-cat",
                     "title": "Кошка",
                     "level_bonus": {
                         "1": {
@@ -225,7 +225,7 @@
                     }
                 },
                 {
-                    "name": "mole",
+                    "name": "revera-mole",
                     "title": "Крот",
                     "level_bonus": {
                         "1": {
@@ -236,7 +236,7 @@
                     }
                 },
                 {
-                    "name": "marten",
+                    "name": "revera-marten",
                     "title": "Куница",
                     "level_bonus": {
                         "1": {
@@ -247,7 +247,7 @@
                     }
                 },
                 {
-                    "name": "lemur",
+                    "name": "revera-lemur",
                     "title": "Лемур",
                     "level_bonus": {
                         "1": {
@@ -258,7 +258,7 @@
                     }
                 },
                 {
-                    "name": "opossum",
+                    "name": "revera-opossum",
                     "title": "Опоссум",
                     "level_bonus": {
                         "1": {
@@ -269,11 +269,11 @@
                     }
                 },
                 {
-                    "name": "raptur",
+                    "name": "revera-raptur",
                     "title": "Раптур"
                 },
                 {
-                    "name": "custom",
+                    "name": "revera-custom",
                     "title": "Свой вариант",
                     "level_bonus": {
                         "1": {

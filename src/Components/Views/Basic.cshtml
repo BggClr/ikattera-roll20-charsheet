@@ -6,42 +6,29 @@
 		<div class="col-6">
 			<div class="fancy-border">
 				<div class="input-group mb-2">
-					<span class="input-group-text">Имя</span>
+					<span class="input-group-text" data-i18n="name">Name</span>
 					<input type="text" name="attr_character_name" class="form-control" id="form_character_name"/>
 				</div>
 				<div class="input-group mb-2">
-                	<span class="input-group-text">Уровень</span>
+                	<span class="input-group-text" data-i18n="level">Level</span>
                 	<input type="number" name="attr_level" class="form-control" id="form_level"/>
                 </div>
                 <div class="input-group mb-2">
-                	<span class="input-group-text">Раса</span>
-                	<select name="attr_race" id="form_race" class="form-select" aria-label="Раса">
-                		<option value="" selected disabled>Выберите расу</option>
-                		@foreach (var race in Model.Races.OrderBy(p => p.Title))
-                		{
-                			<option value="@race.Name">@race.Title</option>
-                		}
-                	</select>
+                	<span class="input-group-text" data-i18n="race">Race</span>
+	                <select name="attr_race" id="form_race" class="form-select" aria-label="race"/>
                 </div>
                 <div class="input-group mb-2 js-group-kind">
-                	<span class="input-group-text">Вид</span>
-                	<select name="attr_kind" id="form_kind" class="form-select" aria-label="Вид">
-                		<option value="" selected disabled>Выберите вид</option>
-                	</select>
+                	<span class="input-group-text" data-i18n="kind">Kind</span>
+	                <select name="attr_kind" id="form_kind" class="form-select" aria-label="Kind"/>
+
                 </div>
                 <div class="input-group mb-2">
-                	<span class="input-group-text">Класс</span>
-                	<select name="attr_class" id="form_class" class="form-select" aria-label="Класс">
-                		<option value="" selected disabled>Выберите класс</option>
-                		@foreach (var characterClass in Model.Classes.OrderBy(p => p.Title))
-                		{
-                			<option value="@characterClass.Name">@characterClass.Title</option>
-                		}
-                	</select>
+                	<span class="input-group-text" data-i18n="class">Class</span>
+	                <select name="attr_class" id="form_class" class="form-select" aria-label="Class"/>
                 </div>
                 <div class="input-group mb-2 js-group-subclass">
-                	<span class="input-group-text">Подкласс</span>
-                	<select name="attr_subclass" id="form_subclass" class="form-select" aria-label="Подкласс"/>
+                	<span class="input-group-text" data-i18n="subclass">Subclass</span>
+	                <select name="attr_subclass" id="form_subclass" class="form-select" aria-label="SubClass"/>
                 </div>
                 <div class="input-group mb-2">
                 	<span class="input-group-text">Прошлое</span>

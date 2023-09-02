@@ -432,31 +432,42 @@
 		applyLevelBonusVisibility();
 	}
 
+	function sortTranslated(items) {
+		return items.sort((a, b) => (getTranslationByKey(`race_${a.name}`) || '').localeCompare(getTranslationByKey(`race_${b.name}`) || ''));
+	}
+
+	function populateList(items, name, prefix) {
+		populateListOptions({
+			elemSelector: name,
+			optionsArray: [
+				{label: getTranslationByKey(`${prefix}_choose`), value: 'none', disabled: true, selected: true},
+				...sortTranslated(items).map(r => ({label: getTranslationByKey(`${prefix}_${r.name}`), value: r.name}))
+			]
+		});
+	}
+
+	function fillRaces() {
+		populateList(CharsheetData.races, '#form_race', 'race');
+	}
+
+	function fillClasses() {
+		populateList(CharsheetData.classes, '#form_class', 'class');
+    }
+
 	function fillKinds(raceName) {
 		const race = CharsheetData.races.filter(p => p.name == raceName)[0];
 		if (race && race.kinds) {
-			populateListOptions({
-                elemSelector: '#form_kind',
-                optionsArray: [
-                    {label: 'Выберите вид', value: 'none', disabled: true, selected: true},
-                    ...race.kinds.sort((a, b) => a.title.localeCompare(b.title)).map(k => ({label: k.title, value: k.name}))
-                ]
-            });
+			populateList(race.kinds, '#form_kind', 'kind');
 			$20('.js-group-kind').removeClass('hidden');
 		} else {
         	$20('.js-group-kind').addClass('hidden');
 		}
 	}
+
 	function fillSubClasses(className) {
 		const characterClass = CharsheetData.classes.filter(p => p.name == className)[0];
 		if (characterClass && characterClass.subclasses) {
-			populateListOptions({
-                elemSelector: '#form_subclass',
-                optionsArray: [
-                    {label: 'Выберите подкласс', value: 'none', disabled: true, selected: true},
-                    ...characterClass.subclasses.sort((a, b) => a.title.localeCompare(b.title)).map(k => ({label: k.title, value: k.name}))
-                ]
-            });
+			populateList(characterClass.subclasses, '#form_subclass', 'subclass');
 			$20('.js-group-subclass').removeClass('hidden');
 		} else {
         	$20('.js-group-subclass').addClass('hidden');
@@ -471,6 +482,8 @@
 				});
 				$20('.js-group-subclass').addClass('disabled');
 			}
+			fillRaces();
+			fillClasses();
 			fillKinds(values.race);
 			fillSubClasses(values.class)
 		    $20('.js-skill-container').addClass('hidden');

@@ -9,5 +9,43 @@
 	"Total": "Итого",
 	"WeaponAttack": "Атака",
 	"WeaponAdvAttack": "Атака с помехой",
-	"WeaponDisAdvAttack": "Атака с преимуществом"
+	"WeaponDisAdvAttack": "Атака с преимуществом",
+
+    "name": "Имя",
+    "level": "Уровень",
+
+    "race_akir":"Акир",
+    "race_gagan":"Гаган",
+    "race_cro":"Кро",
+    "race_paru":"Пару",
+    "race_revera":"Ревера-Нгахера",
+    "race_skepsi":"Скепси",
+    "race_choose": "Выберите расу",
+    "race": "Раса",
+
+    "kind": "Вид",
+    "kind_choose": "Выберите вид",
+    "kind_revera-hedgehog": "Ёж",
+    "kind_revera-rodent": "Грызун",
+    "kind_revera-hare": "Заяц",
+    "kind_revera-cat": "Кошка",
+    "kind_revera-mole": "Крот",
+    "kind_revera-marten": "Куница",
+    "kind_revera-lemur": "Лемур",
+    "kind_revera-opossum": "Опоссум",
+    "kind_revera-raptur": "Раптур",
+    "kind_revera-custom": "Свой вариант",
+
+    "class": "Класс",
+    "class_choose": "Выберите класс",
+    "class_warrior": "Воин",
+    "class_bowman": "Лучник",
+    "class_rogue": "Разбойник",
+    "class_mage": "Маг",
+    "class_chakram": "Мастер Чакрам",
+    "class_bard": "Бард",
+    "class_scientist": "Ученый",
+
+    "subclass": "Подкласс",
+    "subclass_choose": "Выберите подкласс"
 }
