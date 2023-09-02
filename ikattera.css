@@ -203,88 +203,13 @@ hr {
     padding-top: 0;
 }
 
-.sheet-rolltemplate-attack {
-    margin-left: -40px;
-}
-.withoutavatars .sheet-rolltemplate-attack {
-    margin-left: -7px;
-}
-
-.sheet-rolltemplate-attack .sheet-container {
-    border: 1px solid;
-    border-color: var(--header-bg-color);
-}
-
-.sheet-rolltemplate-attack .sheet-header {
-    background-color: var(--header-bg-color);
-    text-align: left;
-    color: var(--header-text-color);
-    padding: 5px;
-}
-.sheet-rolltemplate-attack .sheet-title {
-    font-size:1.1em;
-    text-align: center;
-}
-.sheet-rolltemplate-attack .sheet-subtitle {
-    font-size:1.1em;
-    text-align: center;
-}
-
-.sheet-rolltemplate-attack .sheet-container {
-    --header-bg-color: rgba(112,32,130,1);
-    --header-text-color: #FFF;
-}
-.sheet-rolltemplate-attack .sheet-container.sheet-color-red {
-    --header-bg-color: #F00;
-}
-.sheet-rolltemplate-attack .sheet-container.sheet-color-green {
-    --header-bg-color: #0F0;
-    --header-text-color: #000;
-}
-
-.sheet-rolltemplate-attack .sheet-content {
-    display: grid;
-    background: var(--banner-background);
-    grid-template-columns: 1fr 2fr;
-    line-height:1.4em;
-}
-.sheet-rolltemplate-attack .sheet-content > div {
-    padding: 5px;
-}
-
-.sheet-rolltemplate-attack .sheet-content .sheet-key {
-    font-weight: bold;
-    padding-right: 10px;
-}
-
-.sheet-rolltemplate-attack .sheet-content :nth-child(4n+3),
-.sheet-rolltemplate-attack .sheet-content :nth-child(4n) {
-    background:var(--primary-background-light);
-}
-
-.sheet-rolltemplate-attack .sheet-desc {
-    grid-column: span 2;
-    padding: 5px;
-    text-align: center;
-}
-
+.sheet-rolltemplate-attack,
 .sheet-rolltemplate-check {
     margin-left: -40px;
     padding-top: 8px;
 }
 
-.sheet-rolltemplate-check.sheet-rolltemplate-darkmode > div.sheet-container {
-    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-dark-normal.png");
-}
-
-.sheet-rolltemplate-check.sheet-rolltemplate-darkmode > div.sheet-container.sheet-success {
-    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-dark-success.png");
-}
-
-.sheet-rolltemplate-check.sheet-rolltemplate-darkmode > div.sheet-container.sheet-failure {
-    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-dark-failure.png");
-}
-
+.sheet-rolltemplate-attack > div.sheet-container,
 .sheet-rolltemplate-check > div.sheet-container {
     background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-light-normal.png");
     background-repeat: no-repeat;
@@ -295,15 +220,65 @@ hr {
     margin: auto;
 }
 
+.sheet-rolltemplate-attack > div.sheet-container.sheet-success,
 .sheet-rolltemplate-check > div.sheet-container.sheet-success {
     background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-light-success.png");
     color: black;
 }
+
+.sheet-rolltemplate-attack > div.sheet-container.sheet-failure,
 .sheet-rolltemplate-check > div.sheet-container.sheet-failure {
     background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-light-failure.png");
     color: black;
 }
 
+.sheet-rolltemplate-attack.sheet-rolltemplate-darkmode > div.sheet-container,
+.sheet-rolltemplate-check.sheet-rolltemplate-darkmode > div.sheet-container {
+    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-dark-normal.png");
+}
+
+.sheet-rolltemplate-attack.sheet-rolltemplate-darkmode > div.sheet-container.sheet-success,
+.sheet-rolltemplate-check.sheet-rolltemplate-darkmode > div.sheet-container.sheet-success {
+    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-dark-success.png");
+}
+
+.sheet-rolltemplate-attack.sheet-rolltemplate-darkmode > div.sheet-container.sheet-failure,
+.sheet-rolltemplate-check.sheet-rolltemplate-darkmode > div.sheet-container.sheet-failure {
+    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-dark-failure.png");
+}
+
+.sheet-rolltemplate-attack .sheet-tooltip,
+.sheet-rolltemplate-check .sheet-tooltip {
+    position: relative;
+}
+
+.sheet-rolltemplate-attack .sheet-tooltip .sheet-tooltip-content,
+.sheet-rolltemplate-check .sheet-tooltip .sheet-tooltip-content {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+    font-size: 14px;
+}
+
+.sheet-rolltemplate-attack .sheet-tooltip:hover .sheet-tooltip-content,
+.sheet-rolltemplate-check .sheet-tooltip:hover .sheet-tooltip-content {
+    visibility: visible;
+}
+
+
+.sheet-rolltemplate-attack .sheet-label,
 .sheet-rolltemplate-check .sheet-label {
     margin-top: -3px;
     padding: 0.25em;
@@ -311,6 +286,26 @@ hr {
     font-weight: 500;
 }
 
+.sheet-rolltemplate-attack.sheet-rolltemplate-darkmode .sheet-success .sheet-devider,
+.sheet-rolltemplate-check.sheet-rolltemplate-darkmode .sheet-success .sheet-devider,
+.sheet-rolltemplate-attack.sheet-rolltemplate-darkmode .sheet-failure .sheet-devider,
+.sheet-rolltemplate-check.sheet-rolltemplate-darkmode .sheet-failure .sheet-devider,
+.sheet-rolltemplate-attack.sheet-rolltemplate-darkmode .sheet-devider,
+.sheet-rolltemplate-check.sheet-rolltemplate-darkmode .sheet-devider,
+.sheet-rolltemplate-attack .sheet-devider,
+.sheet-rolltemplate-check .sheet-devider {
+    margin: 10px 10px;
+    border: black solid 1px;
+    display: block;
+}
+
+.sheet-rolltemplate-attack.sheet-rolltemplate-darkmode .sheet-devider,
+.sheet-rolltemplate-check.sheet-rolltemplate-darkmode .sheet-devider {
+    border: white solid 1px;
+}
+
+
+.sheet-rolltemplate-attack .sheet-result,
 .sheet-rolltemplate-check .sheet-result {
     margin-top: -3px;
     padding: 0.25em;
@@ -318,9 +313,10 @@ hr {
     font-size: 21px;
 }
 
+.sheet-rolltemplate-attack .inlinerollresult,
 .sheet-rolltemplate-check .sheet-result .inlinerollresult{
-    border: none;
-    background-color: transparent;
+    border: none !important;
+    background-color: transparent !important;
 }
 
 .width-1 {

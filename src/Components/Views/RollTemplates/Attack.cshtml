@@ -1,0 +1,35 @@
+﻿@model string
+<div class="sheet-container@(!string.IsNullOrWhiteSpace(Model) ? $" sheet-{Model}" : "")">
+	<div class="sheet-container">
+        {{#title}}
+        	<div class="sheet-label">{{title}}</div>
+        {{/title}}
+        <div class="sheet-result">
+            <span>
+                <span class="sheet-tooltip">
+                    {{attack}}
+                    <span class="sheet-tooltip-content" data-i18n="Attack">Attack</span>
+                </span>
+            </span>
+            <span class="sheet-devider"></span>
+            <span>
+                <span class="sheet-tooltip">
+                    {{computed::total}}
+                    <span class="sheet-tooltip-content" data-i18n="Total">Total</span>
+                </span>
+	            ({{#allprops() total desc description title subtitle weapon modifier attack}}
+	            <span class="sheet-tooltip">
+		            {{value}}
+		            <span class="sheet-tooltip-content" data-i18n="{{key}}">{{key}}</span>
+	            </span>
+	            {{/allprops() total desc description title subtitle weapon modifier attack}})
+            </span>
+        </div>
+        {{#subtitle}}
+        	<div class="sheet-label" data-i18n="{{subtitle}}">{{subtitle}}</div>
+        {{/subtitle}}
+        {{#weapon}}
+        	<div class="sheet-label">{{weapon}}</div>
+        {{/weapon}}
+    </div>
+</div>

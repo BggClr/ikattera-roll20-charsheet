@@ -1,31 +1,13 @@
 ﻿<rolltemplate class="sheet-rolltemplate-attack">
-	<div class="sheet-container">
-		<div class="sheet-header">
-			{{#title}}<div class="sheet-title">{{title}}</div>{{/title}}
-			<div class="sheet-subtitle">
-				{{#subtitle}}{{subtitle}}: {{/subtitle}}{{#weapon}}{{weapon}}{{/weapon}}
-			</div>
-		</div>
-		<div class="sheet-content">
-			{{#allprops() total desc title subtitle weapon modifier}}
-				<div class="sheet-key">{{key}}</div>
-				<div class="sheet-value">{{value}}</div>
-			{{/allprops() total desc title subtitle weapon modifier}}
-			{{#computed::total}}
-				<div class="sheet-key">Итого</div>
-				<div class="sheet-value">{{computed::total}}</div>
-			{{/computed::total}}
-			{{#rollGreater() computed::modifier 0}}
-            	<div class="sheet-key">Модификатор</div>
-            	<div class="sheet-value">Критический успех</div>
-			{{/rollGreater() computed::modifier 0}}
-			{{#rollLess() computed::modifier 0}}
-            	<div class="sheet-key">Модификатор</div>
-            	<div class="sheet-value">Критический провал</div>
-            {{/rollLess() computed::modifier 0}}
-			{{#desc}}<div class="sheet-desc">{{desc}}</div>{{/desc}}
-		</div>
-	</div>
+	{{#rollGreater() computed::modifier 0}}
+    		@await Html.PartialAsync("~/Views/RollTemplates/Attack.cshtml", "success")
+    	{{/rollGreater() computed::modifier 0}}
+    	{{#rollLess() computed::modifier 0}}
+    		@await Html.PartialAsync("~/Views/RollTemplates/Attack.cshtml", "failure")
+    	{{/rollLess() computed::modifier 0}}
+    	{{#rollBetween() computed::modifier 0 0}}
+    		@await Html.PartialAsync("~/Views/RollTemplates/Attack.cshtml", model: null)
+    	{{/rollBetween() computed::modifier 0 0}}
 </rolltemplate>
 
 <rolltemplate class="sheet-rolltemplate-check">
@@ -38,5 +20,4 @@
 	{{#rollBetween() computed::modifier 0 0}}
 		@await Html.PartialAsync("~/Views/RollTemplates/Check.cshtml", model: null)
 	{{/rollBetween() computed::modifier 0 0}}
-
 </rolltemplate>

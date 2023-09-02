@@ -205,19 +205,19 @@
 
         		const damageRollGroups = Object.keys(weaponDamageRollData)
         			.filter(key => !!weaponDamageRollData[key].dices.length || !!weaponDamageRollData[key].attributeBonuses.length || !!weaponDamageRollData[key].valueBonuses.length)
-        			.map(key => `{{${getDamageTypeTitle(key)}=[[${getDamageRoll(weaponDamageRollData[key])}]]}}`)
+        			.map(key => `{{${key}=[[${getDamageRoll(weaponDamageRollData[key])}]]}}`)
 
         		const attackRoll = [dice]
         			.concat(attackRollModifiers)
         			.join(' + ');
 
-                const roll = `${rollModifier} &{template:attack} {{subtitle=${title}}} {{title=@@{character_name}}} {{weapon=@@{${weaponName}_name}}} {{Попадание=[[${attackRoll}]]}} ${damageRollGroups} {{total=[[0]]}} {{modifier=[[0]]}}`;
+                const roll = `${rollModifier} &{template:attack} {{subtitle=${title}}} {{title=@@{character_name}}} {{weapon=@@{${weaponName}_name}}} {{attack=[[${attackRoll}]]}} ${damageRollGroups} {{total=[[0]]}} {{modifier=[[0]]}}`;
                 const results = await startRoll(roll);
-                const total = Object.keys(weaponDamageRollData).reduce((agg, key) => agg + ((results.results[getDamageTypeTitle(key)] && results.results[getDamageTypeTitle(key)].result) || 0), 0);
+                const total = Object.keys(weaponDamageRollData).reduce((agg, key) => agg + ((results.results[key] && results.results[key].result) || 0), 0);
 
                 finishRoll(results.rollId, {
                     total,
-                    modifier: getRollModifierValue(results.results['Попадание'])
+                    modifier: getRollModifierValue(results.results['attack'])
                 });
             });
         });
@@ -665,13 +665,13 @@
 	});
 
 	$20('button.js-weapon-roll').on('click', async e => {
-		await rollWeaponDice('2d10', e.htmlAttributes['data-name'], e.altKey, 'Атака');
+		await rollWeaponDice('2d10', e.htmlAttributes['data-name'], e.altKey, 'WeaponAttack');
 	});
 	$20('button.js-weapon-roll-adv').on('click', async e => {
-		await rollWeaponDice('3d10kh2', e.htmlAttributes['data-name'], e.altKey, 'Атака с преимуществом');
+		await rollWeaponDice('3d10kh2', e.htmlAttributes['data-name'], e.altKey, 'WeaponAdvAttack');
 	});
 	$20('button.js-weapon-roll-dis').on('click', async e => {
-		await rollWeaponDice('3d10kl2', e.htmlAttributes['data-name'], e.altKey, 'Атака с помехой');
+		await rollWeaponDice('3d10kl2', e.htmlAttributes['data-name'], e.altKey, 'WeaponDisAdvAttack');
 	});
 
 	$20('button.js-roll').on('click', async e => {
