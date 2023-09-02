@@ -117,12 +117,13 @@
 
     		const rollModifier = !!altKey ? '/w gm': '';
 
-    		const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${title}}} {{Результат=[[${rollString}]]}}`;
+    		const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${title}}} {{result=[[${rollString}]]}} {{modifier=[[0]]}}`;
     		const results = await startRoll(roll);
     		finishRoll(results.rollId);
-    		const value = results.results['Результат'].result;
+    		const value = results.results['result'].result;
     		setAttrs({
-    			[name]: Math.min(parseInt(values[`${name}_max`]), value + parseInt(values[name]))
+    			[name]: Math.min(parseInt(values[`${name}_max`]), value + parseInt(values[name])),
+    			modifier: 0
     		});
     	});
     }

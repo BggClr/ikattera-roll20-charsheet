@@ -308,6 +308,7 @@ hr {
     margin-top: -3px;
     padding: 0.25em;
     text-align: center;
+    font-weight: 500;
 }
 
 .sheet-rolltemplate-check .sheet-result {
