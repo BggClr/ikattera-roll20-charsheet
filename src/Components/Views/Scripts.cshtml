@@ -83,7 +83,7 @@
 		return 0;
 	}
 
-	async function rollDice(dice, featureName, altKey, title) {
+	async function rollDice(dice, featureName, title, altKey) {
 		getAttrs(getValuesListForCalculate(['global_check_mod']), async values => {
 			const feature = findFeature(featureName);
 			let modifiers = [
@@ -101,7 +101,7 @@
 			const rollResultModifiers = modifiers.filter(key => !!values[key]).map(p => `@@{${p}}`).join(' + ');
 			const rollModifier = !!altKey ? '/w gm': '';
 
-			const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${feature.title} ${title}}} {{result=[[${dice} + ${rollResultModifiers}]]}} {{modifier=[[0]]}}`;
+			const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${getTranslationByKey(feature.name)} ${getTranslationByKey(title) || ''}}} {{result=[[${dice} + ${rollResultModifiers}]]}} {{modifier=[[0]]}}`;
 			const results = await startRoll(roll);
 			finishRoll(results.rollId, {
 				modifier: getRollModifierValue(results.results['result'])
@@ -117,7 +117,7 @@
 
     		const rollModifier = !!altKey ? '/w gm': '';
 
-    		const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${title}}} {{result=[[${rollString}]]}} {{modifier=[[0]]}}`;
+    		const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${getTranslationByKey(title) || ''}}} {{result=[[${rollString}]]}} {{modifier=[[0]]}}`;
     		const results = await startRoll(roll);
     		finishRoll(results.rollId);
     		const value = results.results['result'].result;
@@ -126,11 +126,6 @@
     			modifier: 0
     		});
     	});
-    }
-
-	function getDamageTypeTitle(name) {
-    	const damageType =  CharsheetData.damage_types.filter(p => p.name == name)[0];
-    	return (damageType && damageType.title) || name;
     }
 
     function getDamageRoll(weaponDamageRollDataItem) {
@@ -735,14 +730,15 @@
 	});
 
 	$20('button.js-roll').on('click', async e => {
-		await rollDice('2d10', e.htmlAttributes['data-name'], e.altKey, '');
+		await rollDice('2d10', e.htmlAttributes['data-name'], '', e.altKey);
 	});
 	$20('button.js-roll-adv').on('click', async e => {
-		await rollDice('3d10kh2', e.htmlAttributes['data-name'], e.altKey, 'с преимуществом');
+		await rollDice('3d10kh2', e.htmlAttributes['data-name'], 'roll_adv', e.altKey);
 	});
 	$20('button.js-roll-dis').on('click', async e => {
-		await rollDice('3d10kl2', e.htmlAttributes['data-name'], e.altKey, 'с помехой');
+		await rollDice('3d10kl2', e.htmlAttributes['data-name'], 'roll_disadv', e.altKey);
 	});
+
 	$20('button.js-roll-potion').on('click', async e => {
 		await rollPotionDice(e.htmlAttributes['data-dice'], e.htmlAttributes['data-name'], e.htmlAttributes['data-title'], e.altKey);
 	});

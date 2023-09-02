@@ -102,7 +102,9 @@
     "bonus_damage": "Бонус к урону",
 
     "hp_base": "Здоровье",
+    "hp": "Здоровье",
     "stamina_base": "Выносливость",
+    "stamina": "Выносливость",
     "attributes_free": "Очки характеристик",
     "skills_free": "Очки навыков",
     "weapons_free": "Очки вооружения",
@@ -160,11 +162,29 @@
     "skill_magic_earth": "ШМ - Стихии Земля",
     "skill_magic_fire": "ШМ - Стихия Огонь",
 
+    "armor_head": "КБ - Голова",
+    "armor_body": "КБ - Корпус",
+    "armor_hands": "КБ - Руки",
+    "armor_legs": "КБ - Ноги",
+
     "weapon_light": "Легкое вооружение",
     "weapon_heavy": "Тяжелое вооружение",
     "weapon_ranged": "Дальнобойное оружие",
     "weapon_gunpowder": "Пороховое оружие",
     "weapon_magic": "Магичность",
+
+    "potion_hp_s": "Малое зелье кровавика",
+    "potion_hp_m": "Среднее зелье кровавика",
+    "potion_hp_l": "Большое зелье кровавика",
+    "potion_hp_xl": "Гигантское зелье кровавика",
+
+    "potion_stamina_s": "Малое зелье Фархада",
+    "potion_stamina_m": "Среднее зелье Фархада",
+    "potion_stamina_l": "Большое зелье Фархада",
+    "potion_stamina_xl": "Гигантское зелье Фархада",
+
+    "roll_adv": "с преимуществом",
+    "roll_disadv": "с помехой",
 
     "Attack": "Попадание",
     "Weapon": "Оружие",
