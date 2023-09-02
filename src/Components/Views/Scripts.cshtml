@@ -101,10 +101,10 @@
 			const rollResultModifiers = modifiers.filter(key => !!values[key]).map(p => `@@{${p}}`).join(' + ');
 			const rollModifier = !!altKey ? '/w gm': '';
 
-			const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${feature.title} ${title}}} {{Результат=[[${dice} + ${rollResultModifiers}]]}} {{modifier=[[0]]}}`;
+			const roll = `${rollModifier} &{template:check} {{title=@@{character_name}}} {{subtitle=${feature.title} ${title}}} {{result=[[${dice} + ${rollResultModifiers}]]}} {{modifier=[[0]]}}`;
 			const results = await startRoll(roll);
 			finishRoll(results.rollId, {
-				modifier: getRollModifierValue(results.results['Результат'])
+				modifier: getRollModifierValue(results.results['result'])
 			});
 		});
 	}

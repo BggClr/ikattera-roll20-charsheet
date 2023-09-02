@@ -268,69 +268,58 @@ hr {
     text-align: center;
 }
 
-
 .sheet-rolltemplate-check {
     margin-left: -40px;
-    margin-top: 8px;
-}
-.withoutavatars .sheet-rolltemplate-check {
-    margin-left: -7px;
+    padding-top: 8px;
 }
 
-.sheet-rolltemplate-check .sheet-container {
-    border: 1px solid;
-    border-color: var(--header-bg-color);
+.sheet-rolltemplate-check.sheet-rolltemplate-darkmode > div.sheet-container {
+    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-dark-normal.png");
 }
 
-.sheet-rolltemplate-check .sheet-header {
-    background-color: var(--header-bg-color);
-    text-align: left;
-    color: var(--header-text-color);
-    padding: 5px;
-}
-.sheet-rolltemplate-check .sheet-title {
-    font-size:1.1em;
-}
-.sheet-rolltemplate-check .sheet-subtitle {
-    font-size:.9em;
+.sheet-rolltemplate-check.sheet-rolltemplate-darkmode > div.sheet-container.sheet-success {
+    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-dark-success.png");
 }
 
-.sheet-rolltemplate-check .sheet-container {
-    --header-bg-color: rgba(112,32,130,1);
-    --header-text-color: #FFF;
-}
-.sheet-rolltemplate-check .sheet-container.sheet-color-red {
-    --header-bg-color: #F00;
-}
-.sheet-rolltemplate-check .sheet-container.sheet-color-green {
-    --header-bg-color: #0F0;
-    --header-text-color: #000;
+.sheet-rolltemplate-check.sheet-rolltemplate-darkmode > div.sheet-container.sheet-failure {
+    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-dark-failure.png");
 }
 
-.sheet-rolltemplate-check .sheet-content {
-    display: grid;
-    background:var(--banner-background);
-    grid-template-columns: 1fr 2fr;
-    line-height:1.4em;
-}
-.sheet-rolltemplate-check .sheet-content > div {
-    padding: 5px;
-}
-
-.sheet-rolltemplate-check .sheet-content .sheet-key {
-    font-weight: bold;
-    padding-right: 10px;
+.sheet-rolltemplate-check > div.sheet-container {
+    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-light-normal.png");
+    background-repeat: no-repeat;
+    background-color: inherit;
+    background-size: 100% 100%;
+    border: none;
+    width: 74%;
+    margin: auto;
 }
 
-.sheet-rolltemplate-check .sheet-content :nth-child(4n+3),
-.sheet-rolltemplate-check .sheet-content :nth-child(4n) {
-    background:var(--primary-background-light);
+.sheet-rolltemplate-check > div.sheet-container.sheet-success {
+    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-light-success.png");
+    color: black;
+}
+.sheet-rolltemplate-check > div.sheet-container.sheet-failure {
+    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-light-failure.png");
+    color: black;
 }
 
-.sheet-rolltemplate-check .sheet-desc {
-    grid-column: span 2;
-    padding: 5px;
+.sheet-rolltemplate-check .sheet-label {
+    margin-top: -3px;
+    padding: 0.25em;
     text-align: center;
+}
+
+.sheet-rolltemplate-check .sheet-result {
+    margin-top: -3px;
+    padding: 0.25em;
+    text-align: center;
+    font-size: 21px;
+}
+
+.sheet-rolltemplate-check .sheet-result .inlinerollresult{
+    border: none;
+    background-color: transparent;
 }
 
 .width-1 {

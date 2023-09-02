@@ -29,26 +29,44 @@
 </rolltemplate>
 
 <rolltemplate class="sheet-rolltemplate-check">
-	<div class="sheet-container">
-		<div class="sheet-header">
-			{{#title}}<div class="sheet-title">{{title}}</div>{{/title}}
-			{{#subtitle}}<div class="sheet-subtitle">{{subtitle}}</div>{{/subtitle}}
-		</div>
-		<div class="sheet-content">
-			{{#allprops() desc title subtitle modifier}}
-			<div class="sheet-key">{{key}}</div>
-			<div class="sheet-value">{{value}}</div>
-			{{/allprops() desc title subtitle modifier}}
-			{{#desc}}<div class="sheet-desc">{{desc}}</div>{{/desc}}
-			{{#rollGreater() computed::modifier 0}}
-                <div class="sheet-key">Модификатор</div>
-                <div class="sheet-value">Критический успех</div>
-            {{/rollGreater() computed::modifier 0}}
-            {{#rollLess() computed::modifier 0}}
-                <div class="sheet-key">Модификатор</div>
-                <div class="sheet-value">Критический провал</div>
-            {{/rollLess() computed::modifier 0}}
-            {{#desc}}<div class="sheet-desc">{{desc}}</div>{{/desc}}
-		</div>
-	</div>
+	{{#rollGreater() computed::modifier 0}}
+		<div class="sheet-container sheet-success">
+        	{{#title}}
+        	<div class="sheet-label">{{title}}</div>
+        	{{/title}}
+        	<div class="sheet-result">
+        		{{result}}
+        	</div>
+        	{{#subtitle}}
+        	<div class="sheet-label">{{subtitle}}</div>
+        	{{/subtitle}}
+        </div>
+	{{/rollGreater() computed::modifier 0}}
+	{{#rollLess() computed::modifier 0}}
+		<div class="sheet-container sheet-failure">
+            {{#title}}
+            <div class="sheet-label">{{title}}</div>
+            {{/title}}
+            <div class="sheet-result">
+            	{{result}}
+            </div>
+            {{#subtitle}}
+            <div class="sheet-label">{{subtitle}}</div>
+            {{/subtitle}}
+        </div>
+	{{/rollLess() computed::modifier 0}}
+	{{#rollBetween() computed::modifier 0 0}}
+		<div class="sheet-container">
+    		{{#title}}
+    		<div class="sheet-label">{{title}}</div>
+    		{{/title}}
+    		<div class="sheet-result">
+    			{{result}}
+    		</div>
+    		{{#subtitle}}
+    		<div class="sheet-label">{{subtitle}}</div>
+    		{{/subtitle}}
+	    </div>
+	{{/rollBetween() computed::modifier 0 0}}
+
 </rolltemplate>
