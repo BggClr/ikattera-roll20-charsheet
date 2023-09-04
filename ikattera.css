@@ -211,40 +211,31 @@ hr {
 
 .sheet-rolltemplate-attack > div.sheet-container,
 .sheet-rolltemplate-check > div.sheet-container {
-    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-light-normal.png");
+    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-normal.png");
     background-repeat: no-repeat;
     background-color: inherit;
     background-size: 100% 100%;
     border: none;
     width: 74%;
     margin: auto;
+    padding: 20px 10px;
 }
 
 .sheet-rolltemplate-attack > div.sheet-container.sheet-success,
 .sheet-rolltemplate-check > div.sheet-container.sheet-success {
-    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-light-success.png");
+    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-success.png");
     color: black;
 }
 
 .sheet-rolltemplate-attack > div.sheet-container.sheet-failure,
 .sheet-rolltemplate-check > div.sheet-container.sheet-failure {
-    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-light-failure.png");
+    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-failure.png");
     color: black;
 }
 
 .sheet-rolltemplate-attack.sheet-rolltemplate-darkmode > div.sheet-container,
 .sheet-rolltemplate-check.sheet-rolltemplate-darkmode > div.sheet-container {
-    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-dark-normal.png");
-}
-
-.sheet-rolltemplate-attack.sheet-rolltemplate-darkmode > div.sheet-container.sheet-success,
-.sheet-rolltemplate-check.sheet-rolltemplate-darkmode > div.sheet-container.sheet-success {
-    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-dark-success.png");
-}
-
-.sheet-rolltemplate-attack.sheet-rolltemplate-darkmode > div.sheet-container.sheet-failure,
-.sheet-rolltemplate-check.sheet-rolltemplate-darkmode > div.sheet-container.sheet-failure {
-    background-image: url("https://ikattera-assets.s3.eu-central-1.amazonaws.com/images/roll-template/border-dark-failure.png");
+    color: black;
 }
 
 .sheet-rolltemplate-attack .sheet-tooltip,
@@ -298,12 +289,6 @@ hr {
     border: black solid 1px;
     display: block;
 }
-
-.sheet-rolltemplate-attack.sheet-rolltemplate-darkmode .sheet-devider,
-.sheet-rolltemplate-check.sheet-rolltemplate-darkmode .sheet-devider {
-    border: white solid 1px;
-}
-
 
 .sheet-rolltemplate-attack .sheet-result,
 .sheet-rolltemplate-check .sheet-result {
