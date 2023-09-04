@@ -1,3 +1,4 @@
+@using Models
 @model Components.ViewModels.CombatWeapon
 
 <div class="combat-weapon-container border rounded-3 js-combat-weapon-@(Model.Index) @(Model.Last ? "last" : "")">
@@ -68,6 +69,11 @@
 						{
 							<option value="@feature.Name" data-i18n="@feature.Name">@feature.Name</option>
 						}
+						<option value="" disabled>------</option>
+						@foreach (var feature in Model.Manifest.Weapons)
+                        {
+                        	<option value="@feature.Name" data-i18n="@feature.Name">@feature.Name</option>
+                        }
 					</select>
 					<input type="number" name="attr_damage_value_bonus" class="form-control" />
 				</div>
